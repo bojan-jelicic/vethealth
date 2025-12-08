@@ -7,8 +7,8 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 const navLinks = [
   { name: 'Početna', href: '/' },
   { name: 'Usluge', href: '/services' },
+  { name: 'Cjenovnik', href: '/cjenovnik-usluga' },
   { name: 'Pet Shop', href: '/pet-shop' },
-  { name: 'Blog', href: '/blog' },
   { name: 'O Nama', href: '/about' },
   { name: 'Kontakt', href: '/contact' },
 ];

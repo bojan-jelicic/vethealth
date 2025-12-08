@@ -13,6 +13,7 @@ import AboutPage from "./pages/AboutPage";
 import ContactPage from "./pages/ContactPage";
 import AppointmentPage from "./pages/AppointmentPage";
 import AppointmentConfirmationPage from "./pages/AppointmentConfirmationPage";
+import PriceListPage from "./pages/PriceListPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/zakazivanje-termina" element={<AppointmentPage />} />
             <Route path="/potvrda-zakazivanja" element={<AppointmentConfirmationPage />} />
+            <Route path="/cjenovnik-usluga" element={<PriceListPage />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
