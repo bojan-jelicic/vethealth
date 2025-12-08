@@ -1,20 +1,22 @@
 import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, X, Phone, Calendar, PawPrint } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
+import { Menu, Phone, Calendar, PawPrint } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 const navLinks = [
-  { name: 'Početna', href: '#home' },
-  { name: 'Usluge', href: '#services' },
-  { name: 'Pet Shop', href: '#petshop' },
-  { name: 'O Nama', href: '#about' },
-  { name: 'Kontakt', href: '#contact' },
+  { name: 'Početna', href: '/' },
+  { name: 'Usluge', href: '/services' },
+  { name: 'Pet Shop', href: '/pet-shop' },
+  { name: 'Blog', href: '/blog' },
+  { name: 'O Nama', href: '/about' },
+  { name: 'Kontakt', href: '/contact' },
 ];
 
 export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,12 +26,9 @@ export const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
-    }
-    setIsOpen(false);
+  const isActive = (href: string) => {
+    if (href === '/') return location.pathname === '/';
+    return location.pathname.startsWith(href);
   };
 
   return (
@@ -58,13 +57,17 @@ export const Header = () => {
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
-              <button
+              <Link
                 key={link.name}
-                onClick={() => scrollToSection(link.href)}
-                className="text-foreground font-medium link-underline py-1 hover:text-primary transition-colors"
+                to={link.href}
+                className={`font-medium py-1 transition-colors link-underline ${
+                  isActive(link.href)
+                    ? 'text-primary'
+                    : 'text-foreground hover:text-primary'
+                }`}
               >
                 {link.name}
-              </button>
+              </Link>
             ))}
           </nav>
 
@@ -77,9 +80,11 @@ export const Header = () => {
               <Phone className="w-4 h-4" />
               <span className="text-small">+387 51 123 456</span>
             </a>
-            <Button variant="accent" onClick={() => scrollToSection('#contact')}>
-              <Calendar className="w-4 h-4" />
-              Zakaži Termin
+            <Button variant="accent" asChild>
+              <Link to="/contact">
+                <Calendar className="w-4 h-4" />
+                Zakaži Termin
+              </Link>
             </Button>
           </div>
 
@@ -95,13 +100,18 @@ export const Header = () => {
               <div className="flex flex-col h-full pt-8">
                 <nav className="flex flex-col gap-4">
                   {navLinks.map((link) => (
-                    <button
+                    <Link
                       key={link.name}
-                      onClick={() => scrollToSection(link.href)}
-                      className="text-lg font-heading font-medium text-foreground hover:text-primary transition-colors text-left py-2 border-b border-border"
+                      to={link.href}
+                      onClick={() => setIsOpen(false)}
+                      className={`text-lg font-heading font-medium transition-colors text-left py-2 border-b border-border ${
+                        isActive(link.href)
+                          ? 'text-primary'
+                          : 'text-foreground hover:text-primary'
+                      }`}
                     >
                       {link.name}
-                    </button>
+                    </Link>
                   ))}
                 </nav>
                 <div className="mt-auto pb-8 space-y-4">
@@ -112,13 +122,11 @@ export const Header = () => {
                     <Phone className="w-5 h-5 text-primary" />
                     <span>+387 51 123 456</span>
                   </a>
-                  <Button
-                    variant="accent"
-                    className="w-full"
-                    onClick={() => scrollToSection('#contact')}
-                  >
-                    <Calendar className="w-4 h-4" />
-                    Zakaži Termin
+                  <Button variant="accent" className="w-full" asChild>
+                    <Link to="/contact" onClick={() => setIsOpen(false)}>
+                      <Calendar className="w-4 h-4" />
+                      Zakaži Termin
+                    </Link>
                   </Button>
                 </div>
               </div>
