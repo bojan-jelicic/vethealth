@@ -12,6 +12,7 @@ interface ChatContextType {
   messages: ChatMessage[];
   isLoading: boolean;
   hasUnread: boolean;
+  lastBookingSuccess: boolean;
   openChat: () => void;
   closeChat: () => void;
   toggleChat: () => void;
@@ -38,6 +39,7 @@ export const ChatProvider = ({ children }: ChatProviderProps) => {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasUnread, setHasUnread] = useState(false);
+  const [lastBookingSuccess, setLastBookingSuccess] = useState(false);
 
   const openChat = useCallback(() => {
     setIsOpen(true);
@@ -57,6 +59,7 @@ export const ChatProvider = ({ children }: ChatProviderProps) => {
 
   const clearMessages = useCallback(() => {
     setMessages([]);
+    setLastBookingSuccess(false);
   }, []);
 
   const sendMessage = useCallback(async (content: string) => {
@@ -101,6 +104,13 @@ export const ChatProvider = ({ children }: ChatProviderProps) => {
 
       setMessages(prev => [...prev, assistantMessage]);
 
+      // Check if booking was successful
+      if (data.bookingSuccess) {
+        setLastBookingSuccess(true);
+        // Reset after showing
+        setTimeout(() => setLastBookingSuccess(false), 5000);
+      }
+
       // Set unread if chat is closed
       if (!isOpen) {
         setHasUnread(true);
@@ -126,6 +136,7 @@ export const ChatProvider = ({ children }: ChatProviderProps) => {
         messages,
         isLoading,
         hasUnread,
+        lastBookingSuccess,
         openChat,
         closeChat,
         toggleChat,

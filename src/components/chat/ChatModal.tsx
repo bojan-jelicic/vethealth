@@ -1,11 +1,12 @@
-import { useRef, useEffect } from 'react';
-import { X, Send, Loader2, Bot, User, Trash2 } from 'lucide-react';
+import { useRef, useEffect, useState } from 'react';
+import { X, Send, Loader2, Bot, User, Trash2, CalendarCheck } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useChatContext, ChatMessage } from '@/contexts/ChatContext';
-import { useState } from 'react';
 import { format } from 'date-fns';
+import { Link } from 'react-router-dom';
+import { useToast } from '@/hooks/use-toast';
 
 const MessageBubble = ({ message }: { message: ChatMessage }) => {
   const isUser = message.role === 'user';
@@ -36,10 +37,11 @@ const MessageBubble = ({ message }: { message: ChatMessage }) => {
 };
 
 export const ChatModal = () => {
-  const { isOpen, closeChat, messages, isLoading, sendMessage, clearMessages } = useChatContext();
+  const { isOpen, closeChat, messages, isLoading, sendMessage, clearMessages, lastBookingSuccess } = useChatContext();
   const [inputValue, setInputValue] = useState('');
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const { toast } = useToast();
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -54,6 +56,16 @@ export const ChatModal = () => {
       inputRef.current.focus();
     }
   }, [isOpen]);
+
+  // Show toast when booking is successful
+  useEffect(() => {
+    if (lastBookingSuccess) {
+      toast({
+        title: "Termin zakazan!",
+        description: "Uspješno ste zakazali termin. Potvrda je poslana na vaš email.",
+      });
+    }
+  }, [lastBookingSuccess, toast]);
 
   const handleSend = () => {
     if (inputValue.trim() && !isLoading) {
@@ -122,16 +134,23 @@ export const ChatModal = () => {
               </p>
               <div className="mt-4 space-y-2">
                 <button
+                  onClick={() => sendMessage('Želim zakazati termin za pregled')}
+                  className="block w-full text-left px-3 py-2 rounded-lg bg-primary/10 hover:bg-primary/20 text-sm transition-colors border border-primary/20"
+                >
+                  <CalendarCheck className="w-4 h-4 inline mr-2 text-primary" />
+                  Želim zakazati termin
+                </button>
+                <button
                   onClick={() => sendMessage('Koje usluge nudite?')}
                   className="block w-full text-left px-3 py-2 rounded-lg bg-secondary hover:bg-secondary/80 text-sm transition-colors"
                 >
                   Koje usluge nudite?
                 </button>
                 <button
-                  onClick={() => sendMessage('Kako mogu zakazati termin?')}
+                  onClick={() => sendMessage('Koje je vaše radno vrijeme?')}
                   className="block w-full text-left px-3 py-2 rounded-lg bg-secondary hover:bg-secondary/80 text-sm transition-colors"
                 >
-                  Kako mogu zakazati termin?
+                  Koje je vaše radno vrijeme?
                 </button>
                 <button
                   onClick={() => sendMessage('Koje je vaše radno vrijeme?')}
