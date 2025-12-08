@@ -1,13 +1,99 @@
 import { Helmet } from 'react-helmet-async';
 import { Layout } from '@/components/Layout';
 import { PageHero } from '@/components/PageHero';
-import { useServices } from '@/hooks/useAppointmentData';
-import { Card, CardContent } from '@/components/ui/card';
-import { Loader2, AlertCircle, Clock, Printer } from 'lucide-react';
+import { useServicesWithCategories, CategoryWithServices } from '@/hooks/useAppointmentData';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Loader2, AlertCircle, Clock, Printer, Stethoscope, Syringe, Scissors, Bone, Microscope, HelpCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
+const iconMap: Record<string, React.ElementType> = {
+  Stethoscope,
+  Syringe,
+  Scissors,
+  Bone,
+  Microscope,
+};
+
+const ServiceCategoryCard = ({ category }: { category: CategoryWithServices }) => {
+  const IconComponent = category.icon ? iconMap[category.icon] || HelpCircle : HelpCircle;
+
+  if (category.services.length === 0) return null;
+
+  return (
+    <Card className="overflow-hidden">
+      <CardHeader className="bg-secondary/30 border-b border-border">
+        <CardTitle className="flex items-center gap-3">
+          <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
+            <IconComponent className="w-5 h-5 text-primary" />
+          </div>
+          <div>
+            <h3 className="text-lg font-heading font-semibold text-foreground">
+              {category.name}
+            </h3>
+            {category.description && (
+              <p className="text-sm font-normal text-muted-foreground mt-0.5">
+                {category.description}
+              </p>
+            )}
+          </div>
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="p-0">
+        <table className="w-full">
+          <tbody>
+            {category.services.map((service, index) => (
+              <tr
+                key={service.id}
+                className={`
+                  border-b border-border last:border-b-0 
+                  transition-colors hover:bg-secondary/20
+                  ${index % 2 === 0 ? 'bg-card' : 'bg-secondary/5'}
+                `}
+              >
+                <td className="py-4 px-6">
+                  <div>
+                    <p className="font-medium text-foreground">
+                      {service.name}
+                    </p>
+                    {service.description && (
+                      <p className="text-sm text-muted-foreground mt-1 hidden md:block">
+                        {service.description}
+                      </p>
+                    )}
+                    {/* Mobile duration */}
+                    <div className="flex items-center gap-1 mt-1 sm:hidden text-sm text-muted-foreground">
+                      <Clock className="w-3 h-3" />
+                      <span>{service.duration_minutes} min</span>
+                    </div>
+                  </div>
+                </td>
+                <td className="text-center py-4 px-4 hidden sm:table-cell">
+                  <div className="flex items-center justify-center gap-1 text-muted-foreground">
+                    <Clock className="w-4 h-4" />
+                    <span>{service.duration_minutes} min</span>
+                  </div>
+                </td>
+                <td className="py-4 px-6 text-right">
+                  <span className="text-lg font-bold text-primary">
+                    {service.price?.toFixed(2) || '—'}
+                  </span>
+                  {service.price && (
+                    <span className="text-sm text-muted-foreground ml-1">
+                      KM
+                    </span>
+                  )}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </CardContent>
+    </Card>
+  );
+};
+
 const PriceListPage = () => {
-  const { data: services, isLoading, error } = useServices();
+  const { data: categories, isLoading, error } = useServicesWithCategories();
 
   const breadcrumbs = [
     { label: 'Početna', href: '/' },
@@ -17,6 +103,8 @@ const PriceListPage = () => {
   const handlePrint = () => {
     window.print();
   };
+
+  const totalServices = categories?.reduce((sum, cat) => sum + cat.services.length, 0) || 0;
 
   return (
     <Layout>
@@ -70,7 +158,7 @@ const PriceListPage = () => {
           )}
 
           {/* Empty State */}
-          {!isLoading && !error && services?.length === 0 && (
+          {!isLoading && !error && totalServices === 0 && (
             <Card>
               <CardContent className="flex flex-col items-center justify-center py-16">
                 <p className="text-muted-foreground text-lg">
@@ -80,8 +168,8 @@ const PriceListPage = () => {
             </Card>
           )}
 
-          {/* Price List */}
-          {!isLoading && !error && services && services.length > 0 && (
+          {/* Price List by Category */}
+          {!isLoading && !error && categories && totalServices > 0 && (
             <div className="space-y-6">
               {/* Info Card */}
               <Card className="bg-primary/5 border-primary/20 print:hidden">
@@ -94,72 +182,12 @@ const PriceListPage = () => {
                 </CardContent>
               </Card>
 
-              {/* Services Table */}
-              <Card className="overflow-hidden">
-                <div className="overflow-x-auto">
-                  <table className="w-full">
-                    <thead>
-                      <tr className="bg-secondary/50 border-b border-border">
-                        <th className="text-left py-4 px-6 font-heading font-semibold text-foreground">
-                          Usluga
-                        </th>
-                        <th className="text-center py-4 px-4 font-heading font-semibold text-foreground hidden sm:table-cell">
-                          Trajanje
-                        </th>
-                        <th className="text-right py-4 px-6 font-heading font-semibold text-foreground">
-                          Cijena
-                        </th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {services.map((service, index) => (
-                        <tr
-                          key={service.id}
-                          className={`
-                            border-b border-border last:border-b-0 
-                            transition-colors hover:bg-secondary/30
-                            ${index % 2 === 0 ? 'bg-card' : 'bg-secondary/10'}
-                          `}
-                        >
-                          <td className="py-4 px-6">
-                            <div>
-                              <p className="font-medium text-foreground">
-                                {service.name}
-                              </p>
-                              {service.description && (
-                                <p className="text-sm text-muted-foreground mt-1 hidden md:block">
-                                  {service.description}
-                                </p>
-                              )}
-                              {/* Mobile duration */}
-                              <div className="flex items-center gap-1 mt-1 sm:hidden text-sm text-muted-foreground">
-                                <Clock className="w-3 h-3" />
-                                <span>{service.duration_minutes} min</span>
-                              </div>
-                            </div>
-                          </td>
-                          <td className="text-center py-4 px-4 hidden sm:table-cell">
-                            <div className="flex items-center justify-center gap-1 text-muted-foreground">
-                              <Clock className="w-4 h-4" />
-                              <span>{service.duration_minutes} min</span>
-                            </div>
-                          </td>
-                          <td className="py-4 px-6 text-right">
-                            <span className="text-lg font-bold text-primary">
-                              {service.price?.toFixed(2) || '—'}
-                            </span>
-                            {service.price && (
-                              <span className="text-sm text-muted-foreground ml-1">
-                                KM
-                              </span>
-                            )}
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              </Card>
+              {/* Categories Grid */}
+              <div className="space-y-6">
+                {categories.map((category) => (
+                  <ServiceCategoryCard key={category.id} category={category} />
+                ))}
+              </div>
 
               {/* Additional Info */}
               <div className="grid md:grid-cols-2 gap-6 print:hidden">
