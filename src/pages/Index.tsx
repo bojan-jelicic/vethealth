@@ -1,26 +1,21 @@
-import { Header } from '@/components/Header';
+import { Layout } from '@/components/Layout';
 import { Hero } from '@/components/Hero';
 import { Services } from '@/components/Services';
 import { PetShop } from '@/components/PetShop';
 import { About } from '@/components/About';
 import { Testimonials } from '@/components/Testimonials';
 import { Contact } from '@/components/Contact';
-import { Footer } from '@/components/Footer';
 
 const Index = () => {
   return (
-    <div className="min-h-screen">
-      <Header />
-      <main>
-        <Hero />
-        <Services />
-        <PetShop />
-        <About />
-        <Testimonials />
-        <Contact />
-      </main>
-      <Footer />
-    </div>
+    <Layout>
+      <Hero />
+      <Services />
+      <PetShop />
+      <About />
+      <Testimonials />
+      <Contact />
+    </Layout>
   );
 };
 
