@@ -81,7 +81,7 @@ export const Header = () => {
               <span className="text-small">+387 51 123 456</span>
             </a>
             <Button variant="accent" asChild>
-              <Link to="/contact">
+              <Link to="/zakazivanje-termina">
                 <Calendar className="w-4 h-4" />
                 Zakaži Termin
               </Link>
@@ -123,7 +123,7 @@ export const Header = () => {
                     <span>+387 51 123 456</span>
                   </a>
                   <Button variant="accent" className="w-full" asChild>
-                    <Link to="/contact" onClick={() => setIsOpen(false)}>
+                    <Link to="/zakazivanje-termina" onClick={() => setIsOpen(false)}>
                       <Calendar className="w-4 h-4" />
                       Zakaži Termin
                     </Link>
