@@ -5,8 +5,8 @@ import { Textarea } from '@/components/ui/textarea';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { useChatContext, ChatMessage } from '@/contexts/ChatContext';
 import { format } from 'date-fns';
-import { Link } from 'react-router-dom';
 import { useToast } from '@/hooks/use-toast';
+import { MarkdownRenderer } from './MarkdownRenderer';
 
 const MessageBubble = ({ message }: { message: ChatMessage }) => {
   const isUser = message.role === 'user';
@@ -27,7 +27,11 @@ const MessageBubble = ({ message }: { message: ChatMessage }) => {
             : 'bg-secondary text-secondary-foreground rounded-bl-sm'
         }`}
       >
-        <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+        {isUser ? (
+          <p className="text-sm whitespace-pre-wrap">{message.content}</p>
+        ) : (
+          <MarkdownRenderer content={message.content} />
+        )}
         <p className={`text-xs mt-1 ${isUser ? 'text-primary-foreground/70' : 'text-muted-foreground'}`}>
           {format(message.timestamp, 'HH:mm')}
         </p>
