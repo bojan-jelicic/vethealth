@@ -1,11 +1,12 @@
-import { useState } from 'react';
-import { MapPin, Phone, Mail, Clock, Send, AlertTriangle } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { MapPin, Phone, Mail, Clock, Send, AlertTriangle, CheckCircle, X, Loader2 } from 'lucide-react';
 import { Layout } from '@/components/Layout';
 import { PageHero } from '@/components/PageHero';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { contactFormSchema, type ContactFormData } from '@/lib/validations';
 
 const contactInfo = [
   {
@@ -34,35 +35,101 @@ const contactInfo = [
 ];
 
 const ContactPage = () => {
-  const { toast } = useToast();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ContactFormData>({
     name: '',
     email: '',
     phone: '',
     subject: '',
     message: '',
   });
+  const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  // Auto-hide success/error messages after 7 seconds
+  useEffect(() => {
+    if (submitSuccess) {
+      const timer = setTimeout(() => setSubmitSuccess(false), 7000);
+      return () => clearTimeout(timer);
+    }
+  }, [submitSuccess]);
+
+  useEffect(() => {
+    if (submitError) {
+      const timer = setTimeout(() => setSubmitError(null), 7000);
+      return () => clearTimeout(timer);
+    }
+  }, [submitError]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+    
+    // Clear error when user starts typing
+    if (errors[name as keyof ContactFormData]) {
+      setErrors((prev) => ({ ...prev, [name]: undefined }));
+    }
+  };
+
+  const validateForm = (): boolean => {
+    const result = contactFormSchema.safeParse(formData);
+    
+    if (!result.success) {
+      const newErrors: Partial<Record<keyof ContactFormData, string>> = {};
+      result.error.errors.forEach((err) => {
+        const field = err.path[0] as keyof ContactFormData;
+        newErrors[field] = err.message;
+      });
+      setErrors(newErrors);
+      return false;
+    }
+    
+    setErrors({});
+    return true;
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setSubmitSuccess(false);
+    setSubmitError(null);
+
+    if (!validateForm()) {
+      return;
+    }
+
     setIsSubmitting(true);
 
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const { data, error } = await supabase.functions.invoke('contact-form', {
+        body: {
+          name: formData.name.trim(),
+          email: formData.email.trim(),
+          phone: formData.phone?.trim() || undefined,
+          subject: formData.subject.trim(),
+          message: formData.message.trim(),
+        },
+      });
 
-    toast({
-      title: 'Poruka uspješno poslana!',
-      description: 'Hvala vam na poruci. Javit ćemo vam se uskoro.',
-    });
+      if (error) {
+        console.error('Error submitting form:', error);
+        setSubmitError('Došlo je do greške pri slanju poruke. Molimo pokušajte ponovo.');
+        return;
+      }
 
-    setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
-    setIsSubmitting(false);
+      if (data?.error) {
+        setSubmitError(data.error);
+        return;
+      }
+
+      setSubmitSuccess(true);
+      setFormData({ name: '', email: '', phone: '', subject: '', message: '' });
+    } catch (error) {
+      console.error('Network error:', error);
+      setSubmitError('Trenutno nismo u mogućnosti da obradimo vaš zahtjev. Pokušajte ponovo kasnije.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -157,6 +224,48 @@ const ContactPage = () => {
                   Popunite formu ispod i odgovorit ćemo vam u najkraćem mogućem roku.
                 </p>
 
+                {/* Success Message */}
+                {submitSuccess && (
+                  <div className="mb-6 p-4 bg-success/10 border border-success/20 rounded-lg flex items-start gap-3">
+                    <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="font-medium text-foreground">
+                        Vaša poruka je uspješno poslata!
+                      </p>
+                      <p className="text-small text-muted-foreground">
+                        Odgovorićemo vam u najkraćem mogućem roku.
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setSubmitSuccess(false)}
+                      className="text-muted-foreground hover:text-foreground"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+                )}
+
+                {/* Error Message */}
+                {submitError && (
+                  <div className="mb-6 p-4 bg-destructive/10 border border-destructive/20 rounded-lg flex items-start gap-3">
+                    <AlertTriangle className="w-5 h-5 text-destructive flex-shrink-0 mt-0.5" />
+                    <div className="flex-1">
+                      <p className="font-medium text-foreground">
+                        Greška pri slanju
+                      </p>
+                      <p className="text-small text-muted-foreground">
+                        {submitError}
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setSubmitError(null)}
+                      className="text-muted-foreground hover:text-foreground"
+                    >
+                      <X className="w-5 h-5" />
+                    </button>
+                  </div>
+                )}
+
                 <form onSubmit={handleSubmit} className="space-y-6">
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -166,11 +275,17 @@ const ContactPage = () => {
                       <Input
                         id="name"
                         name="name"
-                        placeholder="Vaše ime"
+                        placeholder="Vaše ime i prezime"
                         value={formData.name}
                         onChange={handleChange}
-                        required
+                        aria-describedby={errors.name ? 'name-error' : undefined}
+                        className={errors.name ? 'border-destructive' : ''}
                       />
+                      {errors.name && (
+                        <p id="name-error" className="text-small text-destructive">
+                          {errors.name}
+                        </p>
+                      )}
                     </div>
                     <div className="space-y-2">
                       <label htmlFor="email" className="text-small font-medium text-foreground">
@@ -183,15 +298,21 @@ const ContactPage = () => {
                         placeholder="vas@email.com"
                         value={formData.email}
                         onChange={handleChange}
-                        required
+                        aria-describedby={errors.email ? 'email-error' : undefined}
+                        className={errors.email ? 'border-destructive' : ''}
                       />
+                      {errors.email && (
+                        <p id="email-error" className="text-small text-destructive">
+                          {errors.email}
+                        </p>
+                      )}
                     </div>
                   </div>
 
                   <div className="grid sm:grid-cols-2 gap-4">
                     <div className="space-y-2">
                       <label htmlFor="phone" className="text-small font-medium text-foreground">
-                        Telefon
+                        Telefon <span className="text-muted-foreground">(opcionalno)</span>
                       </label>
                       <Input
                         id="phone"
@@ -200,26 +321,39 @@ const ContactPage = () => {
                         placeholder="+387 XX XXX XXX"
                         value={formData.phone}
                         onChange={handleChange}
+                        aria-describedby={errors.phone ? 'phone-error' : undefined}
+                        className={errors.phone ? 'border-destructive' : ''}
                       />
+                      {errors.phone && (
+                        <p id="phone-error" className="text-small text-destructive">
+                          {errors.phone}
+                        </p>
+                      )}
                     </div>
                     <div className="space-y-2">
                       <label htmlFor="subject" className="text-small font-medium text-foreground">
-                        Tema *
+                        Predmet Poruke *
                       </label>
                       <Input
                         id="subject"
                         name="subject"
-                        placeholder="Npr. Zakazivanje termina"
+                        placeholder="Npr. Zakazivanje pregleda"
                         value={formData.subject}
                         onChange={handleChange}
-                        required
+                        aria-describedby={errors.subject ? 'subject-error' : undefined}
+                        className={errors.subject ? 'border-destructive' : ''}
                       />
+                      {errors.subject && (
+                        <p id="subject-error" className="text-small text-destructive">
+                          {errors.subject}
+                        </p>
+                      )}
                     </div>
                   </div>
 
                   <div className="space-y-2">
                     <label htmlFor="message" className="text-small font-medium text-foreground">
-                      Poruka *
+                      Vaša Poruka * <span className="text-muted-foreground">(max 500 karaktera)</span>
                     </label>
                     <Textarea
                       id="message"
@@ -227,10 +361,26 @@ const ContactPage = () => {
                       placeholder="Opišite vaše pitanje ili zakažite termin..."
                       value={formData.message}
                       onChange={handleChange}
-                      required
                       rows={6}
-                      className="resize-none"
+                      className={`resize-none ${errors.message ? 'border-destructive' : ''}`}
+                      aria-describedby={errors.message ? 'message-error' : undefined}
                     />
+                    <div className="flex justify-between items-center">
+                      {errors.message ? (
+                        <p id="message-error" className="text-small text-destructive">
+                          {errors.message}
+                        </p>
+                      ) : (
+                        <span />
+                      )}
+                      <span className={`text-small ${
+                        formData.message.length > 500 
+                          ? 'text-destructive' 
+                          : 'text-muted-foreground'
+                      }`}>
+                        {formData.message.length}/500
+                      </span>
+                    </div>
                   </div>
 
                   <Button
@@ -241,7 +391,10 @@ const ContactPage = () => {
                     disabled={isSubmitting}
                   >
                     {isSubmitting ? (
-                      'Šaljem...'
+                      <>
+                        <Loader2 className="w-4 h-4 animate-spin" />
+                        Šaljem poruku...
+                      </>
                     ) : (
                       <>
                         <Send className="w-4 h-4" />
