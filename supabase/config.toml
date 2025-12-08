@@ -5,3 +5,6 @@ verify_jwt = false
 
 [functions.appointments]
 verify_jwt = false
+
+[functions.live-chat]
+verify_jwt = false
