@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, Phone, Calendar, PawPrint } from 'lucide-react';
+import { Menu, Phone, Calendar } from 'lucide-react';
+import vethealthLogo from '@/assets/vethealth-logo.png';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
@@ -42,16 +43,12 @@ export const Header = () => {
       <div className="container-custom">
         <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
-            <div className="w-10 h-10 bg-primary rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-              <PawPrint className="w-6 h-6 text-primary-foreground" />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-heading font-bold text-xl text-foreground">
-                VetHealth
-              </span>
-              <span className="text-xs text-primary font-medium -mt-1">.ba</span>
-            </div>
+          <Link to="/" className="group">
+            <img
+              src={vethealthLogo}
+              alt="VetHealth.ba - Veterinarska Ordinacija"
+              className="h-12 md:h-14 w-auto group-hover:scale-105 transition-transform"
+            />
           </Link>
 
           {/* Desktop Navigation */}
