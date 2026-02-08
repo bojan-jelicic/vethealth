@@ -47,7 +47,7 @@ export const Header = () => {
             <img
               src={vethealthLogo}
               alt="VetHealth.ba - Veterinarska Ordinacija"
-              className="h-12 md:h-14 w-auto group-hover:scale-105 transition-transform"
+              className="h-16 md:h-[72px] w-auto group-hover:scale-105 transition-transform"
             />
           </Link>
 
