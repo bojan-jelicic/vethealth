@@ -673,6 +673,55 @@ const AdminVisitDetail = () => {
           </form>
         </DialogContent>
       </Dialog>
+
+      {/* Euthanasia Finalize Confirmation */}
+      <Dialog open={euthanasiaConfirmOpen} onOpenChange={setEuthanasiaConfirmOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-destructive">
+              <AlertTriangle className="h-5 w-5" />
+              Finalizacija saglasnosti za eutanaziju
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 text-sm space-y-2">
+              <p className="font-semibold text-destructive">⚠ Upozorenje</p>
+              <p className="text-foreground">
+                Ovaj dokument je saglasnost za eutanaziju. Finalizacijom potvrđujete da je vlasnik
+                dao pisanu saglasnost i da su svi podaci tačni. Dokument će biti zaključan i
+                zabilježen u audit logu.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <Label className="text-sm">Upišite <span className="font-bold">POTVRĐUJEM</span> za nastavak</Label>
+              <Input
+                value={euthanasiaConfirmText}
+                onChange={(e) => setEuthanasiaConfirmText(e.target.value)}
+                placeholder="POTVRĐUJEM"
+                className="border-destructive/50 focus-visible:ring-destructive"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => { setEuthanasiaConfirmOpen(false); setEuthanasiaConfirmText(''); }}>
+              Otkaži
+            </Button>
+            <Button
+              variant="destructive"
+              disabled={euthanasiaConfirmText !== 'POTVRĐUJEM' || finalizeDocMutation.isPending}
+              onClick={() => {
+                if (euthanasiaConfirmDocId) {
+                  finalizeDocMutation.mutate(euthanasiaConfirmDocId);
+                  setEuthanasiaConfirmOpen(false);
+                  setEuthanasiaConfirmText('');
+                }
+              }}
+            >
+              {finalizeDocMutation.isPending ? 'Finalizacija...' : 'Finaliziraj dokument'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
