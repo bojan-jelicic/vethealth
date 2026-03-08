@@ -1,0 +1,101 @@
+import { supabase } from '@/integrations/supabase/client';
+import { logAudit } from './auditService';
+
+const DOC_TABLE = 'visit_documents' as any;
+const BILLING_TABLE = 'visit_billing_items' as any;
+const INV_TABLE = 'visit_inventory' as any;
+
+export interface VisitDocument {
+  id: string;
+  visit_id: string;
+  title: string;
+  content: string;
+  doc_type: 'finding' | 'report' | 'prescription' | 'referral' | 'other';
+  status: 'draft' | 'finalized';
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+}
+
+export interface VisitBillingItem {
+  id: string;
+  visit_id: string;
+  description: string;
+  quantity: number;
+  unit_price: number;
+  total: number;
+  service_id: string | null;
+  created_at: string;
+}
+
+export interface VisitInventoryItem {
+  id: string;
+  visit_id: string;
+  item_name: string;
+  quantity: number;
+  unit: string;
+  notes: string | null;
+  created_at: string;
+}
+
+export const visitDocumentService = {
+  async listByVisit(visitId: string): Promise<VisitDocument[]> {
+    const { data, error } = await supabase
+      .from(DOC_TABLE).select('*').eq('visit_id', visitId).order('created_at', { ascending: false });
+    if (error) throw error;
+    return (data ?? []) as unknown as VisitDocument[];
+  },
+  async create(input: { visit_id: string; title: string; content?: string; doc_type?: string }): Promise<VisitDocument> {
+    const { data, error } = await supabase.from(DOC_TABLE).insert(input as any).select().single();
+    if (error) throw error;
+    const doc = data as unknown as VisitDocument;
+    await logAudit({ action: 'create', entity_type: 'visit_document', entity_id: doc.id, metadata: { title: input.title } });
+    return doc;
+  },
+  async update(id: string, input: Partial<{ title: string; content: string; status: string }>): Promise<VisitDocument> {
+    const { data, error } = await supabase.from(DOC_TABLE).update(input as any).eq('id', id).select().single();
+    if (error) throw error;
+    return data as unknown as VisitDocument;
+  },
+  async remove(id: string): Promise<void> {
+    const { error } = await supabase.from(DOC_TABLE).delete().eq('id', id);
+    if (error) throw error;
+    await logAudit({ action: 'delete', entity_type: 'visit_document', entity_id: id });
+  },
+};
+
+export const visitBillingService = {
+  async listByVisit(visitId: string): Promise<VisitBillingItem[]> {
+    const { data, error } = await supabase
+      .from(BILLING_TABLE).select('*').eq('visit_id', visitId).order('created_at');
+    if (error) throw error;
+    return (data ?? []) as unknown as VisitBillingItem[];
+  },
+  async create(input: { visit_id: string; description: string; quantity?: number; unit_price?: number; service_id?: string }): Promise<VisitBillingItem> {
+    const { data, error } = await supabase.from(BILLING_TABLE).insert(input as any).select().single();
+    if (error) throw error;
+    return data as unknown as VisitBillingItem;
+  },
+  async remove(id: string): Promise<void> {
+    const { error } = await supabase.from(BILLING_TABLE).delete().eq('id', id);
+    if (error) throw error;
+  },
+};
+
+export const visitInventoryService = {
+  async listByVisit(visitId: string): Promise<VisitInventoryItem[]> {
+    const { data, error } = await supabase
+      .from(INV_TABLE).select('*').eq('visit_id', visitId).order('created_at');
+    if (error) throw error;
+    return (data ?? []) as unknown as VisitInventoryItem[];
+  },
+  async create(input: { visit_id: string; item_name: string; quantity?: number; unit?: string; notes?: string }): Promise<VisitInventoryItem> {
+    const { data, error } = await supabase.from(INV_TABLE).insert(input as any).select().single();
+    if (error) throw error;
+    return data as unknown as VisitInventoryItem;
+  },
+  async remove(id: string): Promise<void> {
+    const { error } = await supabase.from(INV_TABLE).delete().eq('id', id);
+    if (error) throw error;
+  },
+};

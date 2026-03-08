@@ -1,0 +1,531 @@
+import { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import {
+  ArrowLeft, ClipboardList, FileText, Receipt, Package,
+  Plus, Trash2, PawPrint, User, Calendar, Edit, CheckCircle,
+} from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { Badge } from '@/components/ui/badge';
+import { Skeleton } from '@/components/ui/skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import {
+  Table, TableBody, TableCell, TableHead, TableHeader, TableRow,
+} from '@/components/ui/table';
+import {
+  Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
+} from '@/components/ui/dialog';
+import {
+  Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
+} from '@/components/ui/select';
+import { toast } from '@/hooks/use-toast';
+import { visitService } from '@/services/visitService';
+import { attachmentService } from '@/services/attachmentService';
+import {
+  visitDocumentService, visitBillingService, visitInventoryService,
+  type VisitDocument,
+} from '@/services/visitDetailServices';
+import { format } from 'date-fns';
+
+const statusColors: Record<string, string> = {
+  scheduled: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
+  in_progress: 'bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-400',
+  completed: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+  cancelled: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400',
+};
+const statusLabels: Record<string, string> = {
+  scheduled: 'Zakazana', in_progress: 'U toku', completed: 'Završena', cancelled: 'Otkazana',
+};
+const docTypeLabels: Record<string, string> = {
+  finding: 'Nalaz', report: 'Izvještaj', prescription: 'Recept', referral: 'Uputnica', other: 'Ostalo',
+};
+
+const AdminVisitDetail = () => {
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const qc = useQueryClient();
+
+  const [docDialogOpen, setDocDialogOpen] = useState(false);
+  const [billingDialogOpen, setBillingDialogOpen] = useState(false);
+  const [docForm, setDocForm] = useState({ title: '', doc_type: 'finding', content: '' });
+  const [billingForm, setBillingForm] = useState({ description: '', quantity: '1', unit_price: '0' });
+
+  // Visit
+  const { data: visit, isLoading } = useQuery({
+    queryKey: ['visit', id],
+    queryFn: () => visitService.getById(id!),
+    enabled: !!id,
+  });
+
+  // Documents
+  const { data: documents = [] } = useQuery({
+    queryKey: ['visit-documents', id],
+    queryFn: () => visitDocumentService.listByVisit(id!),
+    enabled: !!id,
+  });
+
+  // Billing
+  const { data: billingItems = [] } = useQuery({
+    queryKey: ['visit-billing', id],
+    queryFn: () => visitBillingService.listByVisit(id!),
+    enabled: !!id,
+  });
+
+  // Inventory
+  const { data: inventoryItems = [] } = useQuery({
+    queryKey: ['visit-inventory', id],
+    queryFn: () => visitInventoryService.listByVisit(id!),
+    enabled: !!id,
+  });
+
+  // Attachments
+  const { data: attachments = [] } = useQuery({
+    queryKey: ['visit-attachments', id],
+    queryFn: () => attachmentService.listByEntity('visit', id!),
+    enabled: !!id,
+  });
+
+  // Create document
+  const createDocMutation = useMutation({
+    mutationFn: () => visitDocumentService.create({
+      visit_id: id!,
+      title: docForm.title,
+      content: docForm.content,
+      doc_type: docForm.doc_type,
+    }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['visit-documents', id] });
+      toast({ title: 'Dokument kreiran' });
+      setDocDialogOpen(false);
+      setDocForm({ title: '', doc_type: 'finding', content: '' });
+    },
+    onError: () => toast({ title: 'Greška', variant: 'destructive' }),
+  });
+
+  // Create billing item
+  const createBillingMutation = useMutation({
+    mutationFn: () => visitBillingService.create({
+      visit_id: id!,
+      description: billingForm.description,
+      quantity: parseFloat(billingForm.quantity) || 1,
+      unit_price: parseFloat(billingForm.unit_price) || 0,
+    }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['visit-billing', id] });
+      toast({ title: 'Stavka dodana' });
+      setBillingDialogOpen(false);
+      setBillingForm({ description: '', quantity: '1', unit_price: '0' });
+    },
+    onError: () => toast({ title: 'Greška', variant: 'destructive' }),
+  });
+
+  // Delete billing item
+  const deleteBillingMutation = useMutation({
+    mutationFn: (itemId: string) => visitBillingService.remove(itemId),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['visit-billing', id] }),
+  });
+
+  // Delete document
+  const deleteDocMutation = useMutation({
+    mutationFn: (docId: string) => visitDocumentService.remove(docId),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['visit-documents', id] }),
+  });
+
+  // Finalize document
+  const finalizeDocMutation = useMutation({
+    mutationFn: (docId: string) => visitDocumentService.update(docId, { status: 'finalized' }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['visit-documents', id] });
+      toast({ title: 'Dokument finaliziran' });
+    },
+  });
+
+  // Update visit status
+  const updateStatusMutation = useMutation({
+    mutationFn: (status: string) => visitService.update(id!, { status: status as any }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['visit', id] });
+      qc.invalidateQueries({ queryKey: ['visits'] });
+      toast({ title: 'Status ažuriran' });
+    },
+  });
+
+  const billingTotal = billingItems.reduce((sum, item) => sum + (item.total || 0), 0);
+
+  if (isLoading) {
+    return (
+      <div className="space-y-6">
+        <Skeleton className="h-8 w-48" />
+        <Skeleton className="h-64 w-full" />
+      </div>
+    );
+  }
+
+  if (!visit) {
+    return (
+      <div className="text-center py-20 text-muted-foreground">
+        <ClipboardList className="w-12 h-12 mx-auto mb-3 opacity-30" />
+        <p>Posjeta nije pronađena.</p>
+        <Button variant="link" onClick={() => navigate('/app/visits')}>Nazad na listu</Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div className="flex items-start justify-between">
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" size="icon" onClick={() => navigate('/app/visits')}>
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <div>
+            <h1 className="text-2xl font-heading font-bold text-foreground">
+              Posjeta — {format(new Date(visit.date_time), 'dd.MM.yyyy HH:mm')}
+            </h1>
+            <div className="flex items-center gap-3 text-sm text-muted-foreground mt-0.5">
+              <button className="flex items-center gap-1 hover:text-primary" onClick={() => navigate(`/app/pets/${visit.pet_id}`)}>
+                <PawPrint className="w-3.5 h-3.5" />{(visit.pet as any)?.name || 'N/A'}
+              </button>
+              <button className="flex items-center gap-1 hover:text-primary" onClick={() => navigate(`/app/clients/${visit.owner_id}`)}>
+                <User className="w-3.5 h-3.5" />{(visit.owner as any)?.name || 'N/A'}
+              </button>
+            </div>
+          </div>
+        </div>
+        <div className="flex items-center gap-2">
+          <Select value={visit.status} onValueChange={(v) => updateStatusMutation.mutate(v)}>
+            <SelectTrigger className="w-[140px] h-9">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="scheduled">Zakazana</SelectItem>
+              <SelectItem value="in_progress">U toku</SelectItem>
+              <SelectItem value="completed">Završena</SelectItem>
+              <SelectItem value="cancelled">Otkazana</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      </div>
+
+      {/* Visit Summary Card */}
+      <div className="grid gap-4 md:grid-cols-4">
+        <SummaryCard label="Status" value={statusLabels[visit.status] || visit.status}>
+          <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[visit.status]}`}>
+            {statusLabels[visit.status]}
+          </span>
+        </SummaryCard>
+        <SummaryCard label="Razlog" value={visit.reason || '—'} />
+        <SummaryCard label="Dokumenti" value={`${documents.length}`} />
+        <SummaryCard label="Ukupan račun" value={`${billingTotal.toFixed(2)} KM`} />
+      </div>
+
+      {visit.notes && (
+        <div className="bg-card rounded-lg border border-border p-4">
+          <p className="text-xs text-muted-foreground mb-1">Napomene</p>
+          <p className="text-sm whitespace-pre-wrap">{visit.notes}</p>
+        </div>
+      )}
+
+      {/* Tabs */}
+      <Tabs defaultValue="dokumenti" className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="dokumenti" className="gap-1.5">
+            <FileText className="h-3.5 w-3.5" />Dokumenti ({documents.length})
+          </TabsTrigger>
+          <TabsTrigger value="racun" className="gap-1.5">
+            <Receipt className="h-3.5 w-3.5" />Račun ({billingItems.length})
+          </TabsTrigger>
+          <TabsTrigger value="materijal" className="gap-1.5">
+            <Package className="h-3.5 w-3.5" />Materijal ({inventoryItems.length})
+          </TabsTrigger>
+          <TabsTrigger value="prilozi" className="gap-1.5">
+            <ClipboardList className="h-3.5 w-3.5" />Prilozi ({attachments.length})
+          </TabsTrigger>
+        </TabsList>
+
+        {/* DOCUMENTS TAB */}
+        <TabsContent value="dokumenti">
+          <div className="bg-card rounded-lg border border-border">
+            <div className="flex items-center justify-between p-4 border-b border-border">
+              <h2 className="font-semibold">Dokumenti posjete</h2>
+              <Button size="sm" className="gap-1.5" onClick={() => setDocDialogOpen(true)}>
+                <Plus className="h-3.5 w-3.5" />Novi dokument
+              </Button>
+            </div>
+            {documents.length === 0 ? (
+              <EmptyState icon={FileText} text="Nema dokumenata. Kreirajte nalaz ili izvještaj." />
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Naslov</TableHead>
+                    <TableHead>Tip</TableHead>
+                    <TableHead>Status</TableHead>
+                    <TableHead>Datum</TableHead>
+                    <TableHead className="w-24"></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {documents.map((doc) => (
+                    <TableRow key={doc.id}>
+                      <TableCell className="font-medium">{doc.title}</TableCell>
+                      <TableCell>
+                        <Badge variant="outline">{docTypeLabels[doc.doc_type] || doc.doc_type}</Badge>
+                      </TableCell>
+                      <TableCell>
+                        <Badge variant={doc.status === 'finalized' ? 'default' : 'secondary'}>
+                          {doc.status === 'finalized' ? 'Finaliziran' : 'Draft'}
+                        </Badge>
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">{format(new Date(doc.created_at), 'dd.MM.yyyy')}</TableCell>
+                      <TableCell>
+                        <div className="flex gap-1">
+                          {doc.status === 'draft' && (
+                            <Button variant="ghost" size="icon" className="h-8 w-8 text-primary" onClick={() => finalizeDocMutation.mutate(doc.id)} title="Finaliziraj">
+                              <CheckCircle className="h-3.5 w-3.5" />
+                            </Button>
+                          )}
+                          <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => deleteDocMutation.mutate(doc.id)}>
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </Button>
+                        </div>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
+          </div>
+        </TabsContent>
+
+        {/* BILLING TAB */}
+        <TabsContent value="racun">
+          <div className="bg-card rounded-lg border border-border">
+            <div className="flex items-center justify-between p-4 border-b border-border">
+              <h2 className="font-semibold">Stavke računa</h2>
+              <Button size="sm" className="gap-1.5" onClick={() => setBillingDialogOpen(true)}>
+                <Plus className="h-3.5 w-3.5" />Dodaj stavku
+              </Button>
+            </div>
+            {billingItems.length === 0 ? (
+              <EmptyState icon={Receipt} text="Nema stavki na računu." />
+            ) : (
+              <>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Opis</TableHead>
+                      <TableHead className="text-right">Kol.</TableHead>
+                      <TableHead className="text-right">Cijena</TableHead>
+                      <TableHead className="text-right">Ukupno</TableHead>
+                      <TableHead className="w-10"></TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {billingItems.map((item) => (
+                      <TableRow key={item.id}>
+                        <TableCell className="font-medium">{item.description}</TableCell>
+                        <TableCell className="text-right">{item.quantity}</TableCell>
+                        <TableCell className="text-right text-muted-foreground">{Number(item.unit_price).toFixed(2)}</TableCell>
+                        <TableCell className="text-right font-medium">{Number(item.total).toFixed(2)} KM</TableCell>
+                        <TableCell>
+                          <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => deleteBillingMutation.mutate(item.id)}>
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                    <TableRow className="bg-muted/30">
+                      <TableCell colSpan={3} className="font-semibold text-right">UKUPNO</TableCell>
+                      <TableCell className="text-right font-bold">{billingTotal.toFixed(2)} KM</TableCell>
+                      <TableCell></TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </>
+            )}
+          </div>
+        </TabsContent>
+
+        {/* INVENTORY TAB */}
+        <TabsContent value="materijal">
+          <div className="bg-card rounded-lg border border-border">
+            <div className="flex items-center justify-between p-4 border-b border-border">
+              <h2 className="font-semibold">Utrošeni materijal</h2>
+            </div>
+            {inventoryItems.length === 0 ? (
+              <EmptyState icon={Package} text="Nema evidentiranog utroška materijala." />
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Artikal</TableHead>
+                    <TableHead className="text-right">Količina</TableHead>
+                    <TableHead>Jedinica</TableHead>
+                    <TableHead>Napomena</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {inventoryItems.map((item) => (
+                    <TableRow key={item.id}>
+                      <TableCell className="font-medium">{item.item_name}</TableCell>
+                      <TableCell className="text-right">{item.quantity}</TableCell>
+                      <TableCell className="text-muted-foreground">{item.unit}</TableCell>
+                      <TableCell className="text-muted-foreground">{item.notes || '—'}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
+          </div>
+        </TabsContent>
+
+        {/* ATTACHMENTS TAB */}
+        <TabsContent value="prilozi">
+          <div className="bg-card rounded-lg border border-border">
+            <div className="flex items-center justify-between p-4 border-b border-border">
+              <h2 className="font-semibold">Prilozi</h2>
+            </div>
+            {attachments.length === 0 ? (
+              <EmptyState icon={ClipboardList} text="Nema priloga za ovu posjetu." />
+            ) : (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Naziv</TableHead>
+                    <TableHead>Tip</TableHead>
+                    <TableHead>Datum</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {attachments.map((att) => (
+                    <TableRow key={att.id}>
+                      <TableCell>
+                        <a href={att.file_url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
+                          {att.file_name}
+                        </a>
+                      </TableCell>
+                      <TableCell className="text-muted-foreground">{att.mime_type || '—'}</TableCell>
+                      <TableCell className="text-muted-foreground">{format(new Date(att.created_at), 'dd.MM.yyyy')}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            )}
+          </div>
+        </TabsContent>
+      </Tabs>
+
+      {/* New Document Dialog */}
+      <Dialog open={docDialogOpen} onOpenChange={setDocDialogOpen}>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader><DialogTitle>Novi dokument</DialogTitle></DialogHeader>
+          <form onSubmit={(e) => { e.preventDefault(); createDocMutation.mutate(); }} className="space-y-4">
+            <div className="space-y-2">
+              <Label>Naslov *</Label>
+              <Input
+                value={docForm.title}
+                onChange={(e) => setDocForm((p) => ({ ...p, title: e.target.value }))}
+                placeholder="npr. Nalaz pregleda"
+                required
+              />
+            </div>
+            <div className="space-y-2">
+              <Label>Tip dokumenta</Label>
+              <Select value={docForm.doc_type} onValueChange={(v) => setDocForm((p) => ({ ...p, doc_type: v }))}>
+                <SelectTrigger><SelectValue /></SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="finding">Nalaz</SelectItem>
+                  <SelectItem value="report">Izvještaj</SelectItem>
+                  <SelectItem value="prescription">Recept</SelectItem>
+                  <SelectItem value="referral">Uputnica</SelectItem>
+                  <SelectItem value="other">Ostalo</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+            <div className="space-y-2">
+              <Label>Sadržaj</Label>
+              <Textarea
+                value={docForm.content}
+                onChange={(e) => setDocForm((p) => ({ ...p, content: e.target.value }))}
+                placeholder="Unesite tekst dokumenta..."
+                rows={6}
+              />
+            </div>
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => setDocDialogOpen(false)}>Otkaži</Button>
+              <Button type="submit" disabled={createDocMutation.isPending}>Kreiraj</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Add Billing Item Dialog */}
+      <Dialog open={billingDialogOpen} onOpenChange={setBillingDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader><DialogTitle>Nova stavka računa</DialogTitle></DialogHeader>
+          <form onSubmit={(e) => { e.preventDefault(); createBillingMutation.mutate(); }} className="space-y-4">
+            <div className="space-y-2">
+              <Label>Opis *</Label>
+              <Input
+                value={billingForm.description}
+                onChange={(e) => setBillingForm((p) => ({ ...p, description: e.target.value }))}
+                placeholder="npr. Pregled psa"
+                required
+              />
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label>Količina</Label>
+                <Input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={billingForm.quantity}
+                  onChange={(e) => setBillingForm((p) => ({ ...p, quantity: e.target.value }))}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Cijena (KM)</Label>
+                <Input
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  value={billingForm.unit_price}
+                  onChange={(e) => setBillingForm((p) => ({ ...p, unit_price: e.target.value }))}
+                />
+              </div>
+            </div>
+            <div className="text-right text-sm text-muted-foreground">
+              Ukupno: <span className="font-semibold text-foreground">{((parseFloat(billingForm.quantity) || 0) * (parseFloat(billingForm.unit_price) || 0)).toFixed(2)} KM</span>
+            </div>
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => setBillingDialogOpen(false)}>Otkaži</Button>
+              <Button type="submit" disabled={createBillingMutation.isPending}>Dodaj</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+};
+
+const SummaryCard = ({ label, value, children }: { label: string; value: string; children?: React.ReactNode }) => (
+  <div className="bg-card rounded-lg border border-border p-4">
+    <p className="text-xs text-muted-foreground mb-1">{label}</p>
+    {children || <p className="text-sm font-medium truncate">{value}</p>}
+  </div>
+);
+
+const EmptyState = ({ icon: Icon, text }: { icon: any; text: string }) => (
+  <div className="py-12 text-center text-muted-foreground">
+    <Icon className="w-8 h-8 mx-auto mb-2 opacity-40" />
+    {text}
+  </div>
+);
+
+export default AdminVisitDetail;
