@@ -50,6 +50,13 @@ const fieldLabels: Record<string, string> = {
   adresa_incidenta: 'Adresa incidenta',
   zakljucak: 'Završni zaključak',
   vakcinacija_napomena: 'Napomena o vakcinaciji',
+  narucilac_ime: 'Naručilac',
+  narucilac_telefon: 'Telefon naručioca',
+  vrsta_zivotinje: 'Vrsta životinje',
+  materijal: 'Materijal',
+  metoda: 'Metoda',
+  rezultat: 'Rezultat',
+  terapija_preporuka: 'Terapija / Preporuka',
 };
 
 const repeatingFieldLabels: Record<string, string> = {
@@ -83,6 +90,12 @@ const petKeys = ['ime_ljubimca', 'vrsta', 'pasmina', 'spol', 'starost', 'pasos_b
 
 // Case intro keys (rabies report etc.)
 const caseIntroKeys = ['datum_ugriza', 'opcina', 'adresa_incidenta'];
+
+// Lab orderer keys
+const ordererKeys = ['narucilac_ime', 'narucilac_telefon'];
+
+// Lab animal keys (not owner-linked)
+const labAnimalKeys = ['vrsta_zivotinje'];
 
 const printStyles = `
   @page { margin: 15mm; }
@@ -119,6 +132,11 @@ const printStyles = `
   .exam-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; }
   .conclusion-box { border: 2px solid #166534; border-radius: 6px; padding: 14px; margin-top: 14px; background: #f0fdf4; }
   .conclusion-title { font-size: 12px; font-weight: 700; text-transform: uppercase; color: #166534; margin-bottom: 6px; }
+  .lab-field { border-bottom: 1px solid #e5e5e5; padding: 8px 0; display: grid; grid-template-columns: 140px 1fr; gap: 8px; align-items: baseline; }
+  .lab-field-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: #555; }
+  .lab-field-value { font-size: 12px; }
+  .lab-result-box { border: 1.5px solid #166534; border-radius: 6px; padding: 12px 14px; margin: 10px 0; background: #f0fdf4; min-height: 60px; white-space: pre-wrap; font-size: 12px; line-height: 1.7; }
+  .lab-subtitle { font-size: 11px; text-align: center; color: #888; margin-bottom: 16px; letter-spacing: 1px; text-transform: uppercase; }
 `;
 
 export const PrintableDocument = ({ doc }: Props) => {
@@ -139,6 +157,7 @@ export const PrintableDocument = ({ doc }: Props) => {
 
   // Categorize fields
   const ownerFields: [string, any][] = [];
+  const ordererFields: [string, any][] = [];
   const petFieldEntries: [string, any][] = [];
   const caseIntroEntries: [string, any][] = [];
   const checkboxFields: [string, boolean][] = [];
@@ -154,6 +173,8 @@ export const PrintableDocument = ({ doc }: Props) => {
     else if (signatureKeys.includes(key)) signatures.push([key, String(val || '')]);
     else if (analysisCheckboxKeys.includes(key)) checkboxFields.push([key, !!val]);
     else if (caseIntroKeys.includes(key)) caseIntroEntries.push([key, val]);
+    else if (ordererKeys.includes(key)) ordererFields.push([key, val]);
+    else if (labAnimalKeys.includes(key)) petFieldEntries.push([key, val]);
     else if (key.startsWith('vlasnik_')) ownerFields.push([key, val]);
     else if (petKeys.includes(key)) petFieldEntries.push([key, val]);
     else if (Array.isArray(val)) repeatingFields.push([key, val]);
@@ -166,6 +187,7 @@ export const PrintableDocument = ({ doc }: Props) => {
   const isConsent = doc.title?.toLowerCase().includes('saglasnost');
   const isEuthanasia = doc.title?.toLowerCase().includes('eutanazij');
   const isRabies = doc.title?.toLowerCase().includes('bjesnilo');
+  const isLabReport = doc.title?.toLowerCase().includes('nalaz') && !doc.title?.toLowerCase().includes('klinič');
 
   return (
     <div>
@@ -185,6 +207,7 @@ export const PrintableDocument = ({ doc }: Props) => {
         </div>
 
         <div className="doc-title">{doc.title}</div>
+        {isLabReport && <div className="lab-subtitle">Laboratorijski nalaz</div>}
 
         {/* Consent intro text */}
         {isConsent && !isEuthanasia && (
@@ -209,6 +232,21 @@ export const PrintableDocument = ({ doc }: Props) => {
             <div className="group-title">Podaci o slučaju</div>
             <div className="field-grid three">
               {caseIntroEntries.map(([key, val]) => (
+                <div key={key} className="section">
+                  <div className="section-label">{fieldLabels[key] || key}</div>
+                  <div className="section-value boxed">{String(val) || '—'}</div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* Orderer section (lab) */}
+        {ordererFields.length > 0 && (
+          <>
+            <div className="group-title">Naručilac</div>
+            <div className="field-grid">
+              {ordererFields.map(([key, val]) => (
                 <div key={key} className="section">
                   <div className="section-label">{fieldLabels[key] || key}</div>
                   <div className="section-value boxed">{String(val) || '—'}</div>
@@ -266,15 +304,35 @@ export const PrintableDocument = ({ doc }: Props) => {
           </>
         )}
 
-        {/* Text fields — conclusion fields get special box for rabies */}
-        {textFields.filter(([k]) => !isRabies || (k !== 'zakljucak' && k !== 'vakcinacija_napomena')).map(([key, val]) => (
-          <div key={key} className="section">
-            <div className="section-label">{fieldLabels[key] || key}</div>
-            <div className={`section-value${key === 'dijagnoza' ? ' italic' : ''} boxed`}>
-              {String(val) || '—'}
+        {/* Text fields */}
+        {textFields.filter(([k]) => !isRabies || (k !== 'zakljucak' && k !== 'vakcinacija_napomena')).map(([key, val]) => {
+          // Lab report: result gets highlighted box
+          if (isLabReport && key === 'rezultat') {
+            return (
+              <div key={key} className="section">
+                <div className="group-title">Rezultat</div>
+                <div className="lab-result-box">{String(val) || '—'}</div>
+              </div>
+            );
+          }
+          // Lab report: use structured lab-field layout
+          if (isLabReport) {
+            return (
+              <div key={key} className="lab-field">
+                <div className="lab-field-label">{fieldLabels[key] || key}</div>
+                <div className="lab-field-value">{String(val) || '—'}</div>
+              </div>
+            );
+          }
+          return (
+            <div key={key} className="section">
+              <div className="section-label">{fieldLabels[key] || key}</div>
+              <div className={`section-value${key === 'dijagnoza' ? ' italic' : ''} boxed`}>
+                {String(val) || '—'}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         {/* Repeating sections */}
         {repeatingFields.map(([key, rows]) => {
