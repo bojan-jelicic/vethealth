@@ -122,12 +122,14 @@ const AdminVisitDetail = () => {
       description: billingForm.description,
       quantity: parseFloat(billingForm.quantity) || 1,
       unit_price: parseFloat(billingForm.unit_price) || 0,
+      discount: parseFloat(billingForm.discount) || 0,
+      note: billingForm.note || undefined,
     }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['visit-billing', id] });
       toast({ title: 'Stavka dodana' });
       setBillingDialogOpen(false);
-      setBillingForm({ description: '', quantity: '1', unit_price: '0' });
+      setBillingForm({ description: '', quantity: '1', unit_price: '0', discount: '0', note: '' });
     },
     onError: () => toast({ title: 'Greška', variant: 'destructive' }),
   });
