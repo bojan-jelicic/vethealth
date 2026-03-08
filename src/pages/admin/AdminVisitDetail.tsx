@@ -28,6 +28,7 @@ import {
 } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
 import { useAuth } from '@/contexts/AuthContext';
+import { supabase } from '@/integrations/supabase/client';
 import { visitService } from '@/services/visitService';
 import { attachmentService } from '@/services/attachmentService';
 import {
