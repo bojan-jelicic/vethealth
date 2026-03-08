@@ -60,7 +60,7 @@ const AdminVisitDetail = () => {
 
   const [createDocOpen, setCreateDocOpen] = useState(false);
   const [billingDialogOpen, setBillingDialogOpen] = useState(false);
-  const [billingForm, setBillingForm] = useState({ description: '', quantity: '1', unit_price: '0' });
+  const [billingForm, setBillingForm] = useState({ description: '', quantity: '1', unit_price: '0', discount: '0', note: '' });
   const [viewDocOpen, setViewDocOpen] = useState(false);
   const [viewingDoc, setViewingDoc] = useState<VisitDocument | null>(null);
   const [editingFieldValues, setEditingFieldValues] = useState<Record<string, any>>({});
