@@ -20,6 +20,8 @@ import {
 import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
 import { visitService } from '@/services/visitService';
+import { exportVisitsCsv } from '@/services/exportService';
+import { toast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 
 const statusColors: Record<string, string> = {
