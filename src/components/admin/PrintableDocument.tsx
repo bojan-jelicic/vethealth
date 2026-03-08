@@ -60,6 +60,10 @@ const repeatingFieldLabels: Record<string, string> = {
   opis: 'Opis',
   kolicina: 'Količina',
   cijena: 'Cijena (KM)',
+  datum_pregleda: 'Datum pregleda',
+  klinicki_nalaz: 'Klinički nalaz',
+  dijagnoza: 'Dijagnoza',
+  napomena: 'Napomena',
 };
 
 // Known checkbox analysis fields
