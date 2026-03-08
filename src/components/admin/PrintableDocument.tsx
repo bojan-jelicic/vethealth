@@ -91,6 +91,12 @@ const petKeys = ['ime_ljubimca', 'vrsta', 'pasmina', 'spol', 'starost', 'pasos_b
 // Case intro keys (rabies report etc.)
 const caseIntroKeys = ['datum_ugriza', 'opcina', 'adresa_incidenta'];
 
+// Lab orderer keys
+const ordererKeys = ['narucilac_ime', 'narucilac_telefon'];
+
+// Lab animal keys (not owner-linked)
+const labAnimalKeys = ['vrsta_zivotinje'];
+
 const printStyles = `
   @page { margin: 15mm; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
