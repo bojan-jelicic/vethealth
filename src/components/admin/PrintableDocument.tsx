@@ -145,6 +145,7 @@ export const PrintableDocument = ({ doc }: Props) => {
   const hasCheckboxes = checkboxFields.length > 0;
   const hasMultipleSignatures = signatures.length > 1;
   const isConsent = doc.title?.toLowerCase().includes('saglasnost');
+  const isEuthanasia = doc.title?.toLowerCase().includes('eutanazij');
 
   return (
     <div>
