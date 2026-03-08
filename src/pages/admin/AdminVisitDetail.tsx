@@ -60,7 +60,7 @@ const AdminVisitDetail = () => {
 
   const [createDocOpen, setCreateDocOpen] = useState(false);
   const [billingDialogOpen, setBillingDialogOpen] = useState(false);
-  const [billingForm, setBillingForm] = useState({ description: '', quantity: '1', unit_price: '0' });
+  const [billingForm, setBillingForm] = useState({ description: '', quantity: '1', unit_price: '0', discount: '0', note: '' });
   const [viewDocOpen, setViewDocOpen] = useState(false);
   const [viewingDoc, setViewingDoc] = useState<VisitDocument | null>(null);
   const [editingFieldValues, setEditingFieldValues] = useState<Record<string, any>>({});
@@ -122,12 +122,14 @@ const AdminVisitDetail = () => {
       description: billingForm.description,
       quantity: parseFloat(billingForm.quantity) || 1,
       unit_price: parseFloat(billingForm.unit_price) || 0,
+      discount: parseFloat(billingForm.discount) || 0,
+      note: billingForm.note || undefined,
     }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['visit-billing', id] });
       toast({ title: 'Stavka dodana' });
       setBillingDialogOpen(false);
-      setBillingForm({ description: '', quantity: '1', unit_price: '0' });
+      setBillingForm({ description: '', quantity: '1', unit_price: '0', discount: '0', note: '' });
     },
     onError: () => toast({ title: 'Greška', variant: 'destructive' }),
   });
@@ -208,7 +210,13 @@ const AdminVisitDetail = () => {
     }
   };
 
-  const billingTotal = billingItems.reduce((sum, item) => sum + (item.total || 0), 0);
+  const billingSubtotal = billingItems.reduce((sum, item) => sum + ((item.quantity || 0) * (item.unit_price || 0)), 0);
+  const billingDiscountTotal = billingItems.reduce((sum, item) => {
+    const lineTotal = (item.quantity || 0) * (item.unit_price || 0);
+    const disc = item.discount || 0;
+    return sum + (lineTotal * disc / 100);
+  }, 0);
+  const billingTotal = billingSubtotal - billingDiscountTotal;
 
   if (isLoading) {
     return <div className="space-y-6"><Skeleton className="h-8 w-48" /><Skeleton className="h-64 w-full" /></div>;
@@ -270,7 +278,7 @@ const AdminVisitDetail = () => {
         </SummaryCard>
         <SummaryCard label="Razlog"><p className="text-sm font-medium truncate">{visit.reason || '—'}</p></SummaryCard>
         <SummaryCard label="Dokumenti"><p className="text-sm font-medium">{documents.length}</p></SummaryCard>
-        <SummaryCard label="Ukupan račun"><p className="text-sm font-medium">{billingTotal.toFixed(2)} KM</p></SummaryCard>
+        <SummaryCard label="Obračun"><p className="text-sm font-medium">{billingTotal.toFixed(2)} KM</p></SummaryCard>
       </div>
 
       {visit.notes && (
@@ -284,7 +292,7 @@ const AdminVisitDetail = () => {
       <Tabs defaultValue="dokumenti" className="space-y-4">
         <TabsList>
           <TabsTrigger value="dokumenti" className="gap-1.5"><FileText className="h-3.5 w-3.5" />Dokumenti ({documents.length})</TabsTrigger>
-          <TabsTrigger value="racun" className="gap-1.5"><Receipt className="h-3.5 w-3.5" />Račun ({billingItems.length})</TabsTrigger>
+          <TabsTrigger value="racun" className="gap-1.5"><Receipt className="h-3.5 w-3.5" />Obračun ({billingItems.length})</TabsTrigger>
           <TabsTrigger value="materijal" className="gap-1.5"><Package className="h-3.5 w-3.5" />Materijal ({inventoryItems.length})</TabsTrigger>
           <TabsTrigger value="prilozi" className="gap-1.5"><ClipboardList className="h-3.5 w-3.5" />Prilozi ({attachments.length})</TabsTrigger>
         </TabsList>
@@ -380,49 +388,78 @@ const AdminVisitDetail = () => {
           </div>
         </TabsContent>
 
-        {/* BILLING TAB */}
+        {/* BILLING TAB — Obračun posjete */}
         <TabsContent value="racun">
           <div className="bg-card rounded-lg border border-border">
             <div className="flex items-center justify-between p-4 border-b border-border">
-              <h2 className="font-semibold">Stavke računa</h2>
+              <div>
+                <h2 className="font-semibold">Obračun posjete</h2>
+                <p className="text-xs text-muted-foreground mt-0.5">Interni obračun — nije fiskalni dokument</p>
+              </div>
               <Button size="sm" className="gap-1.5" onClick={() => setBillingDialogOpen(true)}>
                 <Plus className="h-3.5 w-3.5" />Dodaj stavku
               </Button>
             </div>
             {billingItems.length === 0 ? (
-              <EmptyState icon={Receipt} text="Nema stavki na računu." />
+              <EmptyState icon={Receipt} text="Nema stavki u obračunu." />
             ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Opis</TableHead>
-                    <TableHead className="text-right">Kol.</TableHead>
-                    <TableHead className="text-right">Cijena</TableHead>
-                    <TableHead className="text-right">Ukupno</TableHead>
-                    <TableHead className="w-10"></TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {billingItems.map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell className="font-medium">{item.description}</TableCell>
-                      <TableCell className="text-right">{item.quantity}</TableCell>
-                      <TableCell className="text-right text-muted-foreground">{Number(item.unit_price).toFixed(2)}</TableCell>
-                      <TableCell className="text-right font-medium">{Number(item.total).toFixed(2)} KM</TableCell>
-                      <TableCell>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => deleteBillingMutation.mutate(item.id)}>
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </Button>
-                      </TableCell>
+              <>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Usluga / Opis</TableHead>
+                      <TableHead className="text-right w-16">Kol.</TableHead>
+                      <TableHead className="text-right w-24">Jed. cijena</TableHead>
+                      <TableHead className="text-right w-20">Popust</TableHead>
+                      <TableHead className="text-right w-24">Iznos</TableHead>
+                      <TableHead className="w-10"></TableHead>
                     </TableRow>
-                  ))}
-                  <TableRow className="bg-muted/30">
-                    <TableCell colSpan={3} className="font-semibold text-right">UKUPNO</TableCell>
-                    <TableCell className="text-right font-bold">{billingTotal.toFixed(2)} KM</TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {billingItems.map((item) => {
+                      const lineGross = (item.quantity || 0) * (item.unit_price || 0);
+                      const disc = item.discount || 0;
+                      const lineNet = lineGross - (lineGross * disc / 100);
+                      return (
+                        <TableRow key={item.id}>
+                          <TableCell>
+                            <div className="font-medium">{item.description}</div>
+                            {item.note && <p className="text-xs text-muted-foreground mt-0.5">{item.note}</p>}
+                          </TableCell>
+                          <TableCell className="text-right">{item.quantity}</TableCell>
+                          <TableCell className="text-right text-muted-foreground">{Number(item.unit_price).toFixed(2)}</TableCell>
+                          <TableCell className="text-right">
+                            {disc > 0 ? <span className="text-primary font-medium">-{disc}%</span> : <span className="text-muted-foreground">—</span>}
+                          </TableCell>
+                          <TableCell className="text-right font-medium">{lineNet.toFixed(2)} KM</TableCell>
+                          <TableCell>
+                            <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => deleteBillingMutation.mutate(item.id)}>
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+                {/* Summary */}
+                <div className="border-t border-border p-4 space-y-1.5">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Subtotal (prije popusta)</span>
+                    <span>{billingSubtotal.toFixed(2)} KM</span>
+                  </div>
+                  {billingDiscountTotal > 0 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Ukupan popust</span>
+                      <span className="text-primary">-{billingDiscountTotal.toFixed(2)} KM</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between text-base font-bold pt-1.5 border-t border-border">
+                    <span>UKUPNO</span>
+                    <span>{billingTotal.toFixed(2)} KM</span>
+                  </div>
+                </div>
+              </>
             )}
           </div>
         </TabsContent>
@@ -651,29 +688,65 @@ const AdminVisitDetail = () => {
 
       {/* Add Billing Item Dialog */}
       <Dialog open={billingDialogOpen} onOpenChange={setBillingDialogOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader><DialogTitle>Nova stavka računa</DialogTitle></DialogHeader>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader><DialogTitle>Nova stavka obračuna</DialogTitle></DialogHeader>
           <form onSubmit={(e) => { e.preventDefault(); createBillingMutation.mutate(); }} className="space-y-4">
             <div className="space-y-2">
-              <Label>Opis *</Label>
-              <Input value={billingForm.description} onChange={(e) => setBillingForm((p) => ({ ...p, description: e.target.value }))} placeholder="npr. Pregled psa" required />
+              <Label>Naziv usluge / Opis *</Label>
+              <Input value={billingForm.description} onChange={(e) => setBillingForm((p) => ({ ...p, description: e.target.value }))} placeholder="npr. Klinički pregled" required />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-3">
               <div className="space-y-2">
                 <Label>Količina</Label>
                 <Input type="number" step="0.01" min="0" value={billingForm.quantity} onChange={(e) => setBillingForm((p) => ({ ...p, quantity: e.target.value }))} />
               </div>
               <div className="space-y-2">
-                <Label>Cijena (KM)</Label>
+                <Label>Jed. cijena (KM)</Label>
                 <Input type="number" step="0.01" min="0" value={billingForm.unit_price} onChange={(e) => setBillingForm((p) => ({ ...p, unit_price: e.target.value }))} />
               </div>
+              <div className="space-y-2">
+                <Label>Popust (%)</Label>
+                <Input type="number" step="1" min="0" max="100" value={billingForm.discount} onChange={(e) => setBillingForm((p) => ({ ...p, discount: e.target.value }))} placeholder="0" />
+              </div>
             </div>
-            <div className="text-right text-sm text-muted-foreground">
-              Ukupno: <span className="font-semibold text-foreground">{((parseFloat(billingForm.quantity) || 0) * (parseFloat(billingForm.unit_price) || 0)).toFixed(2)} KM</span>
+            <div className="space-y-2">
+              <Label>Napomena <span className="text-muted-foreground font-normal">(opcionalno)</span></Label>
+              <Input value={billingForm.note} onChange={(e) => setBillingForm((p) => ({ ...p, note: e.target.value }))} placeholder="npr. Hitna intervencija" />
+            </div>
+            {/* Live total preview */}
+            <div className="bg-muted/30 rounded-lg p-3 space-y-1">
+              {(() => {
+                const qty = parseFloat(billingForm.quantity) || 0;
+                const price = parseFloat(billingForm.unit_price) || 0;
+                const disc = parseFloat(billingForm.discount) || 0;
+                const gross = qty * price;
+                const discAmt = gross * disc / 100;
+                const net = gross - discAmt;
+                return (
+                  <>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Bruto</span>
+                      <span>{gross.toFixed(2)} KM</span>
+                    </div>
+                    {disc > 0 && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">Popust ({disc}%)</span>
+                        <span className="text-primary">-{discAmt.toFixed(2)} KM</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between text-sm font-semibold pt-1 border-t border-border">
+                      <span>Iznos</span>
+                      <span>{net.toFixed(2)} KM</span>
+                    </div>
+                  </>
+                );
+              })()}
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setBillingDialogOpen(false)}>Otkaži</Button>
-              <Button type="submit" disabled={createBillingMutation.isPending}>Dodaj</Button>
+              <Button type="submit" disabled={createBillingMutation.isPending || !billingForm.description.trim()}>
+                {createBillingMutation.isPending ? 'Dodavanje...' : 'Dodaj stavku'}
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>
