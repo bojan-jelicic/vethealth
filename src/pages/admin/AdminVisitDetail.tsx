@@ -580,7 +580,7 @@ const AdminVisitDetail = () => {
                 {viewingDoc.status === 'draft' && !isEditingDoc && (
                   <>
                     <Button variant="outline" size="sm" onClick={() => setIsEditingDoc(true)}>Uredi</Button>
-                    <Button size="sm" className="gap-1.5" onClick={() => finalizeDocMutation.mutate(viewingDoc.id)}>
+                    <Button size="sm" className="gap-1.5" onClick={() => handleFinalize(viewingDoc.id)}>
                       <CheckCircle className="h-3.5 w-3.5" />Finaliziraj
                     </Button>
                   </>
