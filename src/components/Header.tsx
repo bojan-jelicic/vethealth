@@ -78,6 +78,7 @@ export const Header = () => {
               <Phone className="w-4 h-4" />
               <span className="text-small">+387 51 123 456</span>
             </a>
+            <ThemeToggle />
             <Button variant="accent" asChild>
               <Link to="/zakazivanje-termina">
                 <Calendar className="w-4 h-4" />
