@@ -21,6 +21,7 @@ export interface VisitDocument {
   created_by: string | null;
   created_at: string;
   updated_at: string;
+  pdf_url: string | null;
 }
 
 export interface VisitBillingItem {
