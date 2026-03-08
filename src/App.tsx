@@ -25,6 +25,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminClients from "./pages/admin/AdminClients";
 import AdminClientDetail from "./pages/admin/AdminClientDetail";
 import AdminPets from "./pages/admin/AdminPets";
+import AdminPetDetail from "./pages/admin/AdminPetDetail";
 import AdminVisits from "./pages/admin/AdminVisits";
 import AdminDocuments from "./pages/admin/AdminDocuments";
 import AdminPricing from "./pages/admin/AdminPricing";
