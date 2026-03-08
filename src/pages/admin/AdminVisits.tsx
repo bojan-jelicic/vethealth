@@ -1,8 +1,8 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import {
-  ClipboardList, Search, Filter, X, CalendarIcon, Plus,
+  ClipboardList, Search, Filter, X, CalendarIcon, Plus, Download, Loader2,
 } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
@@ -20,6 +20,8 @@ import {
 import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
 import { visitService } from '@/services/visitService';
+import { exportVisitsCsv } from '@/services/exportService';
+import { toast } from '@/hooks/use-toast';
 import { format } from 'date-fns';
 
 const statusColors: Record<string, string> = {
@@ -42,6 +44,7 @@ const AdminVisits = () => {
   const [statusFilter, setStatusFilter] = useState(searchParams.get('status') || '');
   const [dateFrom, setDateFrom] = useState<Date | undefined>();
   const [dateTo, setDateTo] = useState<Date | undefined>();
+  const [exportingCsv, setExportingCsv] = useState(false);
 
   const { data: allVisits = [], isLoading } = useQuery({
     queryKey: ['visits', statusFilter],
@@ -85,10 +88,28 @@ const AdminVisits = () => {
             Pregled i upravljanje posjetama · {visits.length} rezultata
           </p>
         </div>
-        <Button className="gap-2" onClick={() => navigate('/app/visits/new')}>
-          <Plus className="w-4 h-4" />
-          Nova posjeta
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            className="gap-2"
+            disabled={exportingCsv || visits.length === 0}
+            onClick={async () => {
+              setExportingCsv(true);
+              try {
+                await exportVisitsCsv(visits, dateFrom, dateTo);
+                toast({ title: 'CSV izvoz završen' });
+              } catch { toast({ title: 'Greška pri izvozu', variant: 'destructive' }); }
+              setExportingCsv(false);
+            }}
+          >
+            {exportingCsv ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+            CSV
+          </Button>
+          <Button className="gap-2" onClick={() => navigate('/app/visits/new')}>
+            <Plus className="w-4 h-4" />
+            Nova posjeta
+          </Button>
+        </div>
       </div>
 
       {/* Table Card */}

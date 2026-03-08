@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   ArrowLeft, Plus, User, PawPrint, ClipboardList, FileText,
-  Phone, Mail, MapPin, Edit, Save, X, Trash2,
+  Phone, Mail, MapPin, Edit, Save, X, Trash2, Download, Loader2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -29,6 +29,7 @@ import { visitService } from '@/services/visitService';
 import { attachmentService } from '@/services/attachmentService';
 import type { ClientUpdate, PetInsert, VisitInsert } from '@/services/types';
 import { format } from 'date-fns';
+import { exportClientPdf } from '@/services/exportService';
 
 const AdminClientDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -41,6 +42,7 @@ const AdminClientDetail = () => {
   const [visitDialogOpen, setVisitDialogOpen] = useState(false);
   const [petForm, setPetForm] = useState<PetInsert>({ owner_id: id!, name: '', species: 'Pas' });
   const [visitForm, setVisitForm] = useState<VisitInsert>({ pet_id: '', owner_id: id! });
+  const [exportingPdf, setExportingPdf] = useState(false);
 
   // Client
   const { data: client, isLoading } = useQuery({
@@ -168,6 +170,21 @@ const AdminClientDetail = () => {
           </div>
         </div>
         <div className="flex items-center gap-2">
+          <Button
+            variant="outline" size="sm" className="gap-1.5"
+            disabled={exportingPdf}
+            onClick={async () => {
+              setExportingPdf(true);
+              try {
+                await exportClientPdf(client, pets, visits);
+                toast({ title: 'PDF izvoz završen' });
+              } catch { toast({ title: 'Greška pri izvozu', variant: 'destructive' }); }
+              setExportingPdf(false);
+            }}
+          >
+            {exportingPdf ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
+            PDF
+          </Button>
           <Button variant="default" size="sm" className="gap-1.5" onClick={() => setVisitDialogOpen(true)}>
             <Plus className="h-3.5 w-3.5" />
             Nova posjeta
