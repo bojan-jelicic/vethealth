@@ -50,6 +50,13 @@ const fieldLabels: Record<string, string> = {
   adresa_incidenta: 'Adresa incidenta',
   zakljucak: 'Završni zaključak',
   vakcinacija_napomena: 'Napomena o vakcinaciji',
+  narucilac_ime: 'Naručilac',
+  narucilac_telefon: 'Telefon naručioca',
+  vrsta_zivotinje: 'Vrsta životinje',
+  materijal: 'Materijal',
+  metoda: 'Metoda',
+  rezultat: 'Rezultat',
+  terapija_preporuka: 'Terapija / Preporuka',
 };
 
 const repeatingFieldLabels: Record<string, string> = {
