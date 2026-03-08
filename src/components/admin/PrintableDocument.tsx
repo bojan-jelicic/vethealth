@@ -277,33 +277,60 @@ export const PrintableDocument = ({ doc }: Props) => {
         ))}
 
         {/* Repeating sections */}
-        {repeatingFields.map(([key, rows]) => (
-          <div key={key} className="section">
-            <div className="group-title">{fieldLabels[key] || key}</div>
-            {rows.length > 0 && (
-              <table>
-                <thead>
-                  <tr>
-                    <th style={{ width: '30px' }}>#</th>
-                    {Object.keys(rows[0]).map((col) => (
-                      <th key={col}>{repeatingFieldLabels[col] || fieldLabels[col] || col}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {rows.map((row, i) => (
-                    <tr key={i}>
-                      <td>{i + 1}</td>
-                      {Object.values(row).map((v, j) => (
-                        <td key={j}>{String(v) || '—'}</td>
+        {repeatingFields.map(([key, rows]) => {
+          // Special rabies exam card layout
+          const isExamSection = key === 'pregledi' && isRabies;
+          if (isExamSection && rows.length > 0) {
+            const examLabels = ['I pregled', 'II pregled', 'III pregled'];
+            return (
+              <div key={key} className="section">
+                <div className="group-title">Pregledi</div>
+                {rows.map((row, i) => (
+                  <div key={i} className="exam-card">
+                    <div className="exam-card-header">{examLabels[i] || `Pregled ${i + 1}`}</div>
+                    <div className="exam-row">
+                      {Object.entries(row).map(([col, v]) => (
+                        <div key={col} className="section">
+                          <div className="section-label">{repeatingFieldLabels[col] || col}</div>
+                          <div className={`section-value${col === 'dijagnoza' ? ' italic' : ''} boxed`}>
+                            {String(v) || '—'}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            );
+          }
+          return (
+            <div key={key} className="section">
+              <div className="group-title">{fieldLabels[key] || key}</div>
+              {rows.length > 0 && (
+                <table>
+                  <thead>
+                    <tr>
+                      <th style={{ width: '30px' }}>#</th>
+                      {Object.keys(rows[0]).map((col) => (
+                        <th key={col}>{repeatingFieldLabels[col] || fieldLabels[col] || col}</th>
                       ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            )}
-          </div>
-        ))}
+                  </thead>
+                  <tbody>
+                    {rows.map((row, i) => (
+                      <tr key={i}>
+                        <td>{i + 1}</td>
+                        {Object.values(row).map((v, j) => (
+                          <td key={j}>{String(v) || '—'}</td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          );
+        })}
 
         {/* Content / notes */}
         {doc.content && (
