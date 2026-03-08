@@ -114,6 +114,11 @@ const printStyles = `
   .footer { margin-top: 30px; padding-top: 10px; border-top: 1px solid #ddd; text-align: center; font-size: 9px; color: #999; }
   .divider { border: none; border-top: 1px solid #eee; margin: 14px 0; }
   .consent-text { font-size: 11px; color: #444; margin: 12px 0; line-height: 1.7; padding: 10px; background: #f9f9f9; border: 1px solid #eee; border-radius: 4px; }
+  .exam-card { border: 1px solid #ccc; border-radius: 6px; padding: 12px 14px; margin-bottom: 10px; page-break-inside: avoid; }
+  .exam-card-header { font-size: 13px; font-weight: 700; color: #166534; margin-bottom: 8px; border-bottom: 1px solid #e0e0e0; padding-bottom: 4px; }
+  .exam-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; }
+  .conclusion-box { border: 2px solid #166534; border-radius: 6px; padding: 14px; margin-top: 14px; background: #f0fdf4; }
+  .conclusion-title { font-size: 12px; font-weight: 700; text-transform: uppercase; color: #166534; margin-bottom: 6px; }
 `;
 
 export const PrintableDocument = ({ doc }: Props) => {
