@@ -88,10 +88,28 @@ const AdminVisits = () => {
             Pregled i upravljanje posjetama · {visits.length} rezultata
           </p>
         </div>
-        <Button className="gap-2" onClick={() => navigate('/app/visits/new')}>
-          <Plus className="w-4 h-4" />
-          Nova posjeta
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            variant="outline"
+            className="gap-2"
+            disabled={exportingCsv || visits.length === 0}
+            onClick={async () => {
+              setExportingCsv(true);
+              try {
+                await exportVisitsCsv(visits, dateFrom, dateTo);
+                toast({ title: 'CSV izvoz završen' });
+              } catch { toast({ title: 'Greška pri izvozu', variant: 'destructive' }); }
+              setExportingCsv(false);
+            }}
+          >
+            {exportingCsv ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
+            CSV
+          </Button>
+          <Button className="gap-2" onClick={() => navigate('/app/visits/new')}>
+            <Plus className="w-4 h-4" />
+            Nova posjeta
+          </Button>
+        </div>
       </div>
 
       {/* Table Card */}
