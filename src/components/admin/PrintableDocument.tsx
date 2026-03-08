@@ -132,6 +132,11 @@ const printStyles = `
   .exam-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; }
   .conclusion-box { border: 2px solid #166534; border-radius: 6px; padding: 14px; margin-top: 14px; background: #f0fdf4; }
   .conclusion-title { font-size: 12px; font-weight: 700; text-transform: uppercase; color: #166534; margin-bottom: 6px; }
+  .lab-field { border-bottom: 1px solid #e5e5e5; padding: 8px 0; display: grid; grid-template-columns: 140px 1fr; gap: 8px; align-items: baseline; }
+  .lab-field-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: #555; }
+  .lab-field-value { font-size: 12px; }
+  .lab-result-box { border: 1.5px solid #166534; border-radius: 6px; padding: 12px 14px; margin: 10px 0; background: #f0fdf4; min-height: 60px; white-space: pre-wrap; font-size: 12px; line-height: 1.7; }
+  .lab-subtitle { font-size: 11px; text-align: center; color: #888; margin-bottom: 16px; letter-spacing: 1px; text-transform: uppercase; }
 `;
 
 export const PrintableDocument = ({ doc }: Props) => {
