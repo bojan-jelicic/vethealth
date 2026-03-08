@@ -105,6 +105,10 @@ const PetShopPage = () => {
 
   return (
     <Layout>
+      <Helmet>
+        <title>Pet Shop | VetHealth.ba - Hrana i Oprema za Ljubimce</title>
+        <meta name="description" content="Kvalitetna hrana, igračke i oprema za pse, mačke i druge ljubimce. Besplatna dostava u Banjaluci za narudžbe preko 50 KM." />
+      </Helmet>
       <PageHero
         title="Pet Shop"
         description="Kvalitetna hrana, igračke i oprema za vaše ljubimce od provjerenih proizvođača."

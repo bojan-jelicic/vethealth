@@ -57,6 +57,10 @@ const workingHours = [
 const AboutPage = () => {
   return (
     <Layout>
+      <Helmet>
+        <title>O Nama | VetHealth.ba - Veterinarska Ordinacija Banja Luka</title>
+        <meta name="description" content="Upoznajte VetHealth.ba tim veterinara u Banjaluci. 15+ godina iskustva, 5000+ zadovoljnih klijenata. Posvećeni zdravlju vaših ljubimaca od 2009." />
+      </Helmet>
       <PageHero
         title="O Nama"
         description="Upoznajte VetHealth.ba - vašu pouzdanu veterinarsku ordinaciju u Banjaluci od 2009. godine."

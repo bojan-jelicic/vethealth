@@ -135,6 +135,10 @@ const ContactPage = () => {
 
   return (
     <Layout>
+      <Helmet>
+        <title>Kontakt | VetHealth.ba - Veterinarska Ordinacija Banja Luka</title>
+        <meta name="description" content="Kontaktirajte VetHealth.ba veterinarsku ordinaciju u Banjaluci. Adresa, telefon, radno vrijeme i kontakt forma. Hitna pomoć 24/7." />
+      </Helmet>
       <PageHero
         title="Kontaktirajte Nas"
         description="Imate pitanja ili želite zakazati termin? Javite nam se - tu smo za vas i vaše ljubimce."
