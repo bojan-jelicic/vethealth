@@ -108,6 +108,13 @@ const AdminVisitDetail = () => {
     enabled: !!id,
   });
 
+  // Document attachments (for currently viewed doc)
+  const { data: docAttachments = [] } = useQuery({
+    queryKey: ['doc-attachments', viewingDoc?.id],
+    queryFn: () => attachmentService.listByEntity('document', viewingDoc!.id),
+    enabled: !!viewingDoc?.id,
+  });
+
   // Billing mutations
   const createBillingMutation = useMutation({
     mutationFn: () => visitBillingService.create({
