@@ -23,6 +23,7 @@ import PriceListPage from "./pages/PriceListPage";
 import AppLoginPage from "./pages/AppLoginPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminClients from "./pages/admin/AdminClients";
+import AdminClientDetail from "./pages/admin/AdminClientDetail";
 import AdminPets from "./pages/admin/AdminPets";
 import AdminVisits from "./pages/admin/AdminVisits";
 import AdminDocuments from "./pages/admin/AdminDocuments";
@@ -65,6 +66,7 @@ const App = () => (
                 <Route path="/app" element={<Navigate to="/app/dashboard" replace />} />
                 <Route path="/app/dashboard" element={<ProtectedRoute><AdminLayout><AdminDashboard /></AdminLayout></ProtectedRoute>} />
                 <Route path="/app/clients" element={<ProtectedRoute><AdminLayout><AdminClients /></AdminLayout></ProtectedRoute>} />
+                <Route path="/app/clients/:id" element={<ProtectedRoute><AdminLayout><AdminClientDetail /></AdminLayout></ProtectedRoute>} />
                 <Route path="/app/pets" element={<ProtectedRoute><AdminLayout><AdminPets /></AdminLayout></ProtectedRoute>} />
                 <Route path="/app/visits" element={<ProtectedRoute><AdminLayout><AdminVisits /></AdminLayout></ProtectedRoute>} />
                 <Route path="/app/documents" element={<ProtectedRoute><AdminLayout><AdminDocuments /></AdminLayout></ProtectedRoute>} />
