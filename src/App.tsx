@@ -23,6 +23,7 @@ import PriceListPage from "./pages/PriceListPage";
 import AppLoginPage from "./pages/AppLoginPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminClients from "./pages/admin/AdminClients";
+import AdminClientDetail from "./pages/admin/AdminClientDetail";
 import AdminPets from "./pages/admin/AdminPets";
 import AdminVisits from "./pages/admin/AdminVisits";
 import AdminDocuments from "./pages/admin/AdminDocuments";
