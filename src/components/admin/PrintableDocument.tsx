@@ -28,6 +28,7 @@ const fieldLabels: Record<string, string> = {
   terapija: 'Terapija / Th',
   napomena: 'Napomena',
   napomene: 'Napomene',
+  razlog_eutanazije: 'Razlog za eutanaziju',
   veterinar: 'Veterinar',
   datum: 'Datum',
   potpis: 'Potpis',
