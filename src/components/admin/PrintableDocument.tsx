@@ -157,6 +157,7 @@ export const PrintableDocument = ({ doc }: Props) => {
 
   // Categorize fields
   const ownerFields: [string, any][] = [];
+  const ordererFields: [string, any][] = [];
   const petFieldEntries: [string, any][] = [];
   const caseIntroEntries: [string, any][] = [];
   const checkboxFields: [string, boolean][] = [];
@@ -172,6 +173,8 @@ export const PrintableDocument = ({ doc }: Props) => {
     else if (signatureKeys.includes(key)) signatures.push([key, String(val || '')]);
     else if (analysisCheckboxKeys.includes(key)) checkboxFields.push([key, !!val]);
     else if (caseIntroKeys.includes(key)) caseIntroEntries.push([key, val]);
+    else if (ordererKeys.includes(key)) ordererFields.push([key, val]);
+    else if (labAnimalKeys.includes(key)) petFieldEntries.push([key, val]);
     else if (key.startsWith('vlasnik_')) ownerFields.push([key, val]);
     else if (petKeys.includes(key)) petFieldEntries.push([key, val]);
     else if (Array.isArray(val)) repeatingFields.push([key, val]);
@@ -184,6 +187,7 @@ export const PrintableDocument = ({ doc }: Props) => {
   const isConsent = doc.title?.toLowerCase().includes('saglasnost');
   const isEuthanasia = doc.title?.toLowerCase().includes('eutanazij');
   const isRabies = doc.title?.toLowerCase().includes('bjesnilo');
+  const isLabReport = doc.title?.toLowerCase().includes('nalaz') && !doc.title?.toLowerCase().includes('klinič');
 
   return (
     <div>
