@@ -13,7 +13,7 @@ export const attachmentService = {
       .eq('entity_id', entityId)
       .order('created_at', { ascending: false });
     if (error) throw error;
-    return (data ?? []) as Attachment[];
+    return (data ?? []) as unknown as Attachment[];
   },
 
   async create(input: AttachmentInsert): Promise<Attachment> {
@@ -24,7 +24,7 @@ export const attachmentService = {
       .select()
       .single();
     if (error) throw error;
-    const attachment = data as Attachment;
+    const attachment = data as unknown as Attachment;
     await logAudit({ action: 'create', entity_type: 'attachment', entity_id: attachment.id, metadata: { file_name: input.file_name, for: `${input.entity_type}:${input.entity_id}` } });
     return attachment;
   },

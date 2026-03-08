@@ -12,19 +12,19 @@ export const visitService = {
     if (filters?.status) query = query.eq('status', filters.status);
     const { data, error } = await query;
     if (error) throw error;
-    return (data ?? []) as Visit[];
+    return (data ?? []) as unknown as Visit[];
   },
 
   async getById(id: string): Promise<Visit | null> {
     const { data, error } = await supabase.from(TABLE).select('*, pet:pets(*, owner:clients(*)), owner:clients(*)').eq('id', id).maybeSingle();
     if (error) throw error;
-    return data as Visit | null;
+    return data as unknown as Visit | null;
   },
 
   async create(input: VisitInsert): Promise<Visit> {
     const { data, error } = await supabase.from(TABLE).insert(input as any).select().single();
     if (error) throw error;
-    const visit = data as Visit;
+    const visit = data as unknown as Visit;
     await logAudit({ action: 'create', entity_type: 'visit', entity_id: visit.id, metadata: { pet_id: input.pet_id, owner_id: input.owner_id } });
     return visit;
   },
@@ -33,7 +33,7 @@ export const visitService = {
     const { data, error } = await supabase.from(TABLE).update(input as any).eq('id', id).select().single();
     if (error) throw error;
     await logAudit({ action: 'update', entity_type: 'visit', entity_id: id, metadata: input });
-    return data as Visit;
+    return data as unknown as Visit;
   },
 
   async cancel(id: string): Promise<void> {

@@ -12,19 +12,19 @@ export const clientService = {
     }
     const { data, error } = await query;
     if (error) throw error;
-    return (data ?? []) as Client[];
+    return (data ?? []) as unknown as Client[];
   },
 
   async getById(id: string): Promise<Client | null> {
     const { data, error } = await supabase.from(TABLE).select('*').eq('id', id).maybeSingle();
     if (error) throw error;
-    return data as Client | null;
+    return data as unknown as Client | null;
   },
 
   async create(input: ClientInsert): Promise<Client> {
     const { data, error } = await supabase.from(TABLE).insert(input as any).select().single();
     if (error) throw error;
-    const client = data as Client;
+    const client = data as unknown as Client;
     await logAudit({ action: 'create', entity_type: 'client', entity_id: client.id, metadata: { name: input.name } });
     return client;
   },
@@ -32,7 +32,7 @@ export const clientService = {
   async update(id: string, input: ClientUpdate): Promise<Client> {
     const { data, error } = await supabase.from(TABLE).update(input as any).eq('id', id).select().single();
     if (error) throw error;
-    const client = data as Client;
+    const client = data as unknown as Client;
     await logAudit({ action: 'update', entity_type: 'client', entity_id: id, metadata: input });
     return client;
   },
