@@ -408,6 +408,136 @@ export type Database = {
         }
         Relationships: []
       }
+      visit_billing_items: {
+        Row: {
+          created_at: string
+          description: string
+          id: string
+          quantity: number
+          service_id: string | null
+          total: number | null
+          unit_price: number
+          visit_id: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          id?: string
+          quantity?: number
+          service_id?: string | null
+          total?: number | null
+          unit_price?: number
+          visit_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          id?: string
+          quantity?: number
+          service_id?: string | null
+          total?: number | null
+          unit_price?: number
+          visit_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "visit_billing_items_service_id_fkey"
+            columns: ["service_id"]
+            isOneToOne: false
+            referencedRelation: "services"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visit_billing_items_visit_id_fkey"
+            columns: ["visit_id"]
+            isOneToOne: false
+            referencedRelation: "visits"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      visit_documents: {
+        Row: {
+          content: string | null
+          created_at: string
+          created_by: string | null
+          doc_type: string
+          id: string
+          status: string
+          title: string
+          updated_at: string
+          visit_id: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          created_by?: string | null
+          doc_type?: string
+          id?: string
+          status?: string
+          title: string
+          updated_at?: string
+          visit_id: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          created_by?: string | null
+          doc_type?: string
+          id?: string
+          status?: string
+          title?: string
+          updated_at?: string
+          visit_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "visit_documents_visit_id_fkey"
+            columns: ["visit_id"]
+            isOneToOne: false
+            referencedRelation: "visits"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      visit_inventory: {
+        Row: {
+          created_at: string
+          id: string
+          item_name: string
+          notes: string | null
+          quantity: number
+          unit: string | null
+          visit_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          item_name: string
+          notes?: string | null
+          quantity?: number
+          unit?: string | null
+          visit_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          item_name?: string
+          notes?: string | null
+          quantity?: number
+          unit?: string | null
+          visit_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "visit_inventory_visit_id_fkey"
+            columns: ["visit_id"]
+            isOneToOne: false
+            referencedRelation: "visits"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       visits: {
         Row: {
           created_at: string
