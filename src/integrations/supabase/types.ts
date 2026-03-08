@@ -531,6 +531,7 @@ export type Database = {
           id: string
           locked_at: string | null
           locked_by: string | null
+          pdf_url: string | null
           status: string
           template_id: string | null
           template_version_id: string | null
@@ -548,6 +549,7 @@ export type Database = {
           id?: string
           locked_at?: string | null
           locked_by?: string | null
+          pdf_url?: string | null
           status?: string
           template_id?: string | null
           template_version_id?: string | null
@@ -565,6 +567,7 @@ export type Database = {
           id?: string
           locked_at?: string | null
           locked_by?: string | null
+          pdf_url?: string | null
           status?: string
           template_id?: string | null
           template_version_id?: string | null
