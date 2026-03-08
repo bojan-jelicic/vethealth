@@ -74,6 +74,11 @@ const AdminVisitDetail = () => {
   const [euthanasiaConfirmOpen, setEuthanasiaConfirmOpen] = useState(false);
   const [euthanasiaConfirmDocId, setEuthanasiaConfirmDocId] = useState<string | null>(null);
   const [euthanasiaConfirmText, setEuthanasiaConfirmText] = useState('');
+  // Inventory consumption
+  const [consumeDialogOpen, setConsumeDialogOpen] = useState(false);
+  const [consumeForm, setConsumeForm] = useState({ item_id: '', quantity: '1', notes: '' });
+  const [consumeSearch, setConsumeSearch] = useState('');
+  const [showConsumeDropdown, setShowConsumeDropdown] = useState(false);
 
   // Visit
   const { data: visit, isLoading } = useQuery({
