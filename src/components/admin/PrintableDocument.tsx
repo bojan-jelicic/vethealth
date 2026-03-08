@@ -266,8 +266,8 @@ export const PrintableDocument = ({ doc }: Props) => {
           </>
         )}
 
-        {/* Text fields */}
-        {textFields.map(([key, val]) => (
+        {/* Text fields — conclusion fields get special box for rabies */}
+        {textFields.filter(([k]) => !isRabies || (k !== 'zakljucak' && k !== 'vakcinacija_napomena')).map(([key, val]) => (
           <div key={key} className="section">
             <div className="section-label">{fieldLabels[key] || key}</div>
             <div className={`section-value${key === 'dijagnoza' ? ' italic' : ''} boxed`}>
