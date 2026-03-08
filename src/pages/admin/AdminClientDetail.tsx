@@ -170,6 +170,21 @@ const AdminClientDetail = () => {
           </div>
         </div>
         <div className="flex items-center gap-2">
+          <Button
+            variant="outline" size="sm" className="gap-1.5"
+            disabled={exportingPdf}
+            onClick={async () => {
+              setExportingPdf(true);
+              try {
+                await exportClientPdf(client, pets, visits);
+                toast({ title: 'PDF izvoz završen' });
+              } catch { toast({ title: 'Greška pri izvozu', variant: 'destructive' }); }
+              setExportingPdf(false);
+            }}
+          >
+            {exportingPdf ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Download className="h-3.5 w-3.5" />}
+            PDF
+          </Button>
           <Button variant="default" size="sm" className="gap-1.5" onClick={() => setVisitDialogOpen(true)}>
             <Plus className="h-3.5 w-3.5" />
             Nova posjeta
