@@ -129,7 +129,7 @@ export const visitBillingService = {
     if (error) throw error;
     return (data ?? []) as unknown as VisitBillingItem[];
   },
-  async create(input: { visit_id: string; description: string; quantity?: number; unit_price?: number; service_id?: string }): Promise<VisitBillingItem> {
+  async create(input: { visit_id: string; description: string; quantity?: number; unit_price?: number; discount?: number; note?: string; service_id?: string }): Promise<VisitBillingItem> {
     const { data, error } = await supabase.from(BILLING_TABLE).insert(input as any).select().single();
     if (error) throw error;
     return data as unknown as VisitBillingItem;
