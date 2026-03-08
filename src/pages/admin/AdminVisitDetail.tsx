@@ -559,6 +559,20 @@ const AdminVisitDetail = () => {
                 </div>
               )}
 
+              {/* Document attachments */}
+              <div className="border-t border-border pt-3">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                  <ImageIcon className="h-3.5 w-3.5" />Slike dokumenta
+                </p>
+                <AttachmentGallery
+                  entityType="document"
+                  entityId={viewingDoc.id}
+                  attachments={docAttachments}
+                  maxSizeMb={10}
+                  readOnly={isDocLocked(viewingDoc)}
+                />
+              </div>
+
               <DialogFooter className="mt-4">
                 <PrintableDocument
                   doc={viewingDoc}
