@@ -332,6 +332,24 @@ export const PrintableDocument = ({ doc }: Props) => {
           );
         })}
 
+        {/* Rabies conclusion + vaccination note */}
+        {isRabies && (
+          <>
+            {textFields.filter(([k]) => k === 'zakljucak').map(([key, val]) => (
+              <div key={key} className="conclusion-box">
+                <div className="conclusion-title">Završni zaključak</div>
+                <div className="section-value">{String(val) || '—'}</div>
+              </div>
+            ))}
+            {textFields.filter(([k]) => k === 'vakcinacija_napomena').map(([key, val]) => val ? (
+              <div key={key} className="section" style={{ marginTop: '10px' }}>
+                <div className="section-label">Napomena o vakcinaciji</div>
+                <div className="section-value boxed">{String(val)}</div>
+              </div>
+            ) : null)}
+          </>
+        )}
+
         {/* Content / notes */}
         {doc.content && (
           <div className="section">
