@@ -304,15 +304,35 @@ export const PrintableDocument = ({ doc }: Props) => {
           </>
         )}
 
-        {/* Text fields — conclusion fields get special box for rabies */}
-        {textFields.filter(([k]) => !isRabies || (k !== 'zakljucak' && k !== 'vakcinacija_napomena')).map(([key, val]) => (
-          <div key={key} className="section">
-            <div className="section-label">{fieldLabels[key] || key}</div>
-            <div className={`section-value${key === 'dijagnoza' ? ' italic' : ''} boxed`}>
-              {String(val) || '—'}
+        {/* Text fields */}
+        {textFields.filter(([k]) => !isRabies || (k !== 'zakljucak' && k !== 'vakcinacija_napomena')).map(([key, val]) => {
+          // Lab report: result gets highlighted box
+          if (isLabReport && key === 'rezultat') {
+            return (
+              <div key={key} className="section">
+                <div className="group-title">Rezultat</div>
+                <div className="lab-result-box">{String(val) || '—'}</div>
+              </div>
+            );
+          }
+          // Lab report: use structured lab-field layout
+          if (isLabReport) {
+            return (
+              <div key={key} className="lab-field">
+                <div className="lab-field-label">{fieldLabels[key] || key}</div>
+                <div className="lab-field-value">{String(val) || '—'}</div>
+              </div>
+            );
+          }
+          return (
+            <div key={key} className="section">
+              <div className="section-label">{fieldLabels[key] || key}</div>
+              <div className={`section-value${key === 'dijagnoza' ? ' italic' : ''} boxed`}>
+                {String(val) || '—'}
+              </div>
             </div>
-          </div>
-        ))}
+          );
+        })}
 
         {/* Repeating sections */}
         {repeatingFields.map(([key, rows]) => {
