@@ -1,5 +1,6 @@
 import { Award, Users, Heart, Clock, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Layout } from '@/components/Layout';
 import { PageHero } from '@/components/PageHero';
 import { Button } from '@/components/ui/button';
