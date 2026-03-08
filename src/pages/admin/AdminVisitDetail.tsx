@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   ArrowLeft, ClipboardList, FileText, Receipt, Package,
   Plus, Trash2, PawPrint, User, CheckCircle, Lock, Unlock,
-  Eye,
+  Eye, Printer,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -35,6 +35,7 @@ import {
   type VisitDocument,
 } from '@/services/visitDetailServices';
 import { CreateDocumentFromTemplate } from '@/components/admin/CreateDocumentFromTemplate';
+import { PrintableDocument } from '@/components/admin/PrintableDocument';
 import { format } from 'date-fns';
 
 const statusColors: Record<string, string> = {
@@ -556,6 +557,8 @@ const AdminVisitDetail = () => {
               )}
 
               <DialogFooter className="mt-4">
+                <PrintableDocument doc={viewingDoc} petName={(visit?.pet as any)?.name} ownerName={(visit?.owner as any)?.name} />
+                <div className="flex-1" />
                 {/* Draft document actions */}
                 {viewingDoc.status === 'draft' && !isEditingDoc && (
                   <>
