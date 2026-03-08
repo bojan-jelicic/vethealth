@@ -210,7 +210,13 @@ const AdminVisitDetail = () => {
     }
   };
 
-  const billingTotal = billingItems.reduce((sum, item) => sum + (item.total || 0), 0);
+  const billingSubtotal = billingItems.reduce((sum, item) => sum + ((item.quantity || 0) * (item.unit_price || 0)), 0);
+  const billingDiscountTotal = billingItems.reduce((sum, item) => {
+    const lineTotal = (item.quantity || 0) * (item.unit_price || 0);
+    const disc = item.discount || 0;
+    return sum + (lineTotal * disc / 100);
+  }, 0);
+  const billingTotal = billingSubtotal - billingDiscountTotal;
 
   if (isLoading) {
     return <div className="space-y-6"><Skeleton className="h-8 w-48" /><Skeleton className="h-64 w-full" /></div>;
