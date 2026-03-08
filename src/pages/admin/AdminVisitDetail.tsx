@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
-  ArrowLeft, ClipboardList, FileText, Receipt, Package,
+  ArrowLeft, ClipboardList, FileText, Receipt, Package, ImageIcon,
   Plus, Trash2, PawPrint, User, CheckCircle, Lock, Unlock,
   Eye, AlertTriangle,
 } from 'lucide-react';
