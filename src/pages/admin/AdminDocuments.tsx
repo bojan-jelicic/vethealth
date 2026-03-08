@@ -61,5 +61,6 @@ const AdminDocuments = () => {
     </div>
   </div>
 );
+};
 
 export default AdminDocuments;
