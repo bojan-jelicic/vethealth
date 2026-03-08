@@ -89,6 +89,10 @@ const App = () => (
                 <Route path="/app/messages" element={<ProtectedRoute><AdminLayout><AdminMessages /></AdminLayout></ProtectedRoute>} />
                 <Route path="/app/settings" element={<ProtectedRoute allowedRoles={['admin']}><AdminLayout><AdminSettings /></AdminLayout></ProtectedRoute>} />
 
+                {/* Client Portal */}
+                <Route path="/portal/login" element={<PortalLogin />} />
+                <Route path="/portal" element={<PortalDashboard />} />
+
                 {/* Legacy redirects */}
                 <Route path="/auth" element={<Navigate to="/app/login" replace />} />
                 <Route path="/admin/*" element={<Navigate to="/app/dashboard" replace />} />
