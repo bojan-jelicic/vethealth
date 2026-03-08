@@ -83,6 +83,105 @@ export type Database = {
           },
         ]
       }
+      attachments: {
+        Row: {
+          created_at: string
+          entity_id: string
+          entity_type: string
+          file_name: string
+          file_url: string
+          id: string
+          mime_type: string | null
+          uploaded_by: string | null
+        }
+        Insert: {
+          created_at?: string
+          entity_id: string
+          entity_type: string
+          file_name: string
+          file_url: string
+          id?: string
+          mime_type?: string | null
+          uploaded_by?: string | null
+        }
+        Update: {
+          created_at?: string
+          entity_id?: string
+          entity_type?: string
+          file_name?: string
+          file_url?: string
+          id?: string
+          mime_type?: string | null
+          uploaded_by?: string | null
+        }
+        Relationships: []
+      }
+      audit_logs: {
+        Row: {
+          action: string
+          actor_user_id: string | null
+          created_at: string
+          entity_id: string | null
+          entity_type: string
+          id: string
+          metadata: Json | null
+        }
+        Insert: {
+          action: string
+          actor_user_id?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type: string
+          id?: string
+          metadata?: Json | null
+        }
+        Update: {
+          action?: string
+          actor_user_id?: string | null
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string
+          id?: string
+          metadata?: Json | null
+        }
+        Relationships: []
+      }
+      clients: {
+        Row: {
+          address: string | null
+          created_at: string
+          email: string | null
+          id: string
+          is_active: boolean
+          name: string
+          notes: string | null
+          phone: string | null
+          updated_at: string
+        }
+        Insert: {
+          address?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_active?: boolean
+          name: string
+          notes?: string | null
+          phone?: string | null
+          updated_at?: string
+        }
+        Update: {
+          address?: string | null
+          created_at?: string
+          email?: string | null
+          id?: string
+          is_active?: boolean
+          name?: string
+          notes?: string | null
+          phone?: string | null
+          updated_at?: string
+        }
+        Relationships: []
+      }
       contact_submissions: {
         Row: {
           created_at: string
@@ -118,6 +217,68 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      pets: {
+        Row: {
+          allergies: string | null
+          birth_date: string | null
+          breed: string | null
+          chronic_conditions: string | null
+          created_at: string
+          id: string
+          is_active: boolean
+          microchip_id: string | null
+          name: string
+          owner_id: string
+          passport_no: string | null
+          sex: string | null
+          species: string
+          updated_at: string
+          weight: number | null
+        }
+        Insert: {
+          allergies?: string | null
+          birth_date?: string | null
+          breed?: string | null
+          chronic_conditions?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          microchip_id?: string | null
+          name: string
+          owner_id: string
+          passport_no?: string | null
+          sex?: string | null
+          species?: string
+          updated_at?: string
+          weight?: number | null
+        }
+        Update: {
+          allergies?: string | null
+          birth_date?: string | null
+          breed?: string | null
+          chronic_conditions?: string | null
+          created_at?: string
+          id?: string
+          is_active?: boolean
+          microchip_id?: string | null
+          name?: string
+          owner_id?: string
+          passport_no?: string | null
+          sex?: string | null
+          species?: string
+          updated_at?: string
+          weight?: number | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "pets_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       service_categories: {
         Row: {
@@ -246,6 +407,67 @@ export type Database = {
           updated_at?: string
         }
         Relationships: []
+      }
+      visits: {
+        Row: {
+          created_at: string
+          date_time: string
+          id: string
+          notes: string | null
+          owner_id: string
+          pet_id: string
+          reason: string | null
+          status: string
+          updated_at: string
+          vet_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          date_time?: string
+          id?: string
+          notes?: string | null
+          owner_id: string
+          pet_id: string
+          reason?: string | null
+          status?: string
+          updated_at?: string
+          vet_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          date_time?: string
+          id?: string
+          notes?: string | null
+          owner_id?: string
+          pet_id?: string
+          reason?: string | null
+          status?: string
+          updated_at?: string
+          vet_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "visits_owner_id_fkey"
+            columns: ["owner_id"]
+            isOneToOne: false
+            referencedRelation: "clients"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visits_pet_id_fkey"
+            columns: ["pet_id"]
+            isOneToOne: false
+            referencedRelation: "pets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visits_vet_id_fkey"
+            columns: ["vet_id"]
+            isOneToOne: false
+            referencedRelation: "veterinarians"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
