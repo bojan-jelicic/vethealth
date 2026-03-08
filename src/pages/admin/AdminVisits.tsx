@@ -44,6 +44,7 @@ const AdminVisits = () => {
   const [statusFilter, setStatusFilter] = useState(searchParams.get('status') || '');
   const [dateFrom, setDateFrom] = useState<Date | undefined>();
   const [dateTo, setDateTo] = useState<Date | undefined>();
+  const [exportingCsv, setExportingCsv] = useState(false);
 
   const { data: allVisits = [], isLoading } = useQuery({
     queryKey: ['visits', statusFilter],
