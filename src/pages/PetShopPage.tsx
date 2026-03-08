@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { ShoppingBag, Star, Filter, Search, Tag } from 'lucide-react';
 import { Layout } from '@/components/Layout';
 import { PageHero } from '@/components/PageHero';
