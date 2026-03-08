@@ -388,49 +388,78 @@ const AdminVisitDetail = () => {
           </div>
         </TabsContent>
 
-        {/* BILLING TAB */}
+        {/* BILLING TAB — Obračun posjete */}
         <TabsContent value="racun">
           <div className="bg-card rounded-lg border border-border">
             <div className="flex items-center justify-between p-4 border-b border-border">
-              <h2 className="font-semibold">Stavke računa</h2>
+              <div>
+                <h2 className="font-semibold">Obračun posjete</h2>
+                <p className="text-xs text-muted-foreground mt-0.5">Interni obračun — nije fiskalni dokument</p>
+              </div>
               <Button size="sm" className="gap-1.5" onClick={() => setBillingDialogOpen(true)}>
                 <Plus className="h-3.5 w-3.5" />Dodaj stavku
               </Button>
             </div>
             {billingItems.length === 0 ? (
-              <EmptyState icon={Receipt} text="Nema stavki na računu." />
+              <EmptyState icon={Receipt} text="Nema stavki u obračunu." />
             ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Opis</TableHead>
-                    <TableHead className="text-right">Kol.</TableHead>
-                    <TableHead className="text-right">Cijena</TableHead>
-                    <TableHead className="text-right">Ukupno</TableHead>
-                    <TableHead className="w-10"></TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {billingItems.map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell className="font-medium">{item.description}</TableCell>
-                      <TableCell className="text-right">{item.quantity}</TableCell>
-                      <TableCell className="text-right text-muted-foreground">{Number(item.unit_price).toFixed(2)}</TableCell>
-                      <TableCell className="text-right font-medium">{Number(item.total).toFixed(2)} KM</TableCell>
-                      <TableCell>
-                        <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => deleteBillingMutation.mutate(item.id)}>
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </Button>
-                      </TableCell>
+              <>
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Usluga / Opis</TableHead>
+                      <TableHead className="text-right w-16">Kol.</TableHead>
+                      <TableHead className="text-right w-24">Jed. cijena</TableHead>
+                      <TableHead className="text-right w-20">Popust</TableHead>
+                      <TableHead className="text-right w-24">Iznos</TableHead>
+                      <TableHead className="w-10"></TableHead>
                     </TableRow>
-                  ))}
-                  <TableRow className="bg-muted/30">
-                    <TableCell colSpan={3} className="font-semibold text-right">UKUPNO</TableCell>
-                    <TableCell className="text-right font-bold">{billingTotal.toFixed(2)} KM</TableCell>
-                    <TableCell></TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
+                  </TableHeader>
+                  <TableBody>
+                    {billingItems.map((item) => {
+                      const lineGross = (item.quantity || 0) * (item.unit_price || 0);
+                      const disc = item.discount || 0;
+                      const lineNet = lineGross - (lineGross * disc / 100);
+                      return (
+                        <TableRow key={item.id}>
+                          <TableCell>
+                            <div className="font-medium">{item.description}</div>
+                            {item.note && <p className="text-xs text-muted-foreground mt-0.5">{item.note}</p>}
+                          </TableCell>
+                          <TableCell className="text-right">{item.quantity}</TableCell>
+                          <TableCell className="text-right text-muted-foreground">{Number(item.unit_price).toFixed(2)}</TableCell>
+                          <TableCell className="text-right">
+                            {disc > 0 ? <span className="text-primary font-medium">-{disc}%</span> : <span className="text-muted-foreground">—</span>}
+                          </TableCell>
+                          <TableCell className="text-right font-medium">{lineNet.toFixed(2)} KM</TableCell>
+                          <TableCell>
+                            <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => deleteBillingMutation.mutate(item.id)}>
+                              <Trash2 className="h-3.5 w-3.5" />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+                {/* Summary */}
+                <div className="border-t border-border p-4 space-y-1.5">
+                  <div className="flex justify-between text-sm">
+                    <span className="text-muted-foreground">Subtotal (prije popusta)</span>
+                    <span>{billingSubtotal.toFixed(2)} KM</span>
+                  </div>
+                  {billingDiscountTotal > 0 && (
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Ukupan popust</span>
+                      <span className="text-primary">-{billingDiscountTotal.toFixed(2)} KM</span>
+                    </div>
+                  )}
+                  <div className="flex justify-between text-base font-bold pt-1.5 border-t border-border">
+                    <span>UKUPNO</span>
+                    <span>{billingTotal.toFixed(2)} KM</span>
+                  </div>
+                </div>
+              </>
             )}
           </div>
         </TabsContent>
