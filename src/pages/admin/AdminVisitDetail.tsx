@@ -557,6 +557,8 @@ const AdminVisitDetail = () => {
               )}
 
               <DialogFooter className="mt-4">
+                <PrintableDocument doc={viewingDoc} petName={(visit?.pet as any)?.name} ownerName={(visit?.owner as any)?.name} />
+                <div className="flex-1" />
                 {/* Draft document actions */}
                 {viewingDoc.status === 'draft' && !isEditingDoc && (
                   <>
