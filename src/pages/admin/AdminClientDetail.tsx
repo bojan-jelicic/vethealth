@@ -29,6 +29,7 @@ import { visitService } from '@/services/visitService';
 import { attachmentService } from '@/services/attachmentService';
 import type { ClientUpdate, PetInsert, VisitInsert } from '@/services/types';
 import { format } from 'date-fns';
+import { exportClientPdf } from '@/services/exportService';
 
 const AdminClientDetail = () => {
   const { id } = useParams<{ id: string }>();
