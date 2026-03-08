@@ -144,7 +144,7 @@ const AdminVisitDetail = () => {
         .select('*')
         .eq('is_active', true)
         .order('name');
-      return (data ?? []) as { id: string; name: string; unit: string; current_quantity: number; low_stock_threshold: number }[];
+      return (data ?? []) as unknown as { id: string; name: string; unit: string; current_quantity: number; low_stock_threshold: number }[];
     },
   });
 
