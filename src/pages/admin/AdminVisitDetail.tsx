@@ -36,6 +36,7 @@ import {
 } from '@/services/visitDetailServices';
 import { CreateDocumentFromTemplate } from '@/components/admin/CreateDocumentFromTemplate';
 import { PrintableDocument } from '@/components/admin/PrintableDocument';
+import { AttachmentGallery } from '@/components/admin/AttachmentGallery';
 import { format } from 'date-fns';
 
 const statusColors: Record<string, string> = {
