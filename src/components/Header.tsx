@@ -4,6 +4,7 @@ import { Menu, Phone, Calendar } from 'lucide-react';
 import vethealthLogo from '@/assets/vethealth-logo.png';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 const navLinks = [
   { name: 'Početna', href: '/' },
