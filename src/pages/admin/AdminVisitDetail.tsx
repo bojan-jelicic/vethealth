@@ -186,6 +186,20 @@ const AdminVisitDetail = () => {
     setViewDocOpen(true);
   };
 
+  const isEuthanasiaDoc = (doc: VisitDocument) =>
+    doc.title?.toLowerCase().includes('eutanazij');
+
+  const handleFinalize = (docId: string) => {
+    const doc = documents.find((d) => d.id === docId);
+    if (doc && isEuthanasiaDoc(doc)) {
+      setEuthanasiaConfirmDocId(docId);
+      setEuthanasiaConfirmText('');
+      setEuthanasiaConfirmOpen(true);
+    } else {
+      finalizeDocMutation.mutate(docId);
+    }
+  };
+
   const billingTotal = billingItems.reduce((sum, item) => sum + (item.total || 0), 0);
 
   if (isLoading) {
