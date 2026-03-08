@@ -198,6 +198,21 @@ export const PrintableDocument = ({ doc }: Props) => {
           </div>
         )}
 
+        {/* Case intro section (rabies etc.) */}
+        {caseIntroEntries.length > 0 && (
+          <>
+            <div className="group-title">Podaci o slučaju</div>
+            <div className="field-grid three">
+              {caseIntroEntries.map(([key, val]) => (
+                <div key={key} className="section">
+                  <div className="section-label">{fieldLabels[key] || key}</div>
+                  <div className="section-value boxed">{String(val) || '—'}</div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
         {/* Owner section */}
         {ownerFields.length > 0 && (
           <>
