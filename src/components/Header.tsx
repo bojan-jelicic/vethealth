@@ -121,6 +121,10 @@ export const Header = () => {
                     <Phone className="w-5 h-5 text-primary" />
                     <span>+387 51 123 456</span>
                   </a>
+                  <div className="flex items-center gap-3">
+                    <ThemeToggle />
+                    <span className="text-sm text-muted-foreground">Promijeni temu</span>
+                  </div>
                   <Button variant="accent" className="w-full" asChild>
                     <Link to="/zakazivanje-termina" onClick={() => setIsOpen(false)}>
                       <Calendar className="w-4 h-4" />
