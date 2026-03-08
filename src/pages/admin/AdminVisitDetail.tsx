@@ -688,29 +688,65 @@ const AdminVisitDetail = () => {
 
       {/* Add Billing Item Dialog */}
       <Dialog open={billingDialogOpen} onOpenChange={setBillingDialogOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader><DialogTitle>Nova stavka računa</DialogTitle></DialogHeader>
+        <DialogContent className="sm:max-w-lg">
+          <DialogHeader><DialogTitle>Nova stavka obračuna</DialogTitle></DialogHeader>
           <form onSubmit={(e) => { e.preventDefault(); createBillingMutation.mutate(); }} className="space-y-4">
             <div className="space-y-2">
-              <Label>Opis *</Label>
-              <Input value={billingForm.description} onChange={(e) => setBillingForm((p) => ({ ...p, description: e.target.value }))} placeholder="npr. Pregled psa" required />
+              <Label>Naziv usluge / Opis *</Label>
+              <Input value={billingForm.description} onChange={(e) => setBillingForm((p) => ({ ...p, description: e.target.value }))} placeholder="npr. Klinički pregled" required />
             </div>
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-3 gap-3">
               <div className="space-y-2">
                 <Label>Količina</Label>
                 <Input type="number" step="0.01" min="0" value={billingForm.quantity} onChange={(e) => setBillingForm((p) => ({ ...p, quantity: e.target.value }))} />
               </div>
               <div className="space-y-2">
-                <Label>Cijena (KM)</Label>
+                <Label>Jed. cijena (KM)</Label>
                 <Input type="number" step="0.01" min="0" value={billingForm.unit_price} onChange={(e) => setBillingForm((p) => ({ ...p, unit_price: e.target.value }))} />
               </div>
+              <div className="space-y-2">
+                <Label>Popust (%)</Label>
+                <Input type="number" step="1" min="0" max="100" value={billingForm.discount} onChange={(e) => setBillingForm((p) => ({ ...p, discount: e.target.value }))} placeholder="0" />
+              </div>
             </div>
-            <div className="text-right text-sm text-muted-foreground">
-              Ukupno: <span className="font-semibold text-foreground">{((parseFloat(billingForm.quantity) || 0) * (parseFloat(billingForm.unit_price) || 0)).toFixed(2)} KM</span>
+            <div className="space-y-2">
+              <Label>Napomena <span className="text-muted-foreground font-normal">(opcionalno)</span></Label>
+              <Input value={billingForm.note} onChange={(e) => setBillingForm((p) => ({ ...p, note: e.target.value }))} placeholder="npr. Hitna intervencija" />
+            </div>
+            {/* Live total preview */}
+            <div className="bg-muted/30 rounded-lg p-3 space-y-1">
+              {(() => {
+                const qty = parseFloat(billingForm.quantity) || 0;
+                const price = parseFloat(billingForm.unit_price) || 0;
+                const disc = parseFloat(billingForm.discount) || 0;
+                const gross = qty * price;
+                const discAmt = gross * disc / 100;
+                const net = gross - discAmt;
+                return (
+                  <>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Bruto</span>
+                      <span>{gross.toFixed(2)} KM</span>
+                    </div>
+                    {disc > 0 && (
+                      <div className="flex justify-between text-sm">
+                        <span className="text-muted-foreground">Popust ({disc}%)</span>
+                        <span className="text-primary">-{discAmt.toFixed(2)} KM</span>
+                      </div>
+                    )}
+                    <div className="flex justify-between text-sm font-semibold pt-1 border-t border-border">
+                      <span>Iznos</span>
+                      <span>{net.toFixed(2)} KM</span>
+                    </div>
+                  </>
+                );
+              })()}
             </div>
             <DialogFooter>
               <Button type="button" variant="outline" onClick={() => setBillingDialogOpen(false)}>Otkaži</Button>
-              <Button type="submit" disabled={createBillingMutation.isPending}>Dodaj</Button>
+              <Button type="submit" disabled={createBillingMutation.isPending || !billingForm.description.trim()}>
+                {createBillingMutation.isPending ? 'Dodavanje...' : 'Dodaj stavku'}
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>
