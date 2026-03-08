@@ -81,6 +81,9 @@ const metaKeys = ['veterinar', 'datum', ...signatureKeys];
 // Pet-related keys for grouping
 const petKeys = ['ime_ljubimca', 'vrsta', 'pasmina', 'spol', 'starost', 'pasos_br', 'chip_br'];
 
+// Case intro keys (rabies report etc.)
+const caseIntroKeys = ['datum_ugriza', 'opcina', 'adresa_incidenta'];
+
 const printStyles = `
   @page { margin: 15mm; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
