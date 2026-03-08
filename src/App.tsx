@@ -25,6 +25,7 @@ import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminClients from "./pages/admin/AdminClients";
 import AdminClientDetail from "./pages/admin/AdminClientDetail";
 import AdminPets from "./pages/admin/AdminPets";
+import AdminPetDetail from "./pages/admin/AdminPetDetail";
 import AdminVisits from "./pages/admin/AdminVisits";
 import AdminDocuments from "./pages/admin/AdminDocuments";
 import AdminPricing from "./pages/admin/AdminPricing";
@@ -68,6 +69,7 @@ const App = () => (
                 <Route path="/app/clients" element={<ProtectedRoute><AdminLayout><AdminClients /></AdminLayout></ProtectedRoute>} />
                 <Route path="/app/clients/:id" element={<ProtectedRoute><AdminLayout><AdminClientDetail /></AdminLayout></ProtectedRoute>} />
                 <Route path="/app/pets" element={<ProtectedRoute><AdminLayout><AdminPets /></AdminLayout></ProtectedRoute>} />
+                <Route path="/app/pets/:id" element={<ProtectedRoute><AdminLayout><AdminPetDetail /></AdminLayout></ProtectedRoute>} />
                 <Route path="/app/visits" element={<ProtectedRoute><AdminLayout><AdminVisits /></AdminLayout></ProtectedRoute>} />
                 <Route path="/app/documents" element={<ProtectedRoute><AdminLayout><AdminDocuments /></AdminLayout></ProtectedRoute>} />
                 <Route path="/app/pricing" element={<ProtectedRoute><AdminLayout><AdminPricing /></AdminLayout></ProtectedRoute>} />
