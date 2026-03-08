@@ -1,12 +1,19 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+
+export type AppRole = 'admin' | 'vet' | 'user';
 
 interface AuthContextType {
   user: User | null;
   session: Session | null;
+  role: AppRole | null;
   isAdmin: boolean;
+  isVet: boolean;
+  isStaff: boolean; // admin OR vet
   isLoading: boolean;
+  sessionExpired: boolean;
+  dismissSessionExpired: () => void;
   signIn: (email: string, password: string) => Promise<{ error: Error | null }>;
   signUp: (email: string, password: string) => Promise<{ error: Error | null }>;
   signOut: () => Promise<void>;
@@ -22,58 +29,96 @@ export const useAuth = () => {
   return context;
 };
 
+const SESSION_TIMEOUT_MS = 60 * 60 * 1000; // 1 hour
+
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [role, setRole] = useState<AppRole | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [sessionExpired, setSessionExpired] = useState(false);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const activityRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const checkAdminRole = async (userId: string) => {
+  const fetchRole = async (userId: string): Promise<AppRole | null> => {
     try {
       const { data, error } = await supabase
         .from('user_roles')
         .select('role')
         .eq('user_id', userId)
-        .eq('role', 'admin')
         .maybeSingle();
 
-      if (error) {
-        console.error('Error checking admin role:', error);
-        return false;
-      }
-      return !!data;
-    } catch (err) {
-      console.error('Error checking admin role:', err);
-      return false;
+      if (error || !data) return null;
+      return data.role as AppRole;
+    } catch {
+      return null;
     }
   };
 
+  const clearSessionTimeout = useCallback(() => {
+    if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    if (activityRef.current) clearTimeout(activityRef.current);
+  }, []);
+
+  const startSessionTimeout = useCallback(() => {
+    clearSessionTimeout();
+    timeoutRef.current = setTimeout(async () => {
+      await supabase.auth.signOut();
+      setSessionExpired(true);
+    }, SESSION_TIMEOUT_MS);
+  }, [clearSessionTimeout]);
+
+  const resetActivityTimer = useCallback(() => {
+    if (!session) return;
+    startSessionTimeout();
+  }, [session, startSessionTimeout]);
+
+  // Activity listeners
   useEffect(() => {
-    // Set up auth state listener FIRST
+    if (!session) return;
+
+    const events = ['mousedown', 'keydown', 'scroll', 'touchstart'];
+    const handler = () => {
+      if (activityRef.current) clearTimeout(activityRef.current);
+      activityRef.current = setTimeout(resetActivityTimer, 1000); // debounce
+    };
+
+    events.forEach((e) => window.addEventListener(e, handler, { passive: true }));
+    startSessionTimeout();
+
+    return () => {
+      events.forEach((e) => window.removeEventListener(e, handler));
+      clearSessionTimeout();
+    };
+  }, [session, resetActivityTimer, startSessionTimeout, clearSessionTimeout]);
+
+  useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
-        
-        // Defer admin check with setTimeout to prevent deadlock
+
         if (session?.user) {
           setTimeout(() => {
-            checkAdminRole(session.user.id).then(setIsAdmin);
+            fetchRole(session.user.id).then(setRole);
           }, 0);
         } else {
-          setIsAdmin(false);
+          setRole(null);
+        }
+
+        if (event === 'SIGNED_OUT') {
+          setRole(null);
         }
       }
     );
 
-    // THEN check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       setSession(session);
       setUser(session?.user ?? null);
-      
+
       if (session?.user) {
-        checkAdminRole(session.user.id).then((isAdminUser) => {
-          setIsAdmin(isAdminUser);
+        fetchRole(session.user.id).then((r) => {
+          setRole(r);
           setIsLoading(false);
         });
       } else {
@@ -85,35 +130,40 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }, []);
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
+    setSessionExpired(false);
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
     return { error: error as Error | null };
   };
 
   const signUp = async (email: string, password: string) => {
-    const redirectUrl = `${window.location.origin}/`;
-    
     const { error } = await supabase.auth.signUp({
       email,
       password,
-      options: {
-        emailRedirectTo: redirectUrl,
-      },
+      options: { emailRedirectTo: `${window.location.origin}/` },
     });
     return { error: error as Error | null };
   };
 
   const signOut = async () => {
+    clearSessionTimeout();
     await supabase.auth.signOut();
     setUser(null);
     setSession(null);
-    setIsAdmin(false);
+    setRole(null);
   };
 
+  const dismissSessionExpired = () => setSessionExpired(false);
+
+  const isAdmin = role === 'admin';
+  const isVet = role === 'vet';
+  const isStaff = isAdmin || isVet;
+
   return (
-    <AuthContext.Provider value={{ user, session, isAdmin, isLoading, signIn, signUp, signOut }}>
+    <AuthContext.Provider value={{
+      user, session, role, isAdmin, isVet, isStaff, isLoading,
+      sessionExpired, dismissSessionExpired,
+      signIn, signUp, signOut,
+    }}>
       {children}
     </AuthContext.Provider>
   );
