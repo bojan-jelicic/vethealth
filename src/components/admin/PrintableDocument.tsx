@@ -241,6 +241,21 @@ export const PrintableDocument = ({ doc }: Props) => {
           </>
         )}
 
+        {/* Orderer section (lab) */}
+        {ordererFields.length > 0 && (
+          <>
+            <div className="group-title">Naručilac</div>
+            <div className="field-grid">
+              {ordererFields.map(([key, val]) => (
+                <div key={key} className="section">
+                  <div className="section-label">{fieldLabels[key] || key}</div>
+                  <div className="section-value boxed">{String(val) || '—'}</div>
+                </div>
+              ))}
+            </div>
+          </>
+        )}
+
         {/* Owner section */}
         {ownerFields.length > 0 && (
           <>
