@@ -116,6 +116,19 @@ const AdminVisitDetail = () => {
     enabled: !!viewingDoc?.id,
   });
 
+  // Services for autocomplete in billing
+  const { data: allServices = [] } = useQuery({
+    queryKey: ['services-for-billing'],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('services')
+        .select('id, name, price, service_categories(name)')
+        .eq('is_active', true)
+        .order('name');
+      return (data ?? []) as { id: string; name: string; price: number | null; service_categories: { name: string } | null }[];
+    },
+  });
+
   // Billing mutations
   const createBillingMutation = useMutation({
     mutationFn: () => visitBillingService.create({
