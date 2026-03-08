@@ -455,36 +455,14 @@ const AdminVisitDetail = () => {
 
         {/* ATTACHMENTS TAB */}
         <TabsContent value="prilozi">
-          <div className="bg-card rounded-lg border border-border">
-            <div className="flex items-center justify-between p-4 border-b border-border">
-              <h2 className="font-semibold">Prilozi</h2>
-            </div>
-            {attachments.length === 0 ? (
-              <EmptyState icon={ClipboardList} text="Nema priloga za ovu posjetu." />
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Naziv</TableHead>
-                    <TableHead>Tip</TableHead>
-                    <TableHead>Datum</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {attachments.map((att) => (
-                    <TableRow key={att.id}>
-                      <TableCell>
-                        <a href={att.file_url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
-                          {att.file_name}
-                        </a>
-                      </TableCell>
-                      <TableCell className="text-muted-foreground">{att.mime_type || '—'}</TableCell>
-                      <TableCell className="text-muted-foreground">{format(new Date(att.created_at), 'dd.MM.yyyy')}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
+          <div className="bg-card rounded-lg border border-border p-4">
+            <h2 className="font-semibold mb-4">Slike i prilozi posjete</h2>
+            <AttachmentGallery
+              entityType="visit"
+              entityId={id!}
+              attachments={attachments}
+              maxSizeMb={10}
+            />
           </div>
         </TabsContent>
       </Tabs>
