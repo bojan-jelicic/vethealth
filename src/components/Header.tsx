@@ -1,21 +1,24 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { Menu, Phone, Calendar } from 'lucide-react';
 import vethealthLogo from '@/assets/vethealth-logo.png';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 
 const navLinks = [
-  { name: 'Početna', href: '/' },
-  { name: 'Usluge', href: '/services' },
-  { name: 'Cjenovnik', href: '/cjenovnik-usluga' },
-  { name: 'Pet Shop', href: '/pet-shop' },
-  { name: 'O Nama', href: '/about' },
-  { name: 'Kontakt', href: '/contact' },
+  { key: 'home', href: '/' },
+  { key: 'services', href: '/services' },
+  { key: 'priceList', href: '/cjenovnik-usluga' },
+  { key: 'petShop', href: '/pet-shop' },
+  { key: 'about', href: '/about' },
+  { key: 'contact', href: '/contact' },
 ];
 
 export const Header = () => {
+  const { t } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
@@ -56,7 +59,7 @@ export const Header = () => {
           <nav className="hidden lg:flex items-center gap-8">
             {navLinks.map((link) => (
               <Link
-                key={link.name}
+                key={link.key}
                 to={link.href}
                 className={`font-medium py-1 transition-colors link-underline ${
                   isActive(link.href)
@@ -64,13 +67,13 @@ export const Header = () => {
                     : 'text-foreground hover:text-primary'
                 }`}
               >
-                {link.name}
+                {t(`nav.${link.key}`)}
               </Link>
             ))}
           </nav>
 
           {/* Desktop CTA */}
-          <div className="hidden lg:flex items-center gap-4">
+          <div className="hidden lg:flex items-center gap-3">
             <a
               href="tel:+38751123456"
               className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
@@ -78,11 +81,12 @@ export const Header = () => {
               <Phone className="w-4 h-4" />
               <span className="text-small">+387 51 123 456</span>
             </a>
+            <LanguageSwitcher />
             <ThemeToggle />
             <Button variant="accent" asChild>
               <Link to="/zakazivanje-termina">
                 <Calendar className="w-4 h-4" />
-                Zakaži Termin
+                {t('nav.bookAppointment')}
               </Link>
             </Button>
           </div>
@@ -100,7 +104,7 @@ export const Header = () => {
                 <nav className="flex flex-col gap-4">
                   {navLinks.map((link) => (
                     <Link
-                      key={link.name}
+                      key={link.key}
                       to={link.href}
                       onClick={() => setIsOpen(false)}
                       className={`text-lg font-heading font-medium transition-colors text-left py-2 border-b border-border ${
@@ -109,7 +113,7 @@ export const Header = () => {
                           : 'text-foreground hover:text-primary'
                       }`}
                     >
-                      {link.name}
+                      {t(`nav.${link.key}`)}
                     </Link>
                   ))}
                 </nav>
@@ -122,13 +126,14 @@ export const Header = () => {
                     <span>+387 51 123 456</span>
                   </a>
                   <div className="flex items-center gap-3">
+                    <LanguageSwitcher />
                     <ThemeToggle />
-                    <span className="text-sm text-muted-foreground">Promijeni temu</span>
+                    <span className="text-sm text-muted-foreground">{t('nav.changeTheme')}</span>
                   </div>
                   <Button variant="accent" className="w-full" asChild>
                     <Link to="/zakazivanje-termina" onClick={() => setIsOpen(false)}>
                       <Calendar className="w-4 h-4" />
-                      Zakaži Termin
+                      {t('nav.bookAppointment')}
                     </Link>
                   </Button>
                 </div>
