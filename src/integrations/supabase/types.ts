@@ -283,6 +283,45 @@ export type Database = {
         }
         Relationships: []
       }
+      inventory_items: {
+        Row: {
+          created_at: string
+          current_quantity: number
+          id: string
+          is_active: boolean
+          low_stock_threshold: number
+          name: string
+          purchase_price: number | null
+          sell_price: number | null
+          unit: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          current_quantity?: number
+          id?: string
+          is_active?: boolean
+          low_stock_threshold?: number
+          name: string
+          purchase_price?: number | null
+          sell_price?: number | null
+          unit?: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          current_quantity?: number
+          id?: string
+          is_active?: boolean
+          low_stock_threshold?: number
+          name?: string
+          purchase_price?: number | null
+          sell_price?: number | null
+          unit?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       pets: {
         Row: {
           allergies: string | null
@@ -415,6 +454,51 @@ export type Database = {
             columns: ["category_id"]
             isOneToOne: false
             referencedRelation: "service_categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      stock_movements: {
+        Row: {
+          created_at: string
+          id: string
+          item_id: string
+          linked_visit_id: string | null
+          note: string | null
+          quantity: number
+          type: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          item_id: string
+          linked_visit_id?: string | null
+          note?: string | null
+          quantity: number
+          type: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          item_id?: string
+          linked_visit_id?: string | null
+          note?: string | null
+          quantity?: number
+          type?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "stock_movements_item_id_fkey"
+            columns: ["item_id"]
+            isOneToOne: false
+            referencedRelation: "inventory_items"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "stock_movements_linked_visit_id_fkey"
+            columns: ["linked_visit_id"]
+            isOneToOne: false
+            referencedRelation: "visits"
             referencedColumns: ["id"]
           },
         ]
