@@ -860,6 +860,7 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      get_client_id_for_user: { Args: { _user_id: string }; Returns: string }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
@@ -869,7 +870,7 @@ export type Database = {
       }
     }
     Enums: {
-      app_role: "admin" | "user" | "vet"
+      app_role: "admin" | "user" | "vet" | "client"
       reminder_status: "open" | "snoozed" | "done"
       reminder_type: "vaccine_due" | "follow_up" | "custom"
     }
@@ -999,7 +1000,7 @@ export type CompositeTypes<
 export const Constants = {
   public: {
     Enums: {
-      app_role: ["admin", "user", "vet"],
+      app_role: ["admin", "user", "vet", "client"],
       reminder_status: ["open", "snoozed", "done"],
       reminder_type: ["vaccine_due", "follow_up", "custom"],
     },

@@ -39,6 +39,8 @@ import AdminGallery from "./pages/admin/AdminGallery";
 import AdminSettings from "./pages/admin/AdminSettings";
 import AdminMessages from "./pages/admin/AdminMessages";
 import NotFound from "./pages/NotFound";
+import PortalLogin from "./pages/portal/PortalLogin";
+import PortalDashboard from "./pages/portal/PortalDashboard";
 
 const queryClient = new QueryClient();
 
@@ -86,6 +88,10 @@ const App = () => (
                 <Route path="/app/gallery" element={<ProtectedRoute><AdminLayout><AdminGallery /></AdminLayout></ProtectedRoute>} />
                 <Route path="/app/messages" element={<ProtectedRoute><AdminLayout><AdminMessages /></AdminLayout></ProtectedRoute>} />
                 <Route path="/app/settings" element={<ProtectedRoute allowedRoles={['admin']}><AdminLayout><AdminSettings /></AdminLayout></ProtectedRoute>} />
+
+                {/* Client Portal */}
+                <Route path="/portal/login" element={<PortalLogin />} />
+                <Route path="/portal" element={<PortalDashboard />} />
 
                 {/* Legacy redirects */}
                 <Route path="/auth" element={<Navigate to="/app/login" replace />} />
