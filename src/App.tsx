@@ -2,7 +2,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import { HelmetProvider } from "react-helmet-async";
 import { ChatProvider } from "@/contexts/ChatContext";
@@ -20,7 +20,7 @@ import ContactPage from "./pages/ContactPage";
 import AppointmentPage from "./pages/AppointmentPage";
 import AppointmentConfirmationPage from "./pages/AppointmentConfirmationPage";
 import PriceListPage from "./pages/PriceListPage";
-import AuthPage from "./pages/AuthPage";
+import AppLoginPage from "./pages/AppLoginPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminAppointments from "./pages/admin/AdminAppointments";
 import AdminServices from "./pages/admin/AdminServices";
@@ -52,16 +52,21 @@ const App = () => (
                 <Route path="/zakazivanje-termina" element={<AppointmentPage />} />
                 <Route path="/potvrda-zakazivanja" element={<AppointmentConfirmationPage />} />
                 <Route path="/cjenovnik-usluga" element={<PriceListPage />} />
-                <Route path="/auth" element={<AuthPage />} />
-                
-                {/* Admin Routes */}
-                <Route path="/admin" element={<ProtectedRoute><AdminLayout><AdminDashboard /></AdminLayout></ProtectedRoute>} />
-                <Route path="/admin/appointments" element={<ProtectedRoute><AdminLayout><AdminAppointments /></AdminLayout></ProtectedRoute>} />
-                <Route path="/admin/services" element={<ProtectedRoute><AdminLayout><AdminServices /></AdminLayout></ProtectedRoute>} />
-                <Route path="/admin/categories" element={<ProtectedRoute><AdminLayout><AdminCategories /></AdminLayout></ProtectedRoute>} />
-                <Route path="/admin/veterinarians" element={<ProtectedRoute><AdminLayout><AdminVeterinarians /></AdminLayout></ProtectedRoute>} />
-                <Route path="/admin/messages" element={<ProtectedRoute><AdminLayout><AdminMessages /></AdminLayout></ProtectedRoute>} />
-                
+
+                {/* App Routes */}
+                <Route path="/app/login" element={<AppLoginPage />} />
+                <Route path="/app" element={<Navigate to="/app/dashboard" replace />} />
+                <Route path="/app/dashboard" element={<ProtectedRoute><AdminLayout><AdminDashboard /></AdminLayout></ProtectedRoute>} />
+                <Route path="/app/appointments" element={<ProtectedRoute><AdminLayout><AdminAppointments /></AdminLayout></ProtectedRoute>} />
+                <Route path="/app/services" element={<ProtectedRoute allowedRoles={['admin']}><AdminLayout><AdminServices /></AdminLayout></ProtectedRoute>} />
+                <Route path="/app/categories" element={<ProtectedRoute allowedRoles={['admin']}><AdminLayout><AdminCategories /></AdminLayout></ProtectedRoute>} />
+                <Route path="/app/veterinarians" element={<ProtectedRoute allowedRoles={['admin']}><AdminLayout><AdminVeterinarians /></AdminLayout></ProtectedRoute>} />
+                <Route path="/app/messages" element={<ProtectedRoute><AdminLayout><AdminMessages /></AdminLayout></ProtectedRoute>} />
+
+                {/* Legacy redirects */}
+                <Route path="/auth" element={<Navigate to="/app/login" replace />} />
+                <Route path="/admin/*" element={<Navigate to="/app/dashboard" replace />} />
+
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </BrowserRouter>
