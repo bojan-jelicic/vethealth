@@ -384,6 +384,72 @@ export type Database = {
           },
         ]
       }
+      reminders: {
+        Row: {
+          channel_email: boolean
+          channel_in_app: boolean
+          created_at: string
+          created_by: string | null
+          description: string | null
+          due_date: string
+          id: string
+          pet_id: string | null
+          reminder_type: Database["public"]["Enums"]["reminder_type"]
+          snoozed_until: string | null
+          status: Database["public"]["Enums"]["reminder_status"]
+          title: string
+          updated_at: string
+          visit_id: string | null
+        }
+        Insert: {
+          channel_email?: boolean
+          channel_in_app?: boolean
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          due_date: string
+          id?: string
+          pet_id?: string | null
+          reminder_type?: Database["public"]["Enums"]["reminder_type"]
+          snoozed_until?: string | null
+          status?: Database["public"]["Enums"]["reminder_status"]
+          title: string
+          updated_at?: string
+          visit_id?: string | null
+        }
+        Update: {
+          channel_email?: boolean
+          channel_in_app?: boolean
+          created_at?: string
+          created_by?: string | null
+          description?: string | null
+          due_date?: string
+          id?: string
+          pet_id?: string | null
+          reminder_type?: Database["public"]["Enums"]["reminder_type"]
+          snoozed_until?: string | null
+          status?: Database["public"]["Enums"]["reminder_status"]
+          title?: string
+          updated_at?: string
+          visit_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "reminders_pet_id_fkey"
+            columns: ["pet_id"]
+            isOneToOne: false
+            referencedRelation: "pets"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "reminders_visit_id_fkey"
+            columns: ["visit_id"]
+            isOneToOne: false
+            referencedRelation: "visits"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       service_categories: {
         Row: {
           created_at: string
@@ -804,6 +870,8 @@ export type Database = {
     }
     Enums: {
       app_role: "admin" | "user" | "vet"
+      reminder_status: "open" | "snoozed" | "done"
+      reminder_type: "vaccine_due" | "follow_up" | "custom"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -932,6 +1000,8 @@ export const Constants = {
   public: {
     Enums: {
       app_role: ["admin", "user", "vet"],
+      reminder_status: ["open", "snoozed", "done"],
+      reminder_type: ["vaccine_due", "follow_up", "custom"],
     },
   },
 } as const
