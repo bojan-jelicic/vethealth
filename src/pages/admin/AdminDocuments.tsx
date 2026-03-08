@@ -12,14 +12,21 @@ const placeholderDocs = [
   { id: '3', date: '2026-03-06', type: 'Nalaz', pet: 'Bubi', vet: 'Dr. Marko Petrović', status: 'U pripremi' },
 ];
 
-const AdminDocuments = () => (
+const AdminDocuments = () => {
+  const navigate = useNavigate();
+  return (
   <div className="space-y-6">
     <div className="flex items-center justify-between">
       <div>
         <h1 className="text-2xl font-heading font-bold text-foreground">Dokumenti</h1>
         <p className="text-sm text-muted-foreground">Nalazi, recepti i ostala dokumentacija</p>
       </div>
-      <Button><FilePlus className="w-4 h-4 mr-2" />Novi nalaz</Button>
+      <div className="flex gap-2">
+        <Button variant="outline" className="gap-2" onClick={() => navigate('/app/documents/templates')}>
+          <Layout className="w-4 h-4" />Šabloni
+        </Button>
+        <Button><FilePlus className="w-4 h-4 mr-2" />Novi nalaz</Button>
+      </div>
     </div>
 
     <div className="bg-card rounded-lg border border-border">
