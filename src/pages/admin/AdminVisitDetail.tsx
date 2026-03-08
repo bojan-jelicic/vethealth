@@ -342,7 +342,7 @@ const AdminVisitDetail = () => {
                                   </AlertDialogHeader>
                                   <AlertDialogFooter>
                                     <AlertDialogCancel>Otkaži</AlertDialogCancel>
-                                    <AlertDialogAction onClick={() => finalizeDocMutation.mutate(doc.id)}>Finaliziraj</AlertDialogAction>
+                                    <AlertDialogAction onClick={() => handleFinalize(doc.id)}>Finaliziraj</AlertDialogAction>
                                   </AlertDialogFooter>
                                 </AlertDialogContent>
                               </AlertDialog>
