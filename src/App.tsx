@@ -29,6 +29,8 @@ import AdminPetDetail from "./pages/admin/AdminPetDetail";
 import AdminVisits from "./pages/admin/AdminVisits";
 import AdminVisitDetail from "./pages/admin/AdminVisitDetail";
 import AdminDocuments from "./pages/admin/AdminDocuments";
+import AdminTemplates from "./pages/admin/AdminTemplates";
+import AdminTemplateEditor from "./pages/admin/AdminTemplateEditor";
 import AdminPricing from "./pages/admin/AdminPricing";
 import AdminInventory from "./pages/admin/AdminInventory";
 import AdminReminders from "./pages/admin/AdminReminders";
