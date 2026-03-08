@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
-  ArrowLeft, ClipboardList, FileText, Receipt, Package,
+  ArrowLeft, ClipboardList, FileText, Receipt, Package, ImageIcon,
   Plus, Trash2, PawPrint, User, CheckCircle, Lock, Unlock,
   Eye, AlertTriangle,
 } from 'lucide-react';
@@ -36,6 +36,7 @@ import {
 } from '@/services/visitDetailServices';
 import { CreateDocumentFromTemplate } from '@/components/admin/CreateDocumentFromTemplate';
 import { PrintableDocument } from '@/components/admin/PrintableDocument';
+import { AttachmentGallery } from '@/components/admin/AttachmentGallery';
 import { format } from 'date-fns';
 
 const statusColors: Record<string, string> = {
@@ -105,6 +106,13 @@ const AdminVisitDetail = () => {
     queryKey: ['visit-attachments', id],
     queryFn: () => attachmentService.listByEntity('visit', id!),
     enabled: !!id,
+  });
+
+  // Document attachments (for currently viewed doc)
+  const { data: docAttachments = [] } = useQuery({
+    queryKey: ['doc-attachments', viewingDoc?.id],
+    queryFn: () => attachmentService.listByEntity('document', viewingDoc!.id),
+    enabled: !!viewingDoc?.id,
   });
 
   // Billing mutations
@@ -454,36 +462,14 @@ const AdminVisitDetail = () => {
 
         {/* ATTACHMENTS TAB */}
         <TabsContent value="prilozi">
-          <div className="bg-card rounded-lg border border-border">
-            <div className="flex items-center justify-between p-4 border-b border-border">
-              <h2 className="font-semibold">Prilozi</h2>
-            </div>
-            {attachments.length === 0 ? (
-              <EmptyState icon={ClipboardList} text="Nema priloga za ovu posjetu." />
-            ) : (
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Naziv</TableHead>
-                    <TableHead>Tip</TableHead>
-                    <TableHead>Datum</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {attachments.map((att) => (
-                    <TableRow key={att.id}>
-                      <TableCell>
-                        <a href={att.file_url} target="_blank" rel="noopener noreferrer" className="text-primary hover:underline font-medium">
-                          {att.file_name}
-                        </a>
-                      </TableCell>
-                      <TableCell className="text-muted-foreground">{att.mime_type || '—'}</TableCell>
-                      <TableCell className="text-muted-foreground">{format(new Date(att.created_at), 'dd.MM.yyyy')}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            )}
+          <div className="bg-card rounded-lg border border-border p-4">
+            <h2 className="font-semibold mb-4">Slike i prilozi posjete</h2>
+            <AttachmentGallery
+              entityType="visit"
+              entityId={id!}
+              attachments={attachments}
+              maxSizeMb={10}
+            />
           </div>
         </TabsContent>
       </Tabs>
@@ -572,6 +558,20 @@ const AdminVisitDetail = () => {
                   )}
                 </div>
               )}
+
+              {/* Document attachments */}
+              <div className="border-t border-border pt-3">
+                <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                  <ImageIcon className="h-3.5 w-3.5" />Slike dokumenta
+                </p>
+                <AttachmentGallery
+                  entityType="document"
+                  entityId={viewingDoc.id}
+                  attachments={docAttachments}
+                  maxSizeMb={10}
+                  readOnly={isDocLocked(viewingDoc)}
+                />
+              </div>
 
               <DialogFooter className="mt-4">
                 <PrintableDocument
