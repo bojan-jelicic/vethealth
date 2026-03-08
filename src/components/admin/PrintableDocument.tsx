@@ -28,6 +28,7 @@ const fieldLabels: Record<string, string> = {
   terapija: 'Terapija / Th',
   napomena: 'Napomena',
   napomene: 'Napomene',
+  razlog_eutanazije: 'Razlog za eutanaziju',
   veterinar: 'Veterinar',
   datum: 'Datum',
   potpis: 'Potpis',
@@ -144,6 +145,7 @@ export const PrintableDocument = ({ doc }: Props) => {
   const hasCheckboxes = checkboxFields.length > 0;
   const hasMultipleSignatures = signatures.length > 1;
   const isConsent = doc.title?.toLowerCase().includes('saglasnost');
+  const isEuthanasia = doc.title?.toLowerCase().includes('eutanazij');
 
   return (
     <div>
@@ -165,11 +167,19 @@ export const PrintableDocument = ({ doc }: Props) => {
         <div className="doc-title">{doc.title}</div>
 
         {/* Consent intro text */}
-        {isConsent && (
+        {isConsent && !isEuthanasia && (
           <div className="consent-text">
             Ja, dolje potpisani/a vlasnik životinje, dajem saglasnost za izvođenje
             anestezije i planirane intervencije na mom ljubimcu. Upoznat/a sam sa mogućim
             rizicima koji su povezani sa anestezijom i operativnim zahvatom.
+          </div>
+        )}
+        {isEuthanasia && (
+          <div className="consent-text" style={{ borderColor: '#b91c1c', background: '#fef2f2' }}>
+            Ja, dolje potpisani/a vlasnik životinje, dajem saglasnost za izvršenje eutanazije
+            mog ljubimca. Potvrđujem da sam upoznat/a sa procedurom, da je odluka donesena
+            dobrovoljno i da sam imao/la mogućnost konsultacije sa veterinarom o svim
+            alternativama. Razumijem da je postupak nepovratan.
           </div>
         )}
 

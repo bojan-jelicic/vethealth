@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   ArrowLeft, ClipboardList, FileText, Receipt, Package,
   Plus, Trash2, PawPrint, User, CheckCircle, Lock, Unlock,
-  Eye, Printer,
+  Eye, AlertTriangle,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -68,6 +68,9 @@ const AdminVisitDetail = () => {
   const [unlockDialogOpen, setUnlockDialogOpen] = useState(false);
   const [unlockDocId, setUnlockDocId] = useState<string | null>(null);
   const [unlockReason, setUnlockReason] = useState('');
+  const [euthanasiaConfirmOpen, setEuthanasiaConfirmOpen] = useState(false);
+  const [euthanasiaConfirmDocId, setEuthanasiaConfirmDocId] = useState<string | null>(null);
+  const [euthanasiaConfirmText, setEuthanasiaConfirmText] = useState('');
 
   // Visit
   const { data: visit, isLoading } = useQuery({
@@ -181,6 +184,20 @@ const AdminVisitDetail = () => {
     setEditingContent(doc.content || '');
     setIsEditingDoc(false);
     setViewDocOpen(true);
+  };
+
+  const isEuthanasiaDoc = (doc: VisitDocument) =>
+    doc.title?.toLowerCase().includes('eutanazij');
+
+  const handleFinalize = (docId: string) => {
+    const doc = documents.find((d) => d.id === docId);
+    if (doc && isEuthanasiaDoc(doc)) {
+      setEuthanasiaConfirmDocId(docId);
+      setEuthanasiaConfirmText('');
+      setEuthanasiaConfirmOpen(true);
+    } else {
+      finalizeDocMutation.mutate(docId);
+    }
   };
 
   const billingTotal = billingItems.reduce((sum, item) => sum + (item.total || 0), 0);
@@ -325,7 +342,7 @@ const AdminVisitDetail = () => {
                                   </AlertDialogHeader>
                                   <AlertDialogFooter>
                                     <AlertDialogCancel>Otkaži</AlertDialogCancel>
-                                    <AlertDialogAction onClick={() => finalizeDocMutation.mutate(doc.id)}>Finaliziraj</AlertDialogAction>
+                                    <AlertDialogAction onClick={() => handleFinalize(doc.id)}>Finaliziraj</AlertDialogAction>
                                   </AlertDialogFooter>
                                 </AlertDialogContent>
                               </AlertDialog>
@@ -563,7 +580,7 @@ const AdminVisitDetail = () => {
                 {viewingDoc.status === 'draft' && !isEditingDoc && (
                   <>
                     <Button variant="outline" size="sm" onClick={() => setIsEditingDoc(true)}>Uredi</Button>
-                    <Button size="sm" className="gap-1.5" onClick={() => finalizeDocMutation.mutate(viewingDoc.id)}>
+                    <Button size="sm" className="gap-1.5" onClick={() => handleFinalize(viewingDoc.id)}>
                       <CheckCircle className="h-3.5 w-3.5" />Finaliziraj
                     </Button>
                   </>
@@ -654,6 +671,55 @@ const AdminVisitDetail = () => {
               <Button type="submit" disabled={createBillingMutation.isPending}>Dodaj</Button>
             </DialogFooter>
           </form>
+        </DialogContent>
+      </Dialog>
+
+      {/* Euthanasia Finalize Confirmation */}
+      <Dialog open={euthanasiaConfirmOpen} onOpenChange={setEuthanasiaConfirmOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2 text-destructive">
+              <AlertTriangle className="h-5 w-5" />
+              Finalizacija saglasnosti za eutanaziju
+            </DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="bg-destructive/10 border border-destructive/30 rounded-lg p-4 text-sm space-y-2">
+              <p className="font-semibold text-destructive">⚠ Upozorenje</p>
+              <p className="text-foreground">
+                Ovaj dokument je saglasnost za eutanaziju. Finalizacijom potvrđujete da je vlasnik
+                dao pisanu saglasnost i da su svi podaci tačni. Dokument će biti zaključan i
+                zabilježen u audit logu.
+              </p>
+            </div>
+            <div className="space-y-2">
+              <Label className="text-sm">Upišite <span className="font-bold">POTVRĐUJEM</span> za nastavak</Label>
+              <Input
+                value={euthanasiaConfirmText}
+                onChange={(e) => setEuthanasiaConfirmText(e.target.value)}
+                placeholder="POTVRĐUJEM"
+                className="border-destructive/50 focus-visible:ring-destructive"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => { setEuthanasiaConfirmOpen(false); setEuthanasiaConfirmText(''); }}>
+              Otkaži
+            </Button>
+            <Button
+              variant="destructive"
+              disabled={euthanasiaConfirmText !== 'POTVRĐUJEM' || finalizeDocMutation.isPending}
+              onClick={() => {
+                if (euthanasiaConfirmDocId) {
+                  finalizeDocMutation.mutate(euthanasiaConfirmDocId);
+                  setEuthanasiaConfirmOpen(false);
+                  setEuthanasiaConfirmText('');
+                }
+              }}
+            >
+              {finalizeDocMutation.isPending ? 'Finalizacija...' : 'Finaliziraj dokument'}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </div>
