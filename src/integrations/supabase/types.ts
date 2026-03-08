@@ -527,9 +527,15 @@ export type Database = {
           created_at: string
           created_by: string | null
           doc_type: string
+          field_values: Json | null
           id: string
+          locked_at: string | null
+          locked_by: string | null
           status: string
+          template_id: string | null
+          template_version_id: string | null
           title: string
+          unlock_reason: string | null
           updated_at: string
           visit_id: string
         }
@@ -538,9 +544,15 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           doc_type?: string
+          field_values?: Json | null
           id?: string
+          locked_at?: string | null
+          locked_by?: string | null
           status?: string
+          template_id?: string | null
+          template_version_id?: string | null
           title: string
+          unlock_reason?: string | null
           updated_at?: string
           visit_id: string
         }
@@ -549,13 +561,33 @@ export type Database = {
           created_at?: string
           created_by?: string | null
           doc_type?: string
+          field_values?: Json | null
           id?: string
+          locked_at?: string | null
+          locked_by?: string | null
           status?: string
+          template_id?: string | null
+          template_version_id?: string | null
           title?: string
+          unlock_reason?: string | null
           updated_at?: string
           visit_id?: string
         }
         Relationships: [
+          {
+            foreignKeyName: "visit_documents_template_id_fkey"
+            columns: ["template_id"]
+            isOneToOne: false
+            referencedRelation: "document_templates"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "visit_documents_template_version_id_fkey"
+            columns: ["template_version_id"]
+            isOneToOne: false
+            referencedRelation: "document_template_versions"
+            referencedColumns: ["id"]
+          },
           {
             foreignKeyName: "visit_documents_visit_id_fkey"
             columns: ["visit_id"]
