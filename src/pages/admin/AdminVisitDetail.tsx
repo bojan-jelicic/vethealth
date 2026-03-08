@@ -278,7 +278,7 @@ const AdminVisitDetail = () => {
         </SummaryCard>
         <SummaryCard label="Razlog"><p className="text-sm font-medium truncate">{visit.reason || '—'}</p></SummaryCard>
         <SummaryCard label="Dokumenti"><p className="text-sm font-medium">{documents.length}</p></SummaryCard>
-        <SummaryCard label="Ukupan račun"><p className="text-sm font-medium">{billingTotal.toFixed(2)} KM</p></SummaryCard>
+        <SummaryCard label="Obračun"><p className="text-sm font-medium">{billingTotal.toFixed(2)} KM</p></SummaryCard>
       </div>
 
       {visit.notes && (
