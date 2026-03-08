@@ -31,6 +31,8 @@ export interface VisitBillingItem {
   quantity: number;
   unit_price: number;
   total: number;
+  discount: number;
+  note: string | null;
   service_id: string | null;
   created_at: string;
 }
