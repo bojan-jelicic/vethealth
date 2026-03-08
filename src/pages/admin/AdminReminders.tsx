@@ -4,7 +4,7 @@ import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
 import {
   Bell, Plus, Search, Trash2, CheckCircle, Clock, PawPrint,
-  Syringe, Stethoscope, Edit2, CalendarIcon, AlertTriangle,
+  Syringe, Stethoscope, Edit2, CalendarIcon, AlertTriangle, Mail, Loader2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -100,6 +100,7 @@ const AdminReminders = () => {
   const [editingReminder, setEditingReminder] = useState<Reminder | null>(null);
   const [form, setForm] = useState<ReminderForm>(emptyForm);
   const [deleteConfirm, setDeleteConfirm] = useState<string | null>(null);
+  const [sendingEmailId, setSendingEmailId] = useState<string | null>(null);
 
   // Queries
   const { data: reminders = [], isLoading } = useQuery({
@@ -178,6 +179,53 @@ const AdminReminders = () => {
       qc.invalidateQueries({ queryKey: ['reminders'] });
       toast({ title: 'Podsjetnik obrisan' });
       setDeleteConfirm(null);
+    },
+  });
+
+  const sendEmailMutation = useMutation({
+    mutationFn: async (reminder: Reminder) => {
+      // Get owner email from pet's owner
+      let recipientEmail = '';
+      let recipientName = '';
+      if (reminder.pet_id && reminder.pets) {
+        const ownerId = (reminder.pets as any).owner_id;
+        if (ownerId) {
+          const { data: client } = await supabase
+            .from('clients')
+            .select('name, email')
+            .eq('id', ownerId)
+            .single();
+          if (client) {
+            recipientEmail = client.email || '';
+            recipientName = client.name || '';
+          }
+        }
+      }
+      if (!recipientEmail) {
+        throw new Error('Vlasnik nema email adresu.');
+      }
+      const { data, error } = await supabase.functions.invoke('send-reminder-email', {
+        body: {
+          reminder_id: reminder.id,
+          recipient_email: recipientEmail,
+          recipient_name: recipientName,
+          pet_name: reminder.pets?.name || undefined,
+          reminder_title: reminder.title,
+          reminder_type: reminder.reminder_type,
+          due_date: format(new Date(reminder.due_date), 'dd.MM.yyyy'),
+          description: reminder.description || undefined,
+          is_test: false,
+        },
+      });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      toast({ title: 'Email poslan uspješno!' });
+      setSendingEmailId(null);
+    },
+    onError: (err: any) => {
+      toast({ title: err?.message || 'Greška pri slanju emaila', variant: 'destructive' });
+      setSendingEmailId(null);
     },
   });
 
@@ -388,6 +436,20 @@ const AdminReminders = () => {
                           <Button variant="ghost" size="icon" className="h-7 w-7" title="Ponovo otvori"
                             onClick={() => updateStatusMutation.mutate({ id: r.id, status: 'open' })}>
                             <Bell className="h-3.5 w-3.5 text-blue-600" />
+                          </Button>
+                        )}
+                        {r.channel_email && r.status !== 'done' && (
+                          <Button variant="ghost" size="icon" className="h-7 w-7" title="Pošalji email sada"
+                            disabled={sendingEmailId === r.id}
+                            onClick={() => {
+                              setSendingEmailId(r.id);
+                              sendEmailMutation.mutate(r);
+                            }}>
+                            {sendingEmailId === r.id ? (
+                              <Loader2 className="h-3.5 w-3.5 animate-spin" />
+                            ) : (
+                              <Mail className="h-3.5 w-3.5 text-primary" />
+                            )}
                           </Button>
                         )}
                         <Button variant="ghost" size="icon" className="h-7 w-7" title="Uredi"
