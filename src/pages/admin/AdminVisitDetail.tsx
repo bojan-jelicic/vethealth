@@ -68,6 +68,9 @@ const AdminVisitDetail = () => {
   const [unlockDialogOpen, setUnlockDialogOpen] = useState(false);
   const [unlockDocId, setUnlockDocId] = useState<string | null>(null);
   const [unlockReason, setUnlockReason] = useState('');
+  const [euthanasiaConfirmOpen, setEuthanasiaConfirmOpen] = useState(false);
+  const [euthanasiaConfirmDocId, setEuthanasiaConfirmDocId] = useState<string | null>(null);
+  const [euthanasiaConfirmText, setEuthanasiaConfirmText] = useState('');
 
   // Visit
   const { data: visit, isLoading } = useQuery({
