@@ -167,6 +167,52 @@ const AdminVisitDetail = () => {
     onError: () => toast({ title: 'Greška', variant: 'destructive' }),
   });
 
+  // Consume inventory mutation
+  const consumeInventoryMutation = useMutation({
+    mutationFn: async () => {
+      const selectedItem = stockItems.find((i) => i.id === consumeForm.item_id);
+      if (!selectedItem) throw new Error('Item not found');
+      const qty = parseFloat(consumeForm.quantity) || 0;
+      if (qty <= 0) throw new Error('Invalid qty');
+
+      // Insert visit_inventory record
+      const { error: viErr } = await supabase.from('visit_inventory').insert({
+        visit_id: id!,
+        item_name: selectedItem.name,
+        quantity: qty,
+        unit: selectedItem.unit,
+        notes: consumeForm.notes || null,
+      });
+      if (viErr) throw viErr;
+
+      // Create OUT stock movement
+      const { error: smErr } = await supabase.from('stock_movements' as any).insert({
+        item_id: selectedItem.id,
+        type: 'OUT',
+        quantity: qty,
+        note: `Posjeta ${id}`,
+        linked_visit_id: id!,
+      });
+      if (smErr) throw smErr;
+
+      // Decrease current_quantity
+      const newQty = Math.max(0, Number(selectedItem.current_quantity) - qty);
+      const { error: updErr } = await supabase.from('inventory_items' as any)
+        .update({ current_quantity: newQty }).eq('id', selectedItem.id);
+      if (updErr) throw updErr;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['visit-inventory', id] });
+      qc.invalidateQueries({ queryKey: ['inventory-items-for-visit'] });
+      qc.invalidateQueries({ queryKey: ['inventory-items'] });
+      toast({ title: 'Materijal evidentiran' });
+      setConsumeDialogOpen(false);
+      setConsumeForm({ item_id: '', quantity: '1', notes: '' });
+      setConsumeSearch('');
+    },
+    onError: () => toast({ title: 'Greška pri evidenciji materijala', variant: 'destructive' }),
+  });
+
   const deleteBillingMutation = useMutation({
     mutationFn: (itemId: string) => visitBillingService.remove(itemId),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['visit-billing', id] }),
