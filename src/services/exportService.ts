@@ -7,13 +7,13 @@ import type { Client, Pet, Visit } from './types';
 async function logExport(action: string, entityType: string, entityId: string | null, metadata: Record<string, unknown>) {
   try {
     const { data: { user } } = await supabase.auth.getUser();
-    await supabase.from('audit_logs').insert({
+    await supabase.from('audit_logs').insert([{
       actor_user_id: user?.id || null,
       action,
       entity_type: entityType,
       entity_id: entityId,
-      metadata,
-    });
+      metadata: metadata as any,
+    }]);
   } catch (e) {
     console.error('Failed to log export:', e);
   }
