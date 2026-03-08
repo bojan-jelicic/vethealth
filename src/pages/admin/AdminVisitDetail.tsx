@@ -3,7 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   ArrowLeft, ClipboardList, FileText, Receipt, Package,
-  Plus, Trash2, PawPrint, User, Calendar, Edit, CheckCircle,
+  Plus, Trash2, PawPrint, User, CheckCircle, Lock, Unlock,
+  Eye,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,15 +20,21 @@ import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter,
 } from '@/components/ui/dialog';
 import {
+  AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent,
+  AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger,
+} from '@/components/ui/alert-dialog';
+import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
 } from '@/components/ui/select';
 import { toast } from '@/hooks/use-toast';
+import { useAuth } from '@/contexts/AuthContext';
 import { visitService } from '@/services/visitService';
 import { attachmentService } from '@/services/attachmentService';
 import {
   visitDocumentService, visitBillingService, visitInventoryService,
   type VisitDocument,
 } from '@/services/visitDetailServices';
+import { CreateDocumentFromTemplate } from '@/components/admin/CreateDocumentFromTemplate';
 import { format } from 'date-fns';
 
 const statusColors: Record<string, string> = {
@@ -47,11 +54,19 @@ const AdminVisitDetail = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const qc = useQueryClient();
+  const { isAdmin } = useAuth();
 
-  const [docDialogOpen, setDocDialogOpen] = useState(false);
+  const [createDocOpen, setCreateDocOpen] = useState(false);
   const [billingDialogOpen, setBillingDialogOpen] = useState(false);
-  const [docForm, setDocForm] = useState({ title: '', doc_type: 'finding', content: '' });
   const [billingForm, setBillingForm] = useState({ description: '', quantity: '1', unit_price: '0' });
+  const [viewDocOpen, setViewDocOpen] = useState(false);
+  const [viewingDoc, setViewingDoc] = useState<VisitDocument | null>(null);
+  const [editingFieldValues, setEditingFieldValues] = useState<Record<string, any>>({});
+  const [editingContent, setEditingContent] = useState('');
+  const [isEditingDoc, setIsEditingDoc] = useState(false);
+  const [unlockDialogOpen, setUnlockDialogOpen] = useState(false);
+  const [unlockDocId, setUnlockDocId] = useState<string | null>(null);
+  const [unlockReason, setUnlockReason] = useState('');
 
   // Visit
   const { data: visit, isLoading } = useQuery({
@@ -88,24 +103,7 @@ const AdminVisitDetail = () => {
     enabled: !!id,
   });
 
-  // Create document
-  const createDocMutation = useMutation({
-    mutationFn: () => visitDocumentService.create({
-      visit_id: id!,
-      title: docForm.title,
-      content: docForm.content,
-      doc_type: docForm.doc_type,
-    }),
-    onSuccess: () => {
-      qc.invalidateQueries({ queryKey: ['visit-documents', id] });
-      toast({ title: 'Dokument kreiran' });
-      setDocDialogOpen(false);
-      setDocForm({ title: '', doc_type: 'finding', content: '' });
-    },
-    onError: () => toast({ title: 'Greška', variant: 'destructive' }),
-  });
-
-  // Create billing item
+  // Billing mutations
   const createBillingMutation = useMutation({
     mutationFn: () => visitBillingService.create({
       visit_id: id!,
@@ -122,28 +120,51 @@ const AdminVisitDetail = () => {
     onError: () => toast({ title: 'Greška', variant: 'destructive' }),
   });
 
-  // Delete billing item
   const deleteBillingMutation = useMutation({
     mutationFn: (itemId: string) => visitBillingService.remove(itemId),
     onSuccess: () => qc.invalidateQueries({ queryKey: ['visit-billing', id] }),
   });
 
-  // Delete document
+  // Document mutations
   const deleteDocMutation = useMutation({
     mutationFn: (docId: string) => visitDocumentService.remove(docId),
-    onSuccess: () => qc.invalidateQueries({ queryKey: ['visit-documents', id] }),
-  });
-
-  // Finalize document
-  const finalizeDocMutation = useMutation({
-    mutationFn: (docId: string) => visitDocumentService.update(docId, { status: 'finalized' }),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['visit-documents', id] });
-      toast({ title: 'Dokument finaliziran' });
+      toast({ title: 'Dokument obrisan' });
     },
   });
 
-  // Update visit status
+  const finalizeDocMutation = useMutation({
+    mutationFn: (docId: string) => visitDocumentService.finalize(docId),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['visit-documents', id] });
+      toast({ title: 'Dokument finaliziran i zaključan' });
+      setViewDocOpen(false);
+    },
+  });
+
+  const unlockDocMutation = useMutation({
+    mutationFn: ({ docId, reason }: { docId: string; reason: string }) =>
+      visitDocumentService.unlock(docId, reason),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['visit-documents', id] });
+      toast({ title: 'Dokument otključan' });
+      setUnlockDialogOpen(false);
+      setUnlockReason('');
+    },
+  });
+
+  const saveDocMutation = useMutation({
+    mutationFn: ({ docId, fieldValues, content }: { docId: string; fieldValues: Record<string, any>; content: string }) =>
+      visitDocumentService.update(docId, { field_values: fieldValues, content }),
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['visit-documents', id] });
+      toast({ title: 'Draft sačuvan' });
+      setIsEditingDoc(false);
+    },
+  });
+
+  // Visit status
   const updateStatusMutation = useMutation({
     mutationFn: (status: string) => visitService.update(id!, { status: status as any }),
     onSuccess: () => {
@@ -153,15 +174,18 @@ const AdminVisitDetail = () => {
     },
   });
 
+  const openViewDoc = (doc: VisitDocument) => {
+    setViewingDoc(doc);
+    setEditingFieldValues(doc.field_values || {});
+    setEditingContent(doc.content || '');
+    setIsEditingDoc(false);
+    setViewDocOpen(true);
+  };
+
   const billingTotal = billingItems.reduce((sum, item) => sum + (item.total || 0), 0);
 
   if (isLoading) {
-    return (
-      <div className="space-y-6">
-        <Skeleton className="h-8 w-48" />
-        <Skeleton className="h-64 w-full" />
-      </div>
-    );
+    return <div className="space-y-6"><Skeleton className="h-8 w-48" /><Skeleton className="h-64 w-full" /></div>;
   }
 
   if (!visit) {
@@ -173,6 +197,8 @@ const AdminVisitDetail = () => {
       </div>
     );
   }
+
+  const isDocLocked = (doc: VisitDocument) => doc.status === 'finalized' && !!doc.locked_at;
 
   return (
     <div className="space-y-6">
@@ -196,31 +222,29 @@ const AdminVisitDetail = () => {
             </div>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <Select value={visit.status} onValueChange={(v) => updateStatusMutation.mutate(v)}>
-            <SelectTrigger className="w-[140px] h-9">
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="scheduled">Zakazana</SelectItem>
-              <SelectItem value="in_progress">U toku</SelectItem>
-              <SelectItem value="completed">Završena</SelectItem>
-              <SelectItem value="cancelled">Otkazana</SelectItem>
-            </SelectContent>
-          </Select>
-        </div>
+        <Select value={visit.status} onValueChange={(v) => updateStatusMutation.mutate(v)}>
+          <SelectTrigger className="w-[140px] h-9">
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="scheduled">Zakazana</SelectItem>
+            <SelectItem value="in_progress">U toku</SelectItem>
+            <SelectItem value="completed">Završena</SelectItem>
+            <SelectItem value="cancelled">Otkazana</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
-      {/* Visit Summary Card */}
+      {/* Summary Cards */}
       <div className="grid gap-4 md:grid-cols-4">
-        <SummaryCard label="Status" value={statusLabels[visit.status] || visit.status}>
+        <SummaryCard label="Status">
           <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${statusColors[visit.status]}`}>
             {statusLabels[visit.status]}
           </span>
         </SummaryCard>
-        <SummaryCard label="Razlog" value={visit.reason || '—'} />
-        <SummaryCard label="Dokumenti" value={`${documents.length}`} />
-        <SummaryCard label="Ukupan račun" value={`${billingTotal.toFixed(2)} KM`} />
+        <SummaryCard label="Razlog"><p className="text-sm font-medium truncate">{visit.reason || '—'}</p></SummaryCard>
+        <SummaryCard label="Dokumenti"><p className="text-sm font-medium">{documents.length}</p></SummaryCard>
+        <SummaryCard label="Ukupan račun"><p className="text-sm font-medium">{billingTotal.toFixed(2)} KM</p></SummaryCard>
       </div>
 
       {visit.notes && (
@@ -233,18 +257,10 @@ const AdminVisitDetail = () => {
       {/* Tabs */}
       <Tabs defaultValue="dokumenti" className="space-y-4">
         <TabsList>
-          <TabsTrigger value="dokumenti" className="gap-1.5">
-            <FileText className="h-3.5 w-3.5" />Dokumenti ({documents.length})
-          </TabsTrigger>
-          <TabsTrigger value="racun" className="gap-1.5">
-            <Receipt className="h-3.5 w-3.5" />Račun ({billingItems.length})
-          </TabsTrigger>
-          <TabsTrigger value="materijal" className="gap-1.5">
-            <Package className="h-3.5 w-3.5" />Materijal ({inventoryItems.length})
-          </TabsTrigger>
-          <TabsTrigger value="prilozi" className="gap-1.5">
-            <ClipboardList className="h-3.5 w-3.5" />Prilozi ({attachments.length})
-          </TabsTrigger>
+          <TabsTrigger value="dokumenti" className="gap-1.5"><FileText className="h-3.5 w-3.5" />Dokumenti ({documents.length})</TabsTrigger>
+          <TabsTrigger value="racun" className="gap-1.5"><Receipt className="h-3.5 w-3.5" />Račun ({billingItems.length})</TabsTrigger>
+          <TabsTrigger value="materijal" className="gap-1.5"><Package className="h-3.5 w-3.5" />Materijal ({inventoryItems.length})</TabsTrigger>
+          <TabsTrigger value="prilozi" className="gap-1.5"><ClipboardList className="h-3.5 w-3.5" />Prilozi ({attachments.length})</TabsTrigger>
         </TabsList>
 
         {/* DOCUMENTS TAB */}
@@ -252,7 +268,7 @@ const AdminVisitDetail = () => {
           <div className="bg-card rounded-lg border border-border">
             <div className="flex items-center justify-between p-4 border-b border-border">
               <h2 className="font-semibold">Dokumenti posjete</h2>
-              <Button size="sm" className="gap-1.5" onClick={() => setDocDialogOpen(true)}>
+              <Button size="sm" className="gap-1.5" onClick={() => setCreateDocOpen(true)}>
                 <Plus className="h-3.5 w-3.5" />Novi dokument
               </Button>
             </div>
@@ -266,36 +282,72 @@ const AdminVisitDetail = () => {
                     <TableHead>Tip</TableHead>
                     <TableHead>Status</TableHead>
                     <TableHead>Datum</TableHead>
-                    <TableHead className="w-24"></TableHead>
+                    <TableHead className="w-32"></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {documents.map((doc) => (
-                    <TableRow key={doc.id}>
-                      <TableCell className="font-medium">{doc.title}</TableCell>
-                      <TableCell>
-                        <Badge variant="outline">{docTypeLabels[doc.doc_type] || doc.doc_type}</Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant={doc.status === 'finalized' ? 'default' : 'secondary'}>
-                          {doc.status === 'finalized' ? 'Finaliziran' : 'Draft'}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-muted-foreground">{format(new Date(doc.created_at), 'dd.MM.yyyy')}</TableCell>
-                      <TableCell>
-                        <div className="flex gap-1">
-                          {doc.status === 'draft' && (
-                            <Button variant="ghost" size="icon" className="h-8 w-8 text-primary" onClick={() => finalizeDocMutation.mutate(doc.id)} title="Finaliziraj">
-                              <CheckCircle className="h-3.5 w-3.5" />
+                  {documents.map((doc) => {
+                    const locked = isDocLocked(doc);
+                    return (
+                      <TableRow key={doc.id} className="cursor-pointer hover:bg-muted/50" onClick={() => openViewDoc(doc)}>
+                        <TableCell className="font-medium">
+                          <div className="flex items-center gap-1.5">
+                            {locked && <Lock className="h-3.5 w-3.5 text-muted-foreground" />}
+                            {doc.title}
+                          </div>
+                        </TableCell>
+                        <TableCell><Badge variant="outline">{docTypeLabels[doc.doc_type] || doc.doc_type}</Badge></TableCell>
+                        <TableCell>
+                          <Badge variant={doc.status === 'finalized' ? 'default' : 'secondary'}>
+                            {doc.status === 'finalized' ? 'Finaliziran' : 'Draft'}
+                          </Badge>
+                        </TableCell>
+                        <TableCell className="text-muted-foreground">{format(new Date(doc.created_at), 'dd.MM.yyyy')}</TableCell>
+                        <TableCell>
+                          <div className="flex gap-1" onClick={(e) => e.stopPropagation()}>
+                            <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => openViewDoc(doc)} title="Otvori">
+                              <Eye className="h-3.5 w-3.5" />
                             </Button>
-                          )}
-                          <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => deleteDocMutation.mutate(doc.id)}>
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                            {doc.status === 'draft' && (
+                              <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                  <Button variant="ghost" size="icon" className="h-8 w-8 text-primary" title="Finaliziraj">
+                                    <CheckCircle className="h-3.5 w-3.5" />
+                                  </Button>
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>Finaliziraj dokument?</AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      "{doc.title}" će biti finaliziran i zaključan. Samo administrator može otključati dokument nakon finalizacije.
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>Otkaži</AlertDialogCancel>
+                                    <AlertDialogAction onClick={() => finalizeDocMutation.mutate(doc.id)}>Finaliziraj</AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
+                            )}
+                            {locked && isAdmin && (
+                              <Button
+                                variant="ghost" size="icon" className="h-8 w-8 text-amber-600"
+                                onClick={() => { setUnlockDocId(doc.id); setUnlockDialogOpen(true); }}
+                                title="Otključaj"
+                              >
+                                <Unlock className="h-3.5 w-3.5" />
+                              </Button>
+                            )}
+                            {!locked && (
+                              <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => deleteDocMutation.mutate(doc.id)}>
+                                <Trash2 className="h-3.5 w-3.5" />
+                              </Button>
+                            )}
+                          </div>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             )}
@@ -314,39 +366,37 @@ const AdminVisitDetail = () => {
             {billingItems.length === 0 ? (
               <EmptyState icon={Receipt} text="Nema stavki na računu." />
             ) : (
-              <>
-                <Table>
-                  <TableHeader>
-                    <TableRow>
-                      <TableHead>Opis</TableHead>
-                      <TableHead className="text-right">Kol.</TableHead>
-                      <TableHead className="text-right">Cijena</TableHead>
-                      <TableHead className="text-right">Ukupno</TableHead>
-                      <TableHead className="w-10"></TableHead>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Opis</TableHead>
+                    <TableHead className="text-right">Kol.</TableHead>
+                    <TableHead className="text-right">Cijena</TableHead>
+                    <TableHead className="text-right">Ukupno</TableHead>
+                    <TableHead className="w-10"></TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {billingItems.map((item) => (
+                    <TableRow key={item.id}>
+                      <TableCell className="font-medium">{item.description}</TableCell>
+                      <TableCell className="text-right">{item.quantity}</TableCell>
+                      <TableCell className="text-right text-muted-foreground">{Number(item.unit_price).toFixed(2)}</TableCell>
+                      <TableCell className="text-right font-medium">{Number(item.total).toFixed(2)} KM</TableCell>
+                      <TableCell>
+                        <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => deleteBillingMutation.mutate(item.id)}>
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </Button>
+                      </TableCell>
                     </TableRow>
-                  </TableHeader>
-                  <TableBody>
-                    {billingItems.map((item) => (
-                      <TableRow key={item.id}>
-                        <TableCell className="font-medium">{item.description}</TableCell>
-                        <TableCell className="text-right">{item.quantity}</TableCell>
-                        <TableCell className="text-right text-muted-foreground">{Number(item.unit_price).toFixed(2)}</TableCell>
-                        <TableCell className="text-right font-medium">{Number(item.total).toFixed(2)} KM</TableCell>
-                        <TableCell>
-                          <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive" onClick={() => deleteBillingMutation.mutate(item.id)}>
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </Button>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                    <TableRow className="bg-muted/30">
-                      <TableCell colSpan={3} className="font-semibold text-right">UKUPNO</TableCell>
-                      <TableCell className="text-right font-bold">{billingTotal.toFixed(2)} KM</TableCell>
-                      <TableCell></TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </>
+                  ))}
+                  <TableRow className="bg-muted/30">
+                    <TableCell colSpan={3} className="font-semibold text-right">UKUPNO</TableCell>
+                    <TableCell className="text-right font-bold">{billingTotal.toFixed(2)} KM</TableCell>
+                    <TableCell></TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
             )}
           </div>
         </TabsContent>
@@ -420,47 +470,157 @@ const AdminVisitDetail = () => {
         </TabsContent>
       </Tabs>
 
-      {/* New Document Dialog */}
-      <Dialog open={docDialogOpen} onOpenChange={setDocDialogOpen}>
-        <DialogContent className="sm:max-w-lg">
-          <DialogHeader><DialogTitle>Novi dokument</DialogTitle></DialogHeader>
-          <form onSubmit={(e) => { e.preventDefault(); createDocMutation.mutate(); }} className="space-y-4">
+      {/* Create Document from Template */}
+      <CreateDocumentFromTemplate
+        visitId={id!}
+        open={createDocOpen}
+        onOpenChange={setCreateDocOpen}
+        onCreated={() => {
+          qc.invalidateQueries({ queryKey: ['visit-documents', id] });
+          toast({ title: 'Dokument kreiran kao Draft' });
+        }}
+      />
+
+      {/* View/Edit Document Dialog */}
+      <Dialog open={viewDocOpen} onOpenChange={setViewDocOpen}>
+        <DialogContent className="sm:max-w-2xl max-h-[85vh] overflow-y-auto">
+          {viewingDoc && (
+            <>
+              <DialogHeader>
+                <DialogTitle className="flex items-center gap-2">
+                  {isDocLocked(viewingDoc) && <Lock className="h-4 w-4 text-muted-foreground" />}
+                  {viewingDoc.title}
+                  <Badge variant={viewingDoc.status === 'finalized' ? 'default' : 'secondary'} className="ml-1">
+                    {viewingDoc.status === 'finalized' ? 'Finaliziran' : 'Draft'}
+                  </Badge>
+                </DialogTitle>
+              </DialogHeader>
+
+              {isDocLocked(viewingDoc) && (
+                <div className="bg-muted/50 border border-border rounded-lg p-3 flex items-center gap-2 text-sm">
+                  <Lock className="h-4 w-4 text-muted-foreground flex-shrink-0" />
+                  <span className="text-muted-foreground">
+                    Dokument je zaključan {viewingDoc.locked_at && format(new Date(viewingDoc.locked_at), 'dd.MM.yyyy HH:mm')}.
+                    {viewingDoc.unlock_reason && <span className="block text-xs mt-0.5">Prethodno otključanje: {viewingDoc.unlock_reason}</span>}
+                  </span>
+                </div>
+              )}
+
+              {/* Field values display/edit */}
+              {viewingDoc.field_values && Object.keys(viewingDoc.field_values).length > 0 && (
+                <div className="space-y-3">
+                  <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Polja</p>
+                  {Object.entries(isEditingDoc ? editingFieldValues : viewingDoc.field_values).map(([key, value]) => (
+                    <div key={key}>
+                      <p className="text-xs text-muted-foreground mb-0.5">{key}</p>
+                      {isEditingDoc ? (
+                        typeof value === 'boolean' ? (
+                          <label className="flex items-center gap-2 text-sm">
+                            <input
+                              type="checkbox"
+                              checked={!!editingFieldValues[key]}
+                              onChange={(e) => setEditingFieldValues((p) => ({ ...p, [key]: e.target.checked }))}
+                            />
+                            {key}
+                          </label>
+                        ) : Array.isArray(value) ? (
+                          <pre className="text-sm bg-muted/30 rounded p-2 text-xs">{JSON.stringify(value, null, 2)}</pre>
+                        ) : (
+                          <Input
+                            value={editingFieldValues[key] || ''}
+                            onChange={(e) => setEditingFieldValues((p) => ({ ...p, [key]: e.target.value }))}
+                          />
+                        )
+                      ) : (
+                        <p className="text-sm">
+                          {typeof value === 'boolean' ? (value ? '✓ Da' : '✗ Ne') :
+                           Array.isArray(value) ? `${value.length} stavki` :
+                           (value || '—')}
+                        </p>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {/* Content */}
+              {(viewingDoc.content || isEditingDoc) && (
+                <div>
+                  <p className="text-xs text-muted-foreground mb-1">Sadržaj</p>
+                  {isEditingDoc ? (
+                    <Textarea value={editingContent} onChange={(e) => setEditingContent(e.target.value)} rows={6} />
+                  ) : (
+                    <p className="text-sm whitespace-pre-wrap bg-muted/30 rounded-lg p-3">{viewingDoc.content || '—'}</p>
+                  )}
+                </div>
+              )}
+
+              <DialogFooter className="mt-4">
+                {/* Draft document actions */}
+                {viewingDoc.status === 'draft' && !isEditingDoc && (
+                  <>
+                    <Button variant="outline" size="sm" onClick={() => setIsEditingDoc(true)}>Uredi</Button>
+                    <Button size="sm" className="gap-1.5" onClick={() => finalizeDocMutation.mutate(viewingDoc.id)}>
+                      <CheckCircle className="h-3.5 w-3.5" />Finaliziraj
+                    </Button>
+                  </>
+                )}
+                {viewingDoc.status === 'draft' && isEditingDoc && (
+                  <>
+                    <Button variant="ghost" size="sm" onClick={() => setIsEditingDoc(false)}>Otkaži</Button>
+                    <Button size="sm" onClick={() => saveDocMutation.mutate({
+                      docId: viewingDoc.id,
+                      fieldValues: editingFieldValues,
+                      content: editingContent,
+                    })} disabled={saveDocMutation.isPending}>
+                      Sačuvaj Draft
+                    </Button>
+                  </>
+                )}
+                {/* Locked doc — admin unlock */}
+                {isDocLocked(viewingDoc) && isAdmin && (
+                  <Button variant="outline" size="sm" className="gap-1.5 text-amber-600" onClick={() => {
+                    setUnlockDocId(viewingDoc.id);
+                    setUnlockDialogOpen(true);
+                  }}>
+                    <Unlock className="h-3.5 w-3.5" />Otključaj
+                  </Button>
+                )}
+              </DialogFooter>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Unlock Reason Dialog */}
+      <Dialog open={unlockDialogOpen} onOpenChange={setUnlockDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Otključaj dokument</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p className="text-sm text-muted-foreground">
+              Ovaj dokument je finaliziran i zaključan. Unesite razlog otključavanja koji će biti zabilježen u audit logu.
+            </p>
             <div className="space-y-2">
-              <Label>Naslov *</Label>
-              <Input
-                value={docForm.title}
-                onChange={(e) => setDocForm((p) => ({ ...p, title: e.target.value }))}
-                placeholder="npr. Nalaz pregleda"
-                required
-              />
-            </div>
-            <div className="space-y-2">
-              <Label>Tip dokumenta</Label>
-              <Select value={docForm.doc_type} onValueChange={(v) => setDocForm((p) => ({ ...p, doc_type: v }))}>
-                <SelectTrigger><SelectValue /></SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="finding">Nalaz</SelectItem>
-                  <SelectItem value="report">Izvještaj</SelectItem>
-                  <SelectItem value="prescription">Recept</SelectItem>
-                  <SelectItem value="referral">Uputnica</SelectItem>
-                  <SelectItem value="other">Ostalo</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label>Sadržaj</Label>
+              <Label>Razlog otključavanja *</Label>
               <Textarea
-                value={docForm.content}
-                onChange={(e) => setDocForm((p) => ({ ...p, content: e.target.value }))}
-                placeholder="Unesite tekst dokumenta..."
-                rows={6}
+                value={unlockReason}
+                onChange={(e) => setUnlockReason(e.target.value)}
+                placeholder="npr. Ispravka greške u nalazu..."
+                rows={3}
               />
             </div>
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={() => setDocDialogOpen(false)}>Otkaži</Button>
-              <Button type="submit" disabled={createDocMutation.isPending}>Kreiraj</Button>
-            </DialogFooter>
-          </form>
+          </div>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => { setUnlockDialogOpen(false); setUnlockReason(''); }}>Otkaži</Button>
+            <Button
+              disabled={!unlockReason.trim() || unlockDocMutation.isPending}
+              onClick={() => unlockDocId && unlockDocMutation.mutate({ docId: unlockDocId, reason: unlockReason })}
+            >
+              {unlockDocMutation.isPending ? 'Otključavanje...' : 'Otključaj'}
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
 
@@ -471,33 +631,16 @@ const AdminVisitDetail = () => {
           <form onSubmit={(e) => { e.preventDefault(); createBillingMutation.mutate(); }} className="space-y-4">
             <div className="space-y-2">
               <Label>Opis *</Label>
-              <Input
-                value={billingForm.description}
-                onChange={(e) => setBillingForm((p) => ({ ...p, description: e.target.value }))}
-                placeholder="npr. Pregled psa"
-                required
-              />
+              <Input value={billingForm.description} onChange={(e) => setBillingForm((p) => ({ ...p, description: e.target.value }))} placeholder="npr. Pregled psa" required />
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label>Količina</Label>
-                <Input
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  value={billingForm.quantity}
-                  onChange={(e) => setBillingForm((p) => ({ ...p, quantity: e.target.value }))}
-                />
+                <Input type="number" step="0.01" min="0" value={billingForm.quantity} onChange={(e) => setBillingForm((p) => ({ ...p, quantity: e.target.value }))} />
               </div>
               <div className="space-y-2">
                 <Label>Cijena (KM)</Label>
-                <Input
-                  type="number"
-                  step="0.01"
-                  min="0"
-                  value={billingForm.unit_price}
-                  onChange={(e) => setBillingForm((p) => ({ ...p, unit_price: e.target.value }))}
-                />
+                <Input type="number" step="0.01" min="0" value={billingForm.unit_price} onChange={(e) => setBillingForm((p) => ({ ...p, unit_price: e.target.value }))} />
               </div>
             </div>
             <div className="text-right text-sm text-muted-foreground">
@@ -514,10 +657,10 @@ const AdminVisitDetail = () => {
   );
 };
 
-const SummaryCard = ({ label, value, children }: { label: string; value: string; children?: React.ReactNode }) => (
+const SummaryCard = ({ label, children }: { label: string; children: React.ReactNode }) => (
   <div className="bg-card rounded-lg border border-border p-4">
     <p className="text-xs text-muted-foreground mb-1">{label}</p>
-    {children || <p className="text-sm font-medium truncate">{value}</p>}
+    {children}
   </div>
 );
 
