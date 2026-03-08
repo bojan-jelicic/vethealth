@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { 
+import { Helmet } from 'react-helmet-async';
+import {
   Stethoscope, 
   Syringe, 
   Scissors, 
