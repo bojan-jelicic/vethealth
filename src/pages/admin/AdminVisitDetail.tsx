@@ -984,6 +984,105 @@ const AdminVisitDetail = () => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      {/* Consume Inventory Dialog */}
+      <Dialog open={consumeDialogOpen} onOpenChange={setConsumeDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader><DialogTitle>Dodaj potrošeni materijal</DialogTitle></DialogHeader>
+          <form onSubmit={(e) => { e.preventDefault(); consumeInventoryMutation.mutate(); }} className="space-y-4">
+            <div className="space-y-2 relative">
+              <Label>Artikal iz lagera *</Label>
+              <Input
+                value={consumeSearch}
+                onChange={(e) => {
+                  setConsumeSearch(e.target.value);
+                  setConsumeForm((p) => ({ ...p, item_id: '' }));
+                  setShowConsumeDropdown(e.target.value.length >= 1);
+                }}
+                onFocus={() => setShowConsumeDropdown(true)}
+                onBlur={() => setTimeout(() => setShowConsumeDropdown(false), 200)}
+                placeholder="Pretražite artikle..."
+                autoComplete="off"
+              />
+              {showConsumeDropdown && (() => {
+                const q = consumeSearch.toLowerCase();
+                const matches = stockItems.filter((s) => s.name.toLowerCase().includes(q)).slice(0, 10);
+                if (matches.length === 0) return null;
+                return (
+                  <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-popover border border-border rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                    {matches.map((item) => {
+                      const isLow = Number(item.current_quantity) <= Number(item.low_stock_threshold);
+                      return (
+                        <button
+                          key={item.id}
+                          type="button"
+                          className="w-full text-left px-3 py-2 text-sm hover:bg-muted/60 transition-colors flex items-center justify-between gap-2"
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            setConsumeForm((p) => ({ ...p, item_id: item.id }));
+                            setConsumeSearch(item.name);
+                            setShowConsumeDropdown(false);
+                          }}
+                        >
+                          <span className="font-medium">{item.name}</span>
+                          <span className={`text-xs whitespace-nowrap ${isLow ? 'text-destructive font-semibold' : 'text-muted-foreground'}`}>
+                            {Number(item.current_quantity)} {item.unit}
+                            {isLow && ' ⚠'}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                );
+              })()}
+              {consumeForm.item_id && (() => {
+                const si = stockItems.find((s) => s.id === consumeForm.item_id);
+                if (!si) return null;
+                const isLow = Number(si.current_quantity) <= Number(si.low_stock_threshold);
+                return (
+                  <div className={`text-xs mt-1 p-2 rounded ${isLow ? 'bg-destructive/10 text-destructive' : 'bg-muted/30 text-muted-foreground'}`}>
+                    Na stanju: <span className="font-semibold">{Number(si.current_quantity)} {si.unit}</span>
+                    {isLow && <span className="ml-1 font-semibold">— NISKA ZALIHA!</span>}
+                  </div>
+                );
+              })()}
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-2">
+                <Label>Količina *</Label>
+                <Input
+                  type="number" step="0.01" min="0.01"
+                  value={consumeForm.quantity}
+                  onChange={(e) => setConsumeForm((p) => ({ ...p, quantity: e.target.value }))}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Jedinica</Label>
+                <Input
+                  value={stockItems.find((s) => s.id === consumeForm.item_id)?.unit || '—'}
+                  disabled
+                  className="bg-muted/30"
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label>Napomena <span className="text-muted-foreground font-normal">(opcionalno)</span></Label>
+              <Input
+                value={consumeForm.notes}
+                onChange={(e) => setConsumeForm((p) => ({ ...p, notes: e.target.value }))}
+                placeholder="npr. Za operaciju..."
+              />
+            </div>
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => { setConsumeDialogOpen(false); setConsumeSearch(''); setConsumeForm({ item_id: '', quantity: '1', notes: '' }); }}>Otkaži</Button>
+              <Button type="submit" disabled={consumeInventoryMutation.isPending || !consumeForm.item_id || (parseFloat(consumeForm.quantity) || 0) <= 0}>
+                {consumeInventoryMutation.isPending ? 'Evidentiranje...' : 'Evidentiraj'}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 };
