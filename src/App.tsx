@@ -22,10 +22,16 @@ import AppointmentConfirmationPage from "./pages/AppointmentConfirmationPage";
 import PriceListPage from "./pages/PriceListPage";
 import AppLoginPage from "./pages/AppLoginPage";
 import AdminDashboard from "./pages/admin/AdminDashboard";
-import AdminAppointments from "./pages/admin/AdminAppointments";
-import AdminServices from "./pages/admin/AdminServices";
-import AdminCategories from "./pages/admin/AdminCategories";
-import AdminVeterinarians from "./pages/admin/AdminVeterinarians";
+import AdminClients from "./pages/admin/AdminClients";
+import AdminPets from "./pages/admin/AdminPets";
+import AdminVisits from "./pages/admin/AdminVisits";
+import AdminDocuments from "./pages/admin/AdminDocuments";
+import AdminPricing from "./pages/admin/AdminPricing";
+import AdminInventory from "./pages/admin/AdminInventory";
+import AdminReminders from "./pages/admin/AdminReminders";
+import AdminBlogManager from "./pages/admin/AdminBlogManager";
+import AdminGallery from "./pages/admin/AdminGallery";
+import AdminSettings from "./pages/admin/AdminSettings";
 import AdminMessages from "./pages/admin/AdminMessages";
 import NotFound from "./pages/NotFound";
 
@@ -41,6 +47,7 @@ const App = () => (
             <Sonner />
             <BrowserRouter>
               <Routes>
+                {/* Public Routes */}
                 <Route path="/" element={<Index />} />
                 <Route path="/services" element={<ServicesPage />} />
                 <Route path="/services/:slug" element={<ServiceDetailsPage />} />
@@ -57,11 +64,17 @@ const App = () => (
                 <Route path="/app/login" element={<AppLoginPage />} />
                 <Route path="/app" element={<Navigate to="/app/dashboard" replace />} />
                 <Route path="/app/dashboard" element={<ProtectedRoute><AdminLayout><AdminDashboard /></AdminLayout></ProtectedRoute>} />
-                <Route path="/app/appointments" element={<ProtectedRoute><AdminLayout><AdminAppointments /></AdminLayout></ProtectedRoute>} />
-                <Route path="/app/services" element={<ProtectedRoute allowedRoles={['admin']}><AdminLayout><AdminServices /></AdminLayout></ProtectedRoute>} />
-                <Route path="/app/categories" element={<ProtectedRoute allowedRoles={['admin']}><AdminLayout><AdminCategories /></AdminLayout></ProtectedRoute>} />
-                <Route path="/app/veterinarians" element={<ProtectedRoute allowedRoles={['admin']}><AdminLayout><AdminVeterinarians /></AdminLayout></ProtectedRoute>} />
+                <Route path="/app/clients" element={<ProtectedRoute><AdminLayout><AdminClients /></AdminLayout></ProtectedRoute>} />
+                <Route path="/app/pets" element={<ProtectedRoute><AdminLayout><AdminPets /></AdminLayout></ProtectedRoute>} />
+                <Route path="/app/visits" element={<ProtectedRoute><AdminLayout><AdminVisits /></AdminLayout></ProtectedRoute>} />
+                <Route path="/app/documents" element={<ProtectedRoute><AdminLayout><AdminDocuments /></AdminLayout></ProtectedRoute>} />
+                <Route path="/app/pricing" element={<ProtectedRoute><AdminLayout><AdminPricing /></AdminLayout></ProtectedRoute>} />
+                <Route path="/app/inventory" element={<ProtectedRoute><AdminLayout><AdminInventory /></AdminLayout></ProtectedRoute>} />
+                <Route path="/app/reminders" element={<ProtectedRoute><AdminLayout><AdminReminders /></AdminLayout></ProtectedRoute>} />
+                <Route path="/app/blog" element={<ProtectedRoute><AdminLayout><AdminBlogManager /></AdminLayout></ProtectedRoute>} />
+                <Route path="/app/gallery" element={<ProtectedRoute><AdminLayout><AdminGallery /></AdminLayout></ProtectedRoute>} />
                 <Route path="/app/messages" element={<ProtectedRoute><AdminLayout><AdminMessages /></AdminLayout></ProtectedRoute>} />
+                <Route path="/app/settings" element={<ProtectedRoute allowedRoles={['admin']}><AdminLayout><AdminSettings /></AdminLayout></ProtectedRoute>} />
 
                 {/* Legacy redirects */}
                 <Route path="/auth" element={<Navigate to="/app/login" replace />} />
