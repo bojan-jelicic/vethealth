@@ -292,7 +292,7 @@ const AdminVisitDetail = () => {
       <Tabs defaultValue="dokumenti" className="space-y-4">
         <TabsList>
           <TabsTrigger value="dokumenti" className="gap-1.5"><FileText className="h-3.5 w-3.5" />Dokumenti ({documents.length})</TabsTrigger>
-          <TabsTrigger value="racun" className="gap-1.5"><Receipt className="h-3.5 w-3.5" />Račun ({billingItems.length})</TabsTrigger>
+          <TabsTrigger value="racun" className="gap-1.5"><Receipt className="h-3.5 w-3.5" />Obračun ({billingItems.length})</TabsTrigger>
           <TabsTrigger value="materijal" className="gap-1.5"><Package className="h-3.5 w-3.5" />Materijal ({inventoryItems.length})</TabsTrigger>
           <TabsTrigger value="prilozi" className="gap-1.5"><ClipboardList className="h-3.5 w-3.5" />Prilozi ({attachments.length})</TabsTrigger>
         </TabsList>
