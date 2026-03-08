@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Helmet } from 'react-helmet-async';
 import { MapPin, Phone, Mail, Clock, Send, AlertTriangle, CheckCircle, X, Loader2 } from 'lucide-react';
 import { Layout } from '@/components/Layout';
 import { PageHero } from '@/components/PageHero';
@@ -134,6 +135,10 @@ const ContactPage = () => {
 
   return (
     <Layout>
+      <Helmet>
+        <title>Kontakt | VetHealth.ba - Veterinarska Ordinacija Banja Luka</title>
+        <meta name="description" content="Kontaktirajte VetHealth.ba veterinarsku ordinaciju u Banjaluci. Adresa, telefon, radno vrijeme i kontakt forma. Hitna pomoć 24/7." />
+      </Helmet>
       <PageHero
         title="Kontaktirajte Nas"
         description="Imate pitanja ili želite zakazati termin? Javite nam se - tu smo za vas i vaše ljubimce."
@@ -166,6 +171,41 @@ const ContactPage = () => {
                 +387 51 999 888
               </a>
             </div>
+          </div>
+
+          {/* Working Hours */}
+          <div className="mb-12 grid sm:grid-cols-4 gap-4">
+            {[
+              { day: 'Ponedjeljak - Petak', hours: '08:00 - 20:00', active: true },
+              { day: 'Subota', hours: '09:00 - 14:00', active: true },
+              { day: 'Nedjelja', hours: 'Zatvoreno', active: false },
+              { day: 'Hitni slučajevi', hours: '24/7', active: true },
+            ].map((item) => (
+              <div
+                key={item.day}
+                className={`flex flex-col items-center p-5 rounded-card text-center ${
+                  item.day === 'Hitni slučajevi'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-card shadow-card'
+                }`}
+              >
+                <Clock className={`w-5 h-5 mb-2 ${
+                  item.day === 'Hitni slučajevi' ? 'text-primary-foreground' : 'text-primary'
+                }`} />
+                <span className={`text-small font-medium ${
+                  item.day === 'Hitni slučajevi' ? 'text-primary-foreground' : 'text-foreground'
+                }`}>
+                  {item.day}
+                </span>
+                <span className={`text-lg font-heading font-bold mt-1 ${
+                  item.day === 'Hitni slučajevi'
+                    ? 'text-primary-foreground'
+                    : item.active ? 'text-foreground' : 'text-muted-foreground'
+                }`}>
+                  {item.hours}
+                </span>
+              </div>
+            ))}
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">

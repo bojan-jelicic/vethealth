@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { 
+import { Helmet } from 'react-helmet-async';
+import {
   Stethoscope, 
   Syringe, 
   Scissors, 
@@ -105,6 +106,10 @@ const serviceCategories = [
 const ServicesPage = () => {
   return (
     <Layout>
+      <Helmet>
+        <title>Veterinarske Usluge | VetHealth.ba Banja Luka</title>
+        <meta name="description" content="Kompletan spektar veterinarskih usluga u Banjaluci: pregledi, vakcinacije, hirurgija, dijagnostika, stomatologija i hitna pomoć 24/7." />
+      </Helmet>
       <PageHero
         title="Naše Usluge"
         description="Pružamo širok spektar veterinarskih usluga kako bismo osigurali zdravlje i dobrobit vašeg ljubimca kroz sve životne faze."

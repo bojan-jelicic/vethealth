@@ -1,5 +1,6 @@
 import { Award, Users, Heart, Clock, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
 import { Layout } from '@/components/Layout';
 import { PageHero } from '@/components/PageHero';
 import { Button } from '@/components/ui/button';
@@ -56,6 +57,10 @@ const workingHours = [
 const AboutPage = () => {
   return (
     <Layout>
+      <Helmet>
+        <title>O Nama | VetHealth.ba - Veterinarska Ordinacija Banja Luka</title>
+        <meta name="description" content="Upoznajte VetHealth.ba tim veterinara u Banjaluci. 15+ godina iskustva, 5000+ zadovoljnih klijenata. Posvećeni zdravlju vaših ljubimaca od 2009." />
+      </Helmet>
       <PageHero
         title="O Nama"
         description="Upoznajte VetHealth.ba - vašu pouzdanu veterinarsku ordinaciju u Banjaluci od 2009. godine."
