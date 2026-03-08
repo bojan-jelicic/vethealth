@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   ArrowLeft, Plus, User, PawPrint, ClipboardList, FileText,
-  Phone, Mail, MapPin, Edit, Save, X, Trash2,
+  Phone, Mail, MapPin, Edit, Save, X, Trash2, Download, Loader2,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
