@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import {
   ArrowLeft, ClipboardList, FileText, Receipt, Package,
   Plus, Trash2, PawPrint, User, CheckCircle, Lock, Unlock,
-  Eye,
+  Eye, Printer,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
