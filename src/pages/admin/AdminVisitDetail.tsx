@@ -135,6 +135,19 @@ const AdminVisitDetail = () => {
     },
   });
 
+  // All inventory items for consumption picker
+  const { data: stockItems = [] } = useQuery({
+    queryKey: ['inventory-items-for-visit'],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('inventory_items' as any)
+        .select('*')
+        .eq('is_active', true)
+        .order('name');
+      return (data ?? []) as { id: string; name: string; unit: string; current_quantity: number; low_stock_threshold: number }[];
+    },
+  });
+
   // Billing mutations
   const createBillingMutation = useMutation({
     mutationFn: () => visitBillingService.create({
