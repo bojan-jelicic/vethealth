@@ -706,9 +706,56 @@ const AdminVisitDetail = () => {
         <DialogContent className="sm:max-w-lg">
           <DialogHeader><DialogTitle>Nova stavka obračuna</DialogTitle></DialogHeader>
           <form onSubmit={(e) => { e.preventDefault(); createBillingMutation.mutate(); }} className="space-y-4">
-            <div className="space-y-2">
+            <div className="space-y-2 relative">
               <Label>Naziv usluge / Opis *</Label>
-              <Input value={billingForm.description} onChange={(e) => setBillingForm((p) => ({ ...p, description: e.target.value }))} placeholder="npr. Klinički pregled" required />
+              <Input
+                value={billingForm.description}
+                onChange={(e) => {
+                  setBillingForm((p) => ({ ...p, description: e.target.value }));
+                  setShowServiceSuggestions(e.target.value.length >= 2);
+                }}
+                onFocus={() => { if (billingForm.description.length >= 2) setShowServiceSuggestions(true); }}
+                onBlur={() => setTimeout(() => setShowServiceSuggestions(false), 200)}
+                placeholder="Počnite kucati naziv usluge..."
+                required
+                autoComplete="off"
+              />
+              {/* Autocomplete dropdown */}
+              {showServiceSuggestions && (() => {
+                const q = billingForm.description.toLowerCase();
+                const matches = allServices.filter((s) => s.name.toLowerCase().includes(q)).slice(0, 8);
+                if (matches.length === 0) return null;
+                return (
+                  <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-popover border border-border rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                    {matches.map((svc) => (
+                      <button
+                        key={svc.id}
+                        type="button"
+                        className="w-full text-left px-3 py-2 text-sm hover:bg-muted/60 transition-colors flex items-center justify-between gap-2"
+                        onMouseDown={(e) => {
+                          e.preventDefault();
+                          setBillingForm((p) => ({
+                            ...p,
+                            description: svc.name,
+                            unit_price: svc.price != null ? String(svc.price) : p.unit_price,
+                          }));
+                          setShowServiceSuggestions(false);
+                        }}
+                      >
+                        <div className="min-w-0">
+                          <span className="font-medium">{svc.name}</span>
+                          {svc.service_categories?.name && (
+                            <span className="text-xs text-muted-foreground ml-1.5">· {svc.service_categories.name}</span>
+                          )}
+                        </div>
+                        {svc.price != null && (
+                          <span className="text-xs font-medium text-muted-foreground whitespace-nowrap">{Number(svc.price).toFixed(2)} KM</span>
+                        )}
+                      </button>
+                    ))}
+                  </div>
+                );
+              })()}
             </div>
             <div className="grid grid-cols-3 gap-3">
               <div className="space-y-2">
