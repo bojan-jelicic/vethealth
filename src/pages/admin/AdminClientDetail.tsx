@@ -42,6 +42,7 @@ const AdminClientDetail = () => {
   const [visitDialogOpen, setVisitDialogOpen] = useState(false);
   const [petForm, setPetForm] = useState<PetInsert>({ owner_id: id!, name: '', species: 'Pas' });
   const [visitForm, setVisitForm] = useState<VisitInsert>({ pet_id: '', owner_id: id! });
+  const [exportingPdf, setExportingPdf] = useState(false);
 
   // Client
   const { data: client, isLoading } = useQuery({
