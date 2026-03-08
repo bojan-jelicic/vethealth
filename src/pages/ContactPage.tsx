@@ -173,6 +173,41 @@ const ContactPage = () => {
             </div>
           </div>
 
+          {/* Working Hours */}
+          <div className="mb-12 grid sm:grid-cols-4 gap-4">
+            {[
+              { day: 'Ponedjeljak - Petak', hours: '08:00 - 20:00', active: true },
+              { day: 'Subota', hours: '09:00 - 14:00', active: true },
+              { day: 'Nedjelja', hours: 'Zatvoreno', active: false },
+              { day: 'Hitni slučajevi', hours: '24/7', active: true },
+            ].map((item) => (
+              <div
+                key={item.day}
+                className={`flex flex-col items-center p-5 rounded-card text-center ${
+                  item.day === 'Hitni slučajevi'
+                    ? 'bg-primary text-primary-foreground'
+                    : 'bg-card shadow-card'
+                }`}
+              >
+                <Clock className={`w-5 h-5 mb-2 ${
+                  item.day === 'Hitni slučajevi' ? 'text-primary-foreground' : 'text-primary'
+                }`} />
+                <span className={`text-small font-medium ${
+                  item.day === 'Hitni slučajevi' ? 'text-primary-foreground' : 'text-foreground'
+                }`}>
+                  {item.day}
+                </span>
+                <span className={`text-lg font-heading font-bold mt-1 ${
+                  item.day === 'Hitni slučajevi'
+                    ? 'text-primary-foreground'
+                    : item.active ? 'text-foreground' : 'text-muted-foreground'
+                }`}>
+                  {item.hours}
+                </span>
+              </div>
+            ))}
+          </div>
+
           <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
             {/* Contact Info */}
             <div className="space-y-6">
