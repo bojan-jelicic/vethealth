@@ -207,6 +207,7 @@ export const PrintableDocument = ({ doc }: Props) => {
         </div>
 
         <div className="doc-title">{doc.title}</div>
+        {isLabReport && <div className="lab-subtitle">Laboratorijski nalaz</div>}
 
         {/* Consent intro text */}
         {isConsent && !isEuthanasia && (
