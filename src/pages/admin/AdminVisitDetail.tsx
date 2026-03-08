@@ -74,6 +74,11 @@ const AdminVisitDetail = () => {
   const [euthanasiaConfirmOpen, setEuthanasiaConfirmOpen] = useState(false);
   const [euthanasiaConfirmDocId, setEuthanasiaConfirmDocId] = useState<string | null>(null);
   const [euthanasiaConfirmText, setEuthanasiaConfirmText] = useState('');
+  // Inventory consumption
+  const [consumeDialogOpen, setConsumeDialogOpen] = useState(false);
+  const [consumeForm, setConsumeForm] = useState({ item_id: '', quantity: '1', notes: '' });
+  const [consumeSearch, setConsumeSearch] = useState('');
+  const [showConsumeDropdown, setShowConsumeDropdown] = useState(false);
 
   // Visit
   const { data: visit, isLoading } = useQuery({
@@ -130,6 +135,19 @@ const AdminVisitDetail = () => {
     },
   });
 
+  // All inventory items for consumption picker
+  const { data: stockItems = [] } = useQuery({
+    queryKey: ['inventory-items-for-visit'],
+    queryFn: async () => {
+      const { data } = await supabase
+        .from('inventory_items' as any)
+        .select('*')
+        .eq('is_active', true)
+        .order('name');
+      return (data ?? []) as unknown as { id: string; name: string; unit: string; current_quantity: number; low_stock_threshold: number }[];
+    },
+  });
+
   // Billing mutations
   const createBillingMutation = useMutation({
     mutationFn: () => visitBillingService.create({
@@ -147,6 +165,52 @@ const AdminVisitDetail = () => {
       setBillingForm({ description: '', quantity: '1', unit_price: '0', discount: '0', note: '' });
     },
     onError: () => toast({ title: 'Greška', variant: 'destructive' }),
+  });
+
+  // Consume inventory mutation
+  const consumeInventoryMutation = useMutation({
+    mutationFn: async () => {
+      const selectedItem = stockItems.find((i) => i.id === consumeForm.item_id);
+      if (!selectedItem) throw new Error('Item not found');
+      const qty = parseFloat(consumeForm.quantity) || 0;
+      if (qty <= 0) throw new Error('Invalid qty');
+
+      // Insert visit_inventory record
+      const { error: viErr } = await supabase.from('visit_inventory').insert({
+        visit_id: id!,
+        item_name: selectedItem.name,
+        quantity: qty,
+        unit: selectedItem.unit,
+        notes: consumeForm.notes || null,
+      });
+      if (viErr) throw viErr;
+
+      // Create OUT stock movement
+      const { error: smErr } = await supabase.from('stock_movements' as any).insert({
+        item_id: selectedItem.id,
+        type: 'OUT',
+        quantity: qty,
+        note: `Posjeta ${id}`,
+        linked_visit_id: id!,
+      });
+      if (smErr) throw smErr;
+
+      // Decrease current_quantity
+      const newQty = Math.max(0, Number(selectedItem.current_quantity) - qty);
+      const { error: updErr } = await supabase.from('inventory_items' as any)
+        .update({ current_quantity: newQty }).eq('id', selectedItem.id);
+      if (updErr) throw updErr;
+    },
+    onSuccess: () => {
+      qc.invalidateQueries({ queryKey: ['visit-inventory', id] });
+      qc.invalidateQueries({ queryKey: ['inventory-items-for-visit'] });
+      qc.invalidateQueries({ queryKey: ['inventory-items'] });
+      toast({ title: 'Materijal evidentiran' });
+      setConsumeDialogOpen(false);
+      setConsumeForm({ item_id: '', quantity: '1', notes: '' });
+      setConsumeSearch('');
+    },
+    onError: () => toast({ title: 'Greška pri evidenciji materijala', variant: 'destructive' }),
   });
 
   const deleteBillingMutation = useMutation({
@@ -479,12 +543,43 @@ const AdminVisitDetail = () => {
           </div>
         </TabsContent>
 
-        {/* INVENTORY TAB */}
+        {/* INVENTORY TAB — Potrošnja materijala */}
         <TabsContent value="materijal">
           <div className="bg-card rounded-lg border border-border">
             <div className="flex items-center justify-between p-4 border-b border-border">
-              <h2 className="font-semibold">Utrošeni materijal</h2>
+              <div>
+                <h2 className="font-semibold">Potrošnja materijala</h2>
+                <p className="text-xs text-muted-foreground mt-0.5">Evidencija utrošenog materijala sa automatskim umanjenjem lagera</p>
+              </div>
+              <Button size="sm" className="gap-1.5" onClick={() => setConsumeDialogOpen(true)}>
+                <Plus className="h-3.5 w-3.5" />Dodaj materijal
+              </Button>
             </div>
+
+            {/* Low stock warnings */}
+            {(() => {
+              const lowStockUsed = inventoryItems.filter((vi) => {
+                const si = stockItems.find((s) => s.name === vi.item_name);
+                return si && Number(si.current_quantity) <= Number(si.low_stock_threshold);
+              });
+              if (lowStockUsed.length === 0) return null;
+              return (
+                <div className="mx-4 mt-3 bg-destructive/10 border border-destructive/30 rounded-lg p-3 space-y-1">
+                  <p className="text-sm font-semibold flex items-center gap-1.5 text-destructive">
+                    <AlertTriangle className="h-4 w-4" />Niska zaliha
+                  </p>
+                  {lowStockUsed.map((vi) => {
+                    const si = stockItems.find((s) => s.name === vi.item_name);
+                    return (
+                      <p key={vi.id} className="text-xs text-foreground">
+                        <span className="font-medium">{vi.item_name}</span>: preostalo {si ? Number(si.current_quantity) : '?'} {si?.unit || ''} (min. {si ? Number(si.low_stock_threshold) : '?'})
+                      </p>
+                    );
+                  })}
+                </div>
+              );
+            })()}
+
             {inventoryItems.length === 0 ? (
               <EmptyState icon={Package} text="Nema evidentiranog utroška materijala." />
             ) : (
@@ -494,18 +589,45 @@ const AdminVisitDetail = () => {
                     <TableHead>Artikal</TableHead>
                     <TableHead className="text-right">Količina</TableHead>
                     <TableHead>Jedinica</TableHead>
+                    <TableHead>Stanje lagera</TableHead>
                     <TableHead>Napomena</TableHead>
+                    <TableHead className="w-10"></TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {inventoryItems.map((item) => (
-                    <TableRow key={item.id}>
-                      <TableCell className="font-medium">{item.item_name}</TableCell>
-                      <TableCell className="text-right">{item.quantity}</TableCell>
-                      <TableCell className="text-muted-foreground">{item.unit}</TableCell>
-                      <TableCell className="text-muted-foreground">{item.notes || '—'}</TableCell>
-                    </TableRow>
-                  ))}
+                  {inventoryItems.map((item) => {
+                    const si = stockItems.find((s) => s.name === item.item_name);
+                    const isLow = si && Number(si.current_quantity) <= Number(si.low_stock_threshold);
+                    return (
+                      <TableRow key={item.id}>
+                        <TableCell className="font-medium">{item.item_name}</TableCell>
+                        <TableCell className="text-right">{Number(item.quantity)}</TableCell>
+                        <TableCell className="text-muted-foreground">{item.unit}</TableCell>
+                        <TableCell>
+                          {si ? (
+                            <span className={`text-sm font-medium ${isLow ? 'text-destructive' : 'text-muted-foreground'}`}>
+                              {Number(si.current_quantity)} {si.unit}
+                              {isLow && <AlertTriangle className="inline h-3 w-3 ml-1" />}
+                            </span>
+                          ) : (
+                            <span className="text-muted-foreground text-sm">—</span>
+                          )}
+                        </TableCell>
+                        <TableCell className="text-muted-foreground">{item.notes || '—'}</TableCell>
+                        <TableCell>
+                          <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive"
+                            onClick={() => {
+                              visitInventoryService.remove(item.id).then(() => {
+                                qc.invalidateQueries({ queryKey: ['visit-inventory', id] });
+                                toast({ title: 'Stavka uklonjena' });
+                              });
+                            }}>
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    );
+                  })}
                 </TableBody>
               </Table>
             )}
@@ -860,6 +982,105 @@ const AdminVisitDetail = () => {
               {finalizeDocMutation.isPending ? 'Finalizacija...' : 'Finaliziraj dokument'}
             </Button>
           </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Consume Inventory Dialog */}
+      <Dialog open={consumeDialogOpen} onOpenChange={setConsumeDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader><DialogTitle>Dodaj potrošeni materijal</DialogTitle></DialogHeader>
+          <form onSubmit={(e) => { e.preventDefault(); consumeInventoryMutation.mutate(); }} className="space-y-4">
+            <div className="space-y-2 relative">
+              <Label>Artikal iz lagera *</Label>
+              <Input
+                value={consumeSearch}
+                onChange={(e) => {
+                  setConsumeSearch(e.target.value);
+                  setConsumeForm((p) => ({ ...p, item_id: '' }));
+                  setShowConsumeDropdown(e.target.value.length >= 1);
+                }}
+                onFocus={() => setShowConsumeDropdown(true)}
+                onBlur={() => setTimeout(() => setShowConsumeDropdown(false), 200)}
+                placeholder="Pretražite artikle..."
+                autoComplete="off"
+              />
+              {showConsumeDropdown && (() => {
+                const q = consumeSearch.toLowerCase();
+                const matches = stockItems.filter((s) => s.name.toLowerCase().includes(q)).slice(0, 10);
+                if (matches.length === 0) return null;
+                return (
+                  <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-popover border border-border rounded-lg shadow-lg max-h-48 overflow-y-auto">
+                    {matches.map((item) => {
+                      const isLow = Number(item.current_quantity) <= Number(item.low_stock_threshold);
+                      return (
+                        <button
+                          key={item.id}
+                          type="button"
+                          className="w-full text-left px-3 py-2 text-sm hover:bg-muted/60 transition-colors flex items-center justify-between gap-2"
+                          onMouseDown={(e) => {
+                            e.preventDefault();
+                            setConsumeForm((p) => ({ ...p, item_id: item.id }));
+                            setConsumeSearch(item.name);
+                            setShowConsumeDropdown(false);
+                          }}
+                        >
+                          <span className="font-medium">{item.name}</span>
+                          <span className={`text-xs whitespace-nowrap ${isLow ? 'text-destructive font-semibold' : 'text-muted-foreground'}`}>
+                            {Number(item.current_quantity)} {item.unit}
+                            {isLow && ' ⚠'}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                );
+              })()}
+              {consumeForm.item_id && (() => {
+                const si = stockItems.find((s) => s.id === consumeForm.item_id);
+                if (!si) return null;
+                const isLow = Number(si.current_quantity) <= Number(si.low_stock_threshold);
+                return (
+                  <div className={`text-xs mt-1 p-2 rounded ${isLow ? 'bg-destructive/10 text-destructive' : 'bg-muted/30 text-muted-foreground'}`}>
+                    Na stanju: <span className="font-semibold">{Number(si.current_quantity)} {si.unit}</span>
+                    {isLow && <span className="ml-1 font-semibold">— NISKA ZALIHA!</span>}
+                  </div>
+                );
+              })()}
+            </div>
+            <div className="grid grid-cols-2 gap-3">
+              <div className="space-y-2">
+                <Label>Količina *</Label>
+                <Input
+                  type="number" step="0.01" min="0.01"
+                  value={consumeForm.quantity}
+                  onChange={(e) => setConsumeForm((p) => ({ ...p, quantity: e.target.value }))}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label>Jedinica</Label>
+                <Input
+                  value={stockItems.find((s) => s.id === consumeForm.item_id)?.unit || '—'}
+                  disabled
+                  className="bg-muted/30"
+                />
+              </div>
+            </div>
+            <div className="space-y-2">
+              <Label>Napomena <span className="text-muted-foreground font-normal">(opcionalno)</span></Label>
+              <Input
+                value={consumeForm.notes}
+                onChange={(e) => setConsumeForm((p) => ({ ...p, notes: e.target.value }))}
+                placeholder="npr. Za operaciju..."
+              />
+            </div>
+            <DialogFooter>
+              <Button type="button" variant="outline" onClick={() => { setConsumeDialogOpen(false); setConsumeSearch(''); setConsumeForm({ item_id: '', quantity: '1', notes: '' }); }}>Otkaži</Button>
+              <Button type="submit" disabled={consumeInventoryMutation.isPending || !consumeForm.item_id || (parseFloat(consumeForm.quantity) || 0) <= 0}>
+                {consumeInventoryMutation.isPending ? 'Evidentiranje...' : 'Evidentiraj'}
+              </Button>
+            </DialogFooter>
+          </form>
         </DialogContent>
       </Dialog>
     </div>
