@@ -362,6 +362,135 @@ const AdminVisitDetail = () => {
   }, 0);
   const billingTotal = billingSubtotal - billingDiscountTotal;
 
+  if (isNew) {
+    const selectedOwner = allClients.find((c) => c.id === newVisitForm.owner_id);
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center gap-3">
+          <Button variant="ghost" size="icon" onClick={() => navigate('/app/visits')}>
+            <ArrowLeft className="h-4 w-4" />
+          </Button>
+          <h1 className="text-2xl font-heading font-bold text-foreground">Nova posjeta</h1>
+        </div>
+
+        <div className="bg-card rounded-lg border border-border p-6 space-y-5 max-w-2xl">
+          {/* Owner search */}
+          <div className="space-y-1.5">
+            <Label>Vlasnik *</Label>
+            <div className="relative">
+              <Input
+                placeholder="Pretraži vlasnika po imenu, telefonu ili emailu..."
+                value={selectedOwner ? selectedOwner.name : ownerSearch}
+                onChange={(e) => {
+                  setOwnerSearch(e.target.value);
+                  setShowOwnerDropdown(true);
+                  if (newVisitForm.owner_id) setNewVisitForm((p) => ({ ...p, owner_id: '', pet_id: '' }));
+                }}
+                onFocus={() => setShowOwnerDropdown(true)}
+              />
+              {showOwnerDropdown && ownerSearch && filteredClients.length > 0 && (
+                <div className="absolute z-50 top-full left-0 right-0 bg-popover border border-border rounded-lg shadow-lg mt-1 max-h-48 overflow-auto">
+                  {filteredClients.slice(0, 10).map((c) => (
+                    <button
+                      key={c.id}
+                      className="w-full text-left px-3 py-2 hover:bg-muted text-sm"
+                      onClick={() => {
+                        setNewVisitForm((p) => ({ ...p, owner_id: c.id, pet_id: '' }));
+                        setOwnerSearch(c.name);
+                        setShowOwnerDropdown(false);
+                      }}
+                    >
+                      <span className="font-medium">{c.name}</span>
+                      {c.phone && <span className="text-muted-foreground ml-2">{c.phone}</span>}
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Pet select */}
+          {newVisitForm.owner_id && (
+            <div className="space-y-1.5">
+              <Label>Ljubimac *</Label>
+              <Select value={newVisitForm.pet_id} onValueChange={(v) => setNewVisitForm((p) => ({ ...p, pet_id: v }))}>
+                <SelectTrigger><SelectValue placeholder="Odaberi ljubimca" /></SelectTrigger>
+                <SelectContent>
+                  {ownerPets.map((p) => (
+                    <SelectItem key={p.id} value={p.id}>
+                      {p.name} ({p.species}{p.breed ? ` — ${p.breed}` : ''})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {ownerPets.length === 0 && (
+                <p className="text-xs text-muted-foreground">Ovaj vlasnik nema registrovanih ljubimaca.</p>
+              )}
+            </div>
+          )}
+
+          {/* Vet select */}
+          <div className="space-y-1.5">
+            <Label>Veterinar</Label>
+            <Select value={newVisitForm.vet_id} onValueChange={(v) => setNewVisitForm((p) => ({ ...p, vet_id: v }))}>
+              <SelectTrigger><SelectValue placeholder="Odaberi veterinara (opcionalno)" /></SelectTrigger>
+              <SelectContent>
+                {allVets.map((v) => (
+                  <SelectItem key={v.id} value={v.id}>
+                    {v.name}{v.specialization ? ` — ${v.specialization}` : ''}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+
+          {/* Date/time */}
+          <div className="space-y-1.5">
+            <Label>Datum i vrijeme *</Label>
+            <Input
+              type="datetime-local"
+              value={newVisitForm.date_time}
+              onChange={(e) => setNewVisitForm((p) => ({ ...p, date_time: e.target.value }))}
+            />
+          </div>
+
+          {/* Reason */}
+          <div className="space-y-1.5">
+            <Label>Razlog posjete</Label>
+            <Input
+              placeholder="Npr. vakcinacija, kontrolni pregled..."
+              value={newVisitForm.reason}
+              onChange={(e) => setNewVisitForm((p) => ({ ...p, reason: e.target.value }))}
+            />
+          </div>
+
+          {/* Notes */}
+          <div className="space-y-1.5">
+            <Label>Napomene</Label>
+            <Textarea
+              placeholder="Dodatne napomene..."
+              value={newVisitForm.notes}
+              onChange={(e) => setNewVisitForm((p) => ({ ...p, notes: e.target.value }))}
+              rows={3}
+            />
+          </div>
+
+          {/* Submit */}
+          <div className="flex gap-3 pt-2">
+            <Button
+              onClick={() => createVisitMutation.mutate()}
+              disabled={!newVisitForm.owner_id || !newVisitForm.pet_id || !newVisitForm.date_time || createVisitMutation.isPending}
+            >
+              {createVisitMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin mr-2" /> : <Plus className="w-4 h-4 mr-2" />}
+              Kreiraj posjetu
+            </Button>
+            <Button variant="outline" onClick={() => navigate('/app/visits')}>Odustani</Button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   if (isLoading) {
     return <div className="space-y-6"><Skeleton className="h-8 w-48" /><Skeleton className="h-64 w-full" /></div>;
   }
