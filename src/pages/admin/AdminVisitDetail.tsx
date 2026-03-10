@@ -170,7 +170,7 @@ const AdminVisitDetail = () => {
   const { data: inventoryItems = [] } = useQuery({
     queryKey: ['visit-inventory', id],
     queryFn: () => visitInventoryService.listByVisit(id!),
-    enabled: !!id,
+    enabled: !!id && !isNew,
   });
 
   // Attachments
