@@ -177,7 +177,7 @@ const AdminVisitDetail = () => {
   const { data: attachments = [] } = useQuery({
     queryKey: ['visit-attachments', id],
     queryFn: () => attachmentService.listByEntity('visit', id!),
-    enabled: !!id,
+    enabled: !!id && !isNew,
   });
 
   // Document attachments (for currently viewed doc)
