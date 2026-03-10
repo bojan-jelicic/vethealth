@@ -222,7 +222,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
           </form>
 
           {/* Quick Actions */}
-          <div className="hidden sm:flex items-center gap-2">
+          <div className="hidden sm:flex items-center gap-2 ml-auto">
             <Button
               variant="default"
               size="sm"
