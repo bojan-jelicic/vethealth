@@ -156,7 +156,7 @@ const AdminVisitDetail = () => {
   const { data: documents = [] } = useQuery({
     queryKey: ['visit-documents', id],
     queryFn: () => visitDocumentService.listByVisit(id!),
-    enabled: !!id,
+    enabled: !!id && !isNew,
   });
 
   // Billing
