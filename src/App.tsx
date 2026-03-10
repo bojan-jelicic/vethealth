@@ -45,6 +45,7 @@ import PortalDashboard from "./pages/portal/PortalDashboard";
 const queryClient = new QueryClient();
 
 const App = () => (
+  <HelmetProvider>
   <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
@@ -106,6 +107,7 @@ const App = () => (
       </TooltipProvider>
     </QueryClientProvider>
   </ThemeProvider>
+  </HelmetProvider>
 );
 
 export default App;
