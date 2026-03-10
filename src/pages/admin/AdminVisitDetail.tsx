@@ -163,7 +163,7 @@ const AdminVisitDetail = () => {
   const { data: billingItems = [] } = useQuery({
     queryKey: ['visit-billing', id],
     queryFn: () => visitBillingService.listByVisit(id!),
-    enabled: !!id,
+    enabled: !!id && !isNew,
   });
 
   // Inventory
