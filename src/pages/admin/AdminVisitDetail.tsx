@@ -55,9 +55,22 @@ const docTypeLabels: Record<string, string> = {
 
 const AdminVisitDetail = () => {
   const { id } = useParams<{ id: string }>();
+  const isNew = id === 'new';
   const navigate = useNavigate();
   const qc = useQueryClient();
   const { isAdmin } = useAuth();
+
+  // New visit form state
+  const [newVisitForm, setNewVisitForm] = useState({
+    owner_id: '',
+    pet_id: '',
+    vet_id: '',
+    reason: '',
+    notes: '',
+    date_time: new Date().toISOString().slice(0, 16),
+  });
+  const [ownerSearch, setOwnerSearch] = useState('');
+  const [showOwnerDropdown, setShowOwnerDropdown] = useState(false);
 
   const [createDocOpen, setCreateDocOpen] = useState(false);
   const [billingDialogOpen, setBillingDialogOpen] = useState(false);
@@ -80,11 +93,63 @@ const AdminVisitDetail = () => {
   const [consumeSearch, setConsumeSearch] = useState('');
   const [showConsumeDropdown, setShowConsumeDropdown] = useState(false);
 
+  // Clients & pets for new visit form
+  const { data: allClients = [] } = useQuery({
+    queryKey: ['clients-for-new-visit'],
+    queryFn: async () => {
+      const { data } = await supabase.from('clients').select('id, name, phone, email').eq('is_active', true).order('name');
+      return (data ?? []) as { id: string; name: string; phone: string | null; email: string | null }[];
+    },
+    enabled: isNew,
+  });
+
+  const { data: ownerPets = [] } = useQuery({
+    queryKey: ['pets-for-owner', newVisitForm.owner_id],
+    queryFn: async () => {
+      const { data } = await supabase.from('pets').select('id, name, species, breed').eq('owner_id', newVisitForm.owner_id).eq('is_active', true).order('name');
+      return (data ?? []) as { id: string; name: string; species: string; breed: string | null }[];
+    },
+    enabled: isNew && !!newVisitForm.owner_id,
+  });
+
+  const { data: allVets = [] } = useQuery({
+    queryKey: ['vets-for-new-visit'],
+    queryFn: async () => {
+      const { data } = await supabase.from('veterinarians').select('id, name, specialization').eq('is_active', true).order('name');
+      return (data ?? []) as { id: string; name: string; specialization: string | null }[];
+    },
+    enabled: isNew,
+  });
+
+  const createVisitMutation = useMutation({
+    mutationFn: () => visitService.create({
+      owner_id: newVisitForm.owner_id,
+      pet_id: newVisitForm.pet_id,
+      vet_id: newVisitForm.vet_id || null,
+      reason: newVisitForm.reason || null,
+      notes: newVisitForm.notes || null,
+      date_time: new Date(newVisitForm.date_time).toISOString(),
+      status: 'scheduled',
+    }),
+    onSuccess: (visit) => {
+      qc.invalidateQueries({ queryKey: ['visits'] });
+      toast({ title: 'Posjeta kreirana' });
+      navigate(`/app/visits/${visit.id}`, { replace: true });
+    },
+    onError: () => toast({ title: 'Greška pri kreiranju posjete', variant: 'destructive' }),
+  });
+
+  const filteredClients = allClients.filter((c) =>
+    c.name.toLowerCase().includes(ownerSearch.toLowerCase()) ||
+    (c.phone && c.phone.includes(ownerSearch)) ||
+    (c.email && c.email.toLowerCase().includes(ownerSearch.toLowerCase()))
+  );
+
   // Visit
   const { data: visit, isLoading } = useQuery({
     queryKey: ['visit', id],
     queryFn: () => visitService.getById(id!),
-    enabled: !!id,
+    enabled: !!id && !isNew,
   });
 
   // Documents
