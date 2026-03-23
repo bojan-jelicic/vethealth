@@ -223,7 +223,6 @@ export const CreateDocumentFromTemplate = ({ visitId, open, onOpenChange, onCrea
         await visitDocumentService.update(editingDocument.id, {
           title,
           content: freeContent,
-          doc_type: docType,
           field_values: fieldValues,
         });
       } else {
