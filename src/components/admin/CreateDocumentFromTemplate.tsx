@@ -352,15 +352,18 @@ export const CreateDocumentFromTemplate = ({ visitId, open, onOpenChange, onCrea
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-3 border-b border-border bg-card">
               <div className="flex items-center gap-3">
-                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setStep('choose')}>
-                  <ArrowLeft className="h-4 w-4" />
-                </Button>
+                {!isEditing && (
+                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setStep('choose')}>
+                    <ArrowLeft className="h-4 w-4" />
+                  </Button>
+                )}
                 <div>
-                  <h2 className="text-base font-semibold text-foreground">
-                    {selectedTemplate ? selectedTemplate.name : 'Novi nalaz'}
+                  <h2 className="text-base font-semibold text-foreground flex items-center gap-2">
+                    {isEditing && <Edit className="h-4 w-4" />}
+                    {isEditing ? (title || 'Uredi dokument') : (selectedTemplate ? selectedTemplate.name : 'Novi nalaz')}
                   </h2>
                   <p className="text-xs text-muted-foreground">
-                    {selectedTemplate ? 'Na osnovu šablona' : 'Prazan dokument'}
+                    {isEditing ? 'Uređivanje draft dokumenta' : (selectedTemplate ? 'Na osnovu šablona' : 'Prazan dokument')}
                     {selectedVersion && <Badge variant="outline" className="ml-2 text-[10px]">v{selectedVersion.version}</Badge>}
                   </p>
                 </div>
@@ -369,7 +372,7 @@ export const CreateDocumentFromTemplate = ({ visitId, open, onOpenChange, onCrea
                 <Button variant="outline" size="sm" onClick={() => handleClose(false)}>Otkaži</Button>
                 <Button size="sm" onClick={handleSave} disabled={saving || !title.trim()} className="gap-1.5">
                   {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
-                  {saving ? 'Čuvanje...' : 'Sačuvaj kao Draft'}
+                  {saving ? 'Čuvanje...' : (isEditing ? 'Sačuvaj izmjene' : 'Sačuvaj kao Draft')}
                 </Button>
               </div>
             </div>
