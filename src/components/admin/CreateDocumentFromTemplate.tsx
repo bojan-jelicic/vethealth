@@ -51,6 +51,28 @@ export const CreateDocumentFromTemplate = ({ visitId, open, onOpenChange, onCrea
   const [freeContent, setFreeContent] = useState('');
   const [saving, setSaving] = useState(false);
 
+  // Fetch visit details with owner & pet for auto-fill
+  const { data: visitData } = useQuery({
+    queryKey: ['visit-for-doc', visitId],
+    queryFn: async () => {
+      const { data: visit } = await supabase
+        .from('visits' as any)
+        .select('id, pet_id, owner_id, vet_id, reason, date_time')
+        .eq('id', visitId)
+        .maybeSingle();
+      if (!visit) return null;
+      const [{ data: pet }, { data: owner }, { data: vet }] = await Promise.all([
+        supabase.from('pets').select('*').eq('id', (visit as any).pet_id).maybeSingle(),
+        supabase.from('clients').select('*').eq('id', (visit as any).owner_id).maybeSingle(),
+        (visit as any).vet_id
+          ? supabase.from('veterinarians').select('*').eq('id', (visit as any).vet_id).maybeSingle()
+          : Promise.resolve({ data: null }),
+      ]);
+      return { visit: visit as any, pet: pet as any, owner: owner as any, vet: vet as any };
+    },
+    enabled: open && !!visitId,
+  });
+
   const { data: templates = [] } = useQuery({
     queryKey: ['document-templates-active'],
     queryFn: async () => (await templateService.list()).filter((t) => t.is_active),
@@ -65,6 +87,53 @@ export const CreateDocumentFromTemplate = ({ visitId, open, onOpenChange, onCrea
     },
     enabled: open,
   });
+
+  // Auto-fill field values from visit data
+  const autoFillFromVisit = (defaults: Record<string, any>) => {
+    if (!visitData) return defaults;
+    const filled = { ...defaults };
+    const { owner, pet, vet } = visitData;
+
+    // Owner fields
+    if (owner) {
+      const ownerMap: Record<string, string> = {
+        vlasnik_ime: owner.name,
+        vlasnik_telefon: owner.phone || '',
+        vlasnik_email: owner.email || '',
+        vlasnik_adresa: owner.address || '',
+      };
+      Object.entries(ownerMap).forEach(([key, val]) => {
+        if (key in filled) filled[key] = val;
+      });
+    }
+
+    // Pet fields
+    if (pet) {
+      const petMap: Record<string, string> = {
+        ime_ljubimca: pet.name,
+        vrsta: pet.species || '',
+        vrsta_zivotinje: pet.species || '',
+        pasmina: pet.breed || '',
+        spol: pet.sex || '',
+        chip_br: pet.microchip_id || '',
+        pasos_br: pet.passport_no || '',
+        starost: pet.birth_date || '',
+      };
+      Object.entries(petMap).forEach(([key, val]) => {
+        if (key in filled) filled[key] = val;
+      });
+    }
+
+    // Vet fields
+    if (vet) {
+      const vetKeys = ['veterinar', 'potpis_veterinar'];
+      vetKeys.forEach((key) => {
+        if (key in filled) filled[key] = vet.name;
+      });
+    }
+
+    return filled;
+  };
 
   const reset = () => {
     setStep('choose');
@@ -94,7 +163,7 @@ export const CreateDocumentFromTemplate = ({ visitId, open, onOpenChange, onCrea
         else if (f.type === 'date') defaults[f.name] = new Date().toISOString().split('T')[0];
         else defaults[f.name] = '';
       });
-      setFieldValues(defaults);
+      setFieldValues(autoFillFromVisit(defaults));
     }
     setStep('fill');
   };
