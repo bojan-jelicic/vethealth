@@ -138,14 +138,43 @@ export const CreateDocumentFromTemplate = ({ visitId, open, onOpenChange, onCrea
     return filled;
   };
 
+  // Initialize edit mode when editingDocument changes
+  useEffect(() => {
+    if (editingDocument && open && !editInitialized) {
+      setTitle(editingDocument.title);
+      setDocType(editingDocument.doc_type);
+      setFreeContent(editingDocument.content || '');
+      setFieldValues(editingDocument.field_values || {});
+      setStep('fill');
+
+      // Load template version if document has one
+      if (editingDocument.template_version_id) {
+        templateVersionService.getById(editingDocument.template_version_id).then((ver) => {
+          if (ver) setSelectedVersion(ver);
+        }).catch(() => {});
+      }
+      if (editingDocument.template_id) {
+        templateService.getById(editingDocument.template_id).then((tmpl) => {
+          if (tmpl) setSelectedTemplate(tmpl);
+        }).catch(() => {});
+      }
+
+      setEditInitialized(true);
+    }
+    if (!open) {
+      setEditInitialized(false);
+    }
+  }, [editingDocument, open, editInitialized]);
+
   const reset = () => {
-    setStep('choose');
+    setStep(isEditing ? 'fill' : 'choose');
     setSelectedTemplate(null);
     setSelectedVersion(null);
     setTitle('');
     setDocType('finding');
     setFieldValues({});
     setFreeContent('');
+    setEditInitialized(false);
   };
 
   const handleClose = (val: boolean) => {
@@ -189,15 +218,26 @@ export const CreateDocumentFromTemplate = ({ visitId, open, onOpenChange, onCrea
     if (!title.trim()) return;
     setSaving(true);
     try {
-      await visitDocumentService.create({
-        visit_id: visitId,
-        title,
-        content: freeContent,
-        doc_type: docType,
-        template_id: selectedTemplate?.id,
-        template_version_id: selectedVersion?.id,
-        field_values: fieldValues,
-      });
+      if (isEditing && editingDocument) {
+        // Update existing document
+        await visitDocumentService.update(editingDocument.id, {
+          title,
+          content: freeContent,
+          doc_type: docType,
+          field_values: fieldValues,
+        });
+      } else {
+        // Create new document
+        await visitDocumentService.create({
+          visit_id: visitId,
+          title,
+          content: freeContent,
+          doc_type: docType,
+          template_id: selectedTemplate?.id,
+          template_version_id: selectedVersion?.id,
+          field_values: fieldValues,
+        });
+      }
       onCreated();
       handleClose(false);
     } catch {
