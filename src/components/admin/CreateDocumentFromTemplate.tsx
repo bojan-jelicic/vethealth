@@ -163,7 +163,7 @@ export const CreateDocumentFromTemplate = ({ visitId, open, onOpenChange, onCrea
         else if (f.type === 'date') defaults[f.name] = new Date().toISOString().split('T')[0];
         else defaults[f.name] = '';
       });
-      setFieldValues(defaults);
+      setFieldValues(autoFillFromVisit(defaults));
     }
     setStep('fill');
   };
