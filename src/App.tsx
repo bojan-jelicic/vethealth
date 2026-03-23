@@ -31,6 +31,7 @@ import AdminVisitDetail from "./pages/admin/AdminVisitDetail";
 import AdminDocuments from "./pages/admin/AdminDocuments";
 import AdminTemplates from "./pages/admin/AdminTemplates";
 import AdminTemplateEditor from "./pages/admin/AdminTemplateEditor";
+import AdminNewDocument from "./pages/admin/AdminNewDocument";
 import AdminPricing from "./pages/admin/AdminPricing";
 import AdminInventory from "./pages/admin/AdminInventory";
 import AdminReminders from "./pages/admin/AdminReminders";
@@ -79,6 +80,7 @@ const App = () => (
                 <Route path="/app/visits" element={<ProtectedRoute><AdminLayout><AdminVisits /></AdminLayout></ProtectedRoute>} />
                 <Route path="/app/visits/:id" element={<ProtectedRoute><AdminLayout><AdminVisitDetail /></AdminLayout></ProtectedRoute>} />
                 <Route path="/app/documents" element={<ProtectedRoute><AdminLayout><AdminDocuments /></AdminLayout></ProtectedRoute>} />
+                <Route path="/app/documents/new" element={<ProtectedRoute><AdminLayout><AdminNewDocument /></AdminLayout></ProtectedRoute>} />
                 <Route path="/app/documents/templates" element={<ProtectedRoute allowedRoles={['admin']}><AdminLayout><AdminTemplates /></AdminLayout></ProtectedRoute>} />
                 <Route path="/app/documents/templates/:id" element={<ProtectedRoute allowedRoles={['admin']}><AdminLayout><AdminTemplateEditor /></AdminLayout></ProtectedRoute>} />
                 <Route path="/app/pricing" element={<ProtectedRoute><AdminLayout><AdminPricing /></AdminLayout></ProtectedRoute>} />
