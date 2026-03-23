@@ -388,7 +388,7 @@ const AdminVisitDetail = () => {
                 }}
                 onFocus={() => setShowOwnerDropdown(true)}
               />
-              {showOwnerDropdown && ownerSearch && filteredClients.length > 0 && (
+              {showOwnerDropdown && filteredClients.length > 0 && (
                 <div className="absolute z-50 top-full left-0 right-0 bg-popover border border-border rounded-lg shadow-lg mt-1 max-h-48 overflow-auto">
                   {filteredClients.slice(0, 10).map((c) => (
                     <button
