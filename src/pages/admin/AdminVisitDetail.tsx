@@ -73,6 +73,7 @@ const AdminVisitDetail = () => {
   const [showOwnerDropdown, setShowOwnerDropdown] = useState(false);
 
   const [createDocOpen, setCreateDocOpen] = useState(false);
+  const [editingDoc, setEditingDoc] = useState<VisitDocument | null>(null);
   const [billingDialogOpen, setBillingDialogOpen] = useState(false);
   const [billingForm, setBillingForm] = useState({ description: '', quantity: '1', unit_price: '0', discount: '0', note: '' });
   const [showServiceSuggestions, setShowServiceSuggestions] = useState(false);
@@ -333,11 +334,18 @@ const AdminVisitDetail = () => {
   });
 
   const openViewDoc = (doc: VisitDocument) => {
-    setViewingDoc(doc);
-    setEditingFieldValues(doc.field_values || {});
-    setEditingContent(doc.content || '');
-    setIsEditingDoc(false);
-    setViewDocOpen(true);
+    if (doc.status === 'draft') {
+      // Open draft docs in the Sheet panel for editing
+      setEditingDoc(doc);
+      setCreateDocOpen(true);
+    } else {
+      // Open finalized docs in the view Dialog
+      setViewingDoc(doc);
+      setEditingFieldValues(doc.field_values || {});
+      setEditingContent(doc.content || '');
+      setIsEditingDoc(false);
+      setViewDocOpen(true);
+    }
   };
 
   const isEuthanasiaDoc = (doc: VisitDocument) =>
@@ -846,11 +854,15 @@ const AdminVisitDetail = () => {
       <CreateDocumentFromTemplate
         visitId={id!}
         open={createDocOpen}
-        onOpenChange={setCreateDocOpen}
+        onOpenChange={(open) => {
+          setCreateDocOpen(open);
+          if (!open) setEditingDoc(null);
+        }}
         onCreated={() => {
           qc.invalidateQueries({ queryKey: ['visit-documents', id] });
-          toast({ title: 'Dokument kreiran kao Draft' });
+          toast({ title: editingDoc ? 'Dokument ažuriran' : 'Dokument kreiran kao Draft' });
         }}
+        editingDocument={editingDoc}
       />
 
       {/* View/Edit Document Dialog */}

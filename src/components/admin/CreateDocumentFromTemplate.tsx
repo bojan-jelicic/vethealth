@@ -1,8 +1,8 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import {
   FileText, Plus, ChevronRight, ArrowLeft, Loader2, Trash2, Save, X,
-  Phone, Mail, Globe,
+  Phone, Mail, Globe, Edit,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,13 +18,14 @@ import {
 } from '@/components/ui/select';
 import { supabase } from '@/integrations/supabase/client';
 import { templateService, templateVersionService, type TemplateField, type DocumentTemplate, type TemplateVersion } from '@/services/templateService';
-import { visitDocumentService } from '@/services/visitDetailServices';
+import { visitDocumentService, type VisitDocument } from '@/services/visitDetailServices';
 
 interface Props {
   visitId: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onCreated: () => void;
+  editingDocument?: VisitDocument | null;
 }
 
 type Step = 'choose' | 'fill';
@@ -41,8 +42,9 @@ const docTypeLabels: Record<string, string> = {
   finding: 'Nalaz', report: 'Izvještaj', prescription: 'Recept', referral: 'Uputnica', other: 'Ostalo',
 };
 
-export const CreateDocumentFromTemplate = ({ visitId, open, onOpenChange, onCreated }: Props) => {
-  const [step, setStep] = useState<Step>('choose');
+export const CreateDocumentFromTemplate = ({ visitId, open, onOpenChange, onCreated, editingDocument }: Props) => {
+  const isEditing = !!editingDocument;
+  const [step, setStep] = useState<Step>(isEditing ? 'fill' : 'choose');
   const [selectedTemplate, setSelectedTemplate] = useState<DocumentTemplate | null>(null);
   const [selectedVersion, setSelectedVersion] = useState<TemplateVersion | null>(null);
   const [title, setTitle] = useState('');
@@ -50,6 +52,7 @@ export const CreateDocumentFromTemplate = ({ visitId, open, onOpenChange, onCrea
   const [fieldValues, setFieldValues] = useState<Record<string, any>>({});
   const [freeContent, setFreeContent] = useState('');
   const [saving, setSaving] = useState(false);
+  const [editInitialized, setEditInitialized] = useState(false);
 
   // Fetch visit details with owner & pet for auto-fill
   const { data: visitData } = useQuery({
@@ -135,14 +138,43 @@ export const CreateDocumentFromTemplate = ({ visitId, open, onOpenChange, onCrea
     return filled;
   };
 
+  // Initialize edit mode when editingDocument changes
+  useEffect(() => {
+    if (editingDocument && open && !editInitialized) {
+      setTitle(editingDocument.title);
+      setDocType(editingDocument.doc_type);
+      setFreeContent(editingDocument.content || '');
+      setFieldValues(editingDocument.field_values || {});
+      setStep('fill');
+
+      // Load template version if document has one
+      if (editingDocument.template_id) {
+        templateVersionService.getLatest(editingDocument.template_id).then((ver) => {
+          if (ver) setSelectedVersion(ver);
+        }).catch(() => {});
+      }
+      if (editingDocument.template_id) {
+        templateService.getById(editingDocument.template_id).then((tmpl) => {
+          if (tmpl) setSelectedTemplate(tmpl);
+        }).catch(() => {});
+      }
+
+      setEditInitialized(true);
+    }
+    if (!open) {
+      setEditInitialized(false);
+    }
+  }, [editingDocument, open, editInitialized]);
+
   const reset = () => {
-    setStep('choose');
+    setStep(isEditing ? 'fill' : 'choose');
     setSelectedTemplate(null);
     setSelectedVersion(null);
     setTitle('');
     setDocType('finding');
     setFieldValues({});
     setFreeContent('');
+    setEditInitialized(false);
   };
 
   const handleClose = (val: boolean) => {
@@ -186,15 +218,25 @@ export const CreateDocumentFromTemplate = ({ visitId, open, onOpenChange, onCrea
     if (!title.trim()) return;
     setSaving(true);
     try {
-      await visitDocumentService.create({
-        visit_id: visitId,
-        title,
-        content: freeContent,
-        doc_type: docType,
-        template_id: selectedTemplate?.id,
-        template_version_id: selectedVersion?.id,
-        field_values: fieldValues,
-      });
+      if (isEditing && editingDocument) {
+        // Update existing document
+        await visitDocumentService.update(editingDocument.id, {
+          title,
+          content: freeContent,
+          field_values: fieldValues,
+        });
+      } else {
+        // Create new document
+        await visitDocumentService.create({
+          visit_id: visitId,
+          title,
+          content: freeContent,
+          doc_type: docType,
+          template_id: selectedTemplate?.id,
+          template_version_id: selectedVersion?.id,
+          field_values: fieldValues,
+        });
+      }
       onCreated();
       handleClose(false);
     } catch {
@@ -310,15 +352,18 @@ export const CreateDocumentFromTemplate = ({ visitId, open, onOpenChange, onCrea
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-3 border-b border-border bg-card">
               <div className="flex items-center gap-3">
-                <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setStep('choose')}>
-                  <ArrowLeft className="h-4 w-4" />
-                </Button>
+                {!isEditing && (
+                  <Button variant="ghost" size="icon" className="h-8 w-8" onClick={() => setStep('choose')}>
+                    <ArrowLeft className="h-4 w-4" />
+                  </Button>
+                )}
                 <div>
-                  <h2 className="text-base font-semibold text-foreground">
-                    {selectedTemplate ? selectedTemplate.name : 'Novi nalaz'}
+                  <h2 className="text-base font-semibold text-foreground flex items-center gap-2">
+                    {isEditing && <Edit className="h-4 w-4" />}
+                    {isEditing ? (title || 'Uredi dokument') : (selectedTemplate ? selectedTemplate.name : 'Novi nalaz')}
                   </h2>
                   <p className="text-xs text-muted-foreground">
-                    {selectedTemplate ? 'Na osnovu šablona' : 'Prazan dokument'}
+                    {isEditing ? 'Uređivanje draft dokumenta' : (selectedTemplate ? 'Na osnovu šablona' : 'Prazan dokument')}
                     {selectedVersion && <Badge variant="outline" className="ml-2 text-[10px]">v{selectedVersion.version}</Badge>}
                   </p>
                 </div>
@@ -327,7 +372,7 @@ export const CreateDocumentFromTemplate = ({ visitId, open, onOpenChange, onCrea
                 <Button variant="outline" size="sm" onClick={() => handleClose(false)}>Otkaži</Button>
                 <Button size="sm" onClick={handleSave} disabled={saving || !title.trim()} className="gap-1.5">
                   {saving ? <Loader2 className="h-3.5 w-3.5 animate-spin" /> : <Save className="h-3.5 w-3.5" />}
-                  {saving ? 'Čuvanje...' : 'Sačuvaj kao Draft'}
+                  {saving ? 'Čuvanje...' : (isEditing ? 'Sačuvaj izmjene' : 'Sačuvaj kao Draft')}
                 </Button>
               </div>
             </div>
