@@ -854,11 +854,15 @@ const AdminVisitDetail = () => {
       <CreateDocumentFromTemplate
         visitId={id!}
         open={createDocOpen}
-        onOpenChange={setCreateDocOpen}
+        onOpenChange={(open) => {
+          setCreateDocOpen(open);
+          if (!open) setEditingDoc(null);
+        }}
         onCreated={() => {
           qc.invalidateQueries({ queryKey: ['visit-documents', id] });
-          toast({ title: 'Dokument kreiran kao Draft' });
+          toast({ title: editingDoc ? 'Dokument ažuriran' : 'Dokument kreiran kao Draft' });
         }}
+        editingDocument={editingDoc}
       />
 
       {/* View/Edit Document Dialog */}
