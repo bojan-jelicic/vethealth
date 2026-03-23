@@ -334,11 +334,18 @@ const AdminVisitDetail = () => {
   });
 
   const openViewDoc = (doc: VisitDocument) => {
-    setViewingDoc(doc);
-    setEditingFieldValues(doc.field_values || {});
-    setEditingContent(doc.content || '');
-    setIsEditingDoc(false);
-    setViewDocOpen(true);
+    if (doc.status === 'draft') {
+      // Open draft docs in the Sheet panel for editing
+      setEditingDoc(doc);
+      setCreateDocOpen(true);
+    } else {
+      // Open finalized docs in the view Dialog
+      setViewingDoc(doc);
+      setEditingFieldValues(doc.field_values || {});
+      setEditingContent(doc.content || '');
+      setIsEditingDoc(false);
+      setViewDocOpen(true);
+    }
   };
 
   const isEuthanasiaDoc = (doc: VisitDocument) =>
