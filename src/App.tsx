@@ -31,6 +31,7 @@ import AdminVisitDetail from "./pages/admin/AdminVisitDetail";
 import AdminDocuments from "./pages/admin/AdminDocuments";
 import AdminTemplates from "./pages/admin/AdminTemplates";
 import AdminTemplateEditor from "./pages/admin/AdminTemplateEditor";
+import AdminNewDocument from "./pages/admin/AdminNewDocument";
 import AdminPricing from "./pages/admin/AdminPricing";
 import AdminInventory from "./pages/admin/AdminInventory";
 import AdminReminders from "./pages/admin/AdminReminders";

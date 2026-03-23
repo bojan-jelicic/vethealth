@@ -24,7 +24,7 @@ const AdminDocuments = () => {
         <Button variant="outline" className="gap-2" onClick={() => navigate('/app/documents/templates')}>
           <Layout className="w-4 h-4" />Šabloni
         </Button>
-        <Button><FilePlus className="w-4 h-4 mr-2" />Novi nalaz</Button>
+        <Button onClick={() => navigate('/app/documents/new')}><FilePlus className="w-4 h-4 mr-2" />Novi nalaz</Button>
       </div>
     </div>
 
