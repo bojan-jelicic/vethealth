@@ -148,8 +148,8 @@ export const CreateDocumentFromTemplate = ({ visitId, open, onOpenChange, onCrea
       setStep('fill');
 
       // Load template version if document has one
-      if (editingDocument.template_version_id) {
-        templateVersionService.getById(editingDocument.template_version_id).then((ver) => {
+      if (editingDocument.template_id) {
+        templateVersionService.getLatest(editingDocument.template_id).then((ver) => {
           if (ver) setSelectedVersion(ver);
         }).catch(() => {});
       }
