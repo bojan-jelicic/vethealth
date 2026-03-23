@@ -42,8 +42,9 @@ const docTypeLabels: Record<string, string> = {
   finding: 'Nalaz', report: 'Izvještaj', prescription: 'Recept', referral: 'Uputnica', other: 'Ostalo',
 };
 
-export const CreateDocumentFromTemplate = ({ visitId, open, onOpenChange, onCreated }: Props) => {
-  const [step, setStep] = useState<Step>('choose');
+export const CreateDocumentFromTemplate = ({ visitId, open, onOpenChange, onCreated, editingDocument }: Props) => {
+  const isEditing = !!editingDocument;
+  const [step, setStep] = useState<Step>(isEditing ? 'fill' : 'choose');
   const [selectedTemplate, setSelectedTemplate] = useState<DocumentTemplate | null>(null);
   const [selectedVersion, setSelectedVersion] = useState<TemplateVersion | null>(null);
   const [title, setTitle] = useState('');
@@ -51,6 +52,7 @@ export const CreateDocumentFromTemplate = ({ visitId, open, onOpenChange, onCrea
   const [fieldValues, setFieldValues] = useState<Record<string, any>>({});
   const [freeContent, setFreeContent] = useState('');
   const [saving, setSaving] = useState(false);
+  const [editInitialized, setEditInitialized] = useState(false);
 
   // Fetch visit details with owner & pet for auto-fill
   const { data: visitData } = useQuery({
