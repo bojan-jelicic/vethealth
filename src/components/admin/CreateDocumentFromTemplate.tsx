@@ -1,8 +1,8 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import {
   FileText, Plus, ChevronRight, ArrowLeft, Loader2, Trash2, Save, X,
-  Phone, Mail, Globe,
+  Phone, Mail, Globe, Edit,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,13 +18,14 @@ import {
 } from '@/components/ui/select';
 import { supabase } from '@/integrations/supabase/client';
 import { templateService, templateVersionService, type TemplateField, type DocumentTemplate, type TemplateVersion } from '@/services/templateService';
-import { visitDocumentService } from '@/services/visitDetailServices';
+import { visitDocumentService, type VisitDocument } from '@/services/visitDetailServices';
 
 interface Props {
   visitId: string;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onCreated: () => void;
+  editingDocument?: VisitDocument | null;
 }
 
 type Step = 'choose' | 'fill';
