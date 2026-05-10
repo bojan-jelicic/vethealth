@@ -41,6 +41,7 @@ import AdminBlogManager from "./pages/admin/AdminBlogManager";
 import AdminGallery from "./pages/admin/AdminGallery";
 import AdminSettings from "./pages/admin/AdminSettings";
 import AdminMessages from "./pages/admin/AdminMessages";
+import AdminAuditLogs from "./pages/admin/AdminAuditLogs";
 import NotFound from "./pages/NotFound";
 import PortalLogin from "./pages/portal/PortalLogin";
 import PortalDashboard from "./pages/portal/PortalDashboard";
@@ -93,6 +94,7 @@ const App = () => (
                 <Route path="/app/gallery" element={<ProtectedRoute><AdminLayout><AdminGallery /></AdminLayout></ProtectedRoute>} />
                 <Route path="/app/messages" element={<ProtectedRoute><AdminLayout><AdminMessages /></AdminLayout></ProtectedRoute>} />
                 <Route path="/app/settings" element={<ProtectedRoute allowedRoles={['admin']}><AdminLayout><AdminSettings /></AdminLayout></ProtectedRoute>} />
+                <Route path="/app/audit-logs" element={<ProtectedRoute allowedRoles={['admin']}><AdminLayout><AdminAuditLogs /></AdminLayout></ProtectedRoute>} />
 
                 {/* Client Portal */}
                 <Route path="/portal/login" element={<PortalLogin />} />
