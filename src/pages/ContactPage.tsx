@@ -9,9 +9,12 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/integrations/supabase/client';
 import { contactFormSchema, type ContactFormData } from '@/lib/validations';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { useClinicSettings, telLink, mailLink } from '@/hooks/useClinicSettings';
 
 const ContactPage = () => {
   const { t } = useTranslation();
+  const { data: clinic } = useClinicSettings();
   const [formData, setFormData] = useState<ContactFormData>({ name: '', email: '', phone: '', subject: '', message: '' });
   const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -66,19 +69,26 @@ const ContactPage = () => {
     }
   };
 
-  const contactInfo = [
-    { icon: MapPin, titleKey: 'contact.address', content: 'Ulica Primjer 123, 78000 Banjaluka', link: 'https://maps.google.com' },
-    { icon: Phone, titleKey: 'contact.phone', content: '+387 51 123 456', link: 'tel:+38751123456' },
-    { icon: Mail, titleKey: 'contact.email', content: 'info@vethealth.ba', link: 'mailto:info@vethealth.ba' },
-    { icon: Clock, titleKey: 'contact.workingHours', contentKey: 'contact.workingHoursContent' },
+  const wh = clinic?.working_hours;
+  const phoneVal = clinic?.phone || '+387 51 123 456';
+  const emailVal = clinic?.email || 'info@vethealth.ba';
+  const addressVal = clinic?.address || 'Banja Luka, Bosna i Hercegovina';
+
+  const contactInfo: { icon: any; titleKey: string; content: string; link?: string }[] = [
+    { icon: MapPin, titleKey: 'contact.address', content: addressVal, link: 'https://maps.google.com' },
+    { icon: Phone, titleKey: 'contact.phone', content: phoneVal, link: telLink(phoneVal) },
+    { icon: Mail, titleKey: 'contact.email', content: emailVal, link: mailLink(emailVal) },
+    { icon: Clock, titleKey: 'contact.workingHours', content: `${wh?.pon_pet || '08-20h'} (Pon-Pet)` },
   ];
 
   const workingHoursList = [
-    { dayKey: 'contactPage.monFri', hours: '08:00 - 20:00', active: true },
-    { dayKey: 'contactPage.saturday', hours: '09:00 - 14:00', active: true },
-    { dayKey: 'contactPage.sunday', hoursKey: 'contactPage.closed', active: false },
+    { dayKey: 'contactPage.monFri', hours: wh?.pon_pet || '08:00 - 20:00', active: true },
+    { dayKey: 'contactPage.saturday', hours: wh?.sub || '09:00 - 14:00', active: true },
+    { dayKey: 'contactPage.sunday', hours: wh?.ned || t('contactPage.closed'), active: false },
     { dayKey: 'contactPage.emergencyCases', hours: '24/7', active: true },
   ];
+
+  const faqKeys = ['q1', 'q2', 'q3', 'q4', 'q5'];
 
   return (
     <Layout>
@@ -115,7 +125,7 @@ const ContactPage = () => {
                 <Clock className={`w-5 h-5 mb-2 ${item.dayKey === 'contactPage.emergencyCases' ? 'text-primary-foreground' : 'text-primary'}`} />
                 <span className={`text-small font-medium ${item.dayKey === 'contactPage.emergencyCases' ? 'text-primary-foreground' : 'text-foreground'}`}>{t(item.dayKey)}</span>
                 <span className={`text-lg font-heading font-bold mt-1 ${item.dayKey === 'contactPage.emergencyCases' ? 'text-primary-foreground' : item.active ? 'text-foreground' : 'text-muted-foreground'}`}>
-                  {item.hoursKey ? t(item.hoursKey) : item.hours}
+                  {item.hours}
                 </span>
               </div>
             ))}
@@ -135,7 +145,7 @@ const ContactPage = () => {
                     {item.link ? (
                       <a href={item.link} className="text-muted-foreground hover:text-primary transition-colors">{item.content}</a>
                     ) : (
-                      <p className="text-muted-foreground">{item.contentKey ? t(item.contentKey) : item.content}</p>
+                      <p className="text-muted-foreground">{item.content}</p>
                     )}
                   </div>
                 </div>
@@ -225,6 +235,26 @@ const ContactPage = () => {
                 </form>
               </div>
             </div>
+          </div>
+
+          {/* FAQ */}
+          <div className="mt-16 max-w-3xl mx-auto">
+            <div className="text-center mb-8">
+              <h2 className="text-h3 text-foreground mb-2">{t('faq.title')}</h2>
+              <p className="text-muted-foreground">{t('faq.subtitle')}</p>
+            </div>
+            <Accordion type="single" collapsible className="bg-card rounded-card shadow-card px-6">
+              {faqKeys.map((k) => (
+                <AccordionItem key={k} value={k}>
+                  <AccordionTrigger className="text-left font-heading font-medium">
+                    {t(`faq.${k}.q`)}
+                  </AccordionTrigger>
+                  <AccordionContent className="text-muted-foreground">
+                    {t(`faq.${k}.a`)}
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
           </div>
         </div>
       </section>

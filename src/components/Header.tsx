@@ -7,21 +7,27 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { FEATURES } from '@/config/features';
+import { useClinicSettings, telLink } from '@/hooks/useClinicSettings';
 
-const navLinks = [
-  { key: 'home', href: '/' },
-  { key: 'services', href: '/services' },
-  { key: 'priceList', href: '/cjenovnik-usluga' },
-  { key: 'petShop', href: '/pet-shop' },
-  { key: 'about', href: '/about' },
-  { key: 'contact', href: '/contact' },
+const allNavLinks = [
+  { key: 'home', href: '/', flag: null },
+  { key: 'services', href: '/services', flag: null },
+  { key: 'priceList', href: '/cjenovnik-usluga', flag: null },
+  { key: 'petShop', href: '/pet-shop', flag: 'publicPetShop' as const },
+  { key: 'about', href: '/about', flag: null },
+  { key: 'contact', href: '/contact', flag: null },
 ];
+
+const navLinks = allNavLinks.filter((l) => !l.flag || FEATURES[l.flag]);
 
 export const Header = () => {
   const { t } = useTranslation();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const { data: clinic } = useClinicSettings();
+  const phone = clinic?.phone || '+387 51 123 456';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -75,20 +81,29 @@ export const Header = () => {
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-3">
             <a
-              href="tel:+38751123456"
+              href={telLink(phone)}
               className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
             >
               <Phone className="w-4 h-4" />
-              <span className="text-small">+387 51 123 456</span>
+              <span className="text-small">{phone}</span>
             </a>
             <LanguageSwitcher />
-            <ThemeToggle />
-            <Button variant="accent" asChild>
-              <Link to="/zakazivanje-termina">
-                <Calendar className="w-4 h-4" />
-                {t('nav.bookAppointment')}
-              </Link>
-            </Button>
+            {FEATURES.themeToggle && <ThemeToggle />}
+            {FEATURES.publicAppointments ? (
+              <Button variant="accent" asChild>
+                <Link to="/zakazivanje-termina">
+                  <Calendar className="w-4 h-4" />
+                  {t('nav.bookAppointment')}
+                </Link>
+              </Button>
+            ) : (
+              <Button variant="accent" asChild>
+                <Link to="/contact">
+                  <Phone className="w-4 h-4" />
+                  {t('nav.contact')}
+                </Link>
+              </Button>
+            )}
           </div>
 
           {/* Mobile Menu */}
@@ -119,23 +134,36 @@ export const Header = () => {
                 </nav>
                 <div className="mt-auto pb-8 space-y-4">
                   <a
-                    href="tel:+38751123456"
+                    href={telLink(phone)}
                     className="flex items-center gap-3 text-foreground"
                   >
                     <Phone className="w-5 h-5 text-primary" />
-                    <span>+387 51 123 456</span>
+                    <span>{phone}</span>
                   </a>
                   <div className="flex items-center gap-3">
                     <LanguageSwitcher />
-                    <ThemeToggle />
-                    <span className="text-sm text-muted-foreground">{t('nav.changeTheme')}</span>
+                    {FEATURES.themeToggle && (
+                      <>
+                        <ThemeToggle />
+                        <span className="text-sm text-muted-foreground">{t('nav.changeTheme')}</span>
+                      </>
+                    )}
                   </div>
-                  <Button variant="accent" className="w-full" asChild>
-                    <Link to="/zakazivanje-termina" onClick={() => setIsOpen(false)}>
-                      <Calendar className="w-4 h-4" />
-                      {t('nav.bookAppointment')}
-                    </Link>
-                  </Button>
+                  {FEATURES.publicAppointments ? (
+                    <Button variant="accent" className="w-full" asChild>
+                      <Link to="/zakazivanje-termina" onClick={() => setIsOpen(false)}>
+                        <Calendar className="w-4 h-4" />
+                        {t('nav.bookAppointment')}
+                      </Link>
+                    </Button>
+                  ) : (
+                    <Button variant="accent" className="w-full" asChild>
+                      <Link to="/contact" onClick={() => setIsOpen(false)}>
+                        <Phone className="w-4 h-4" />
+                        {t('nav.contact')}
+                      </Link>
+                    </Button>
+                  )}
                 </div>
               </div>
             </SheetContent>

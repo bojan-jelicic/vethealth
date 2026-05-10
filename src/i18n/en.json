@@ -233,5 +233,14 @@
     "closed": "Closed",
     "networkError": "We are currently unable to process your request. Please try again later.",
     "genericError": "An error occurred while sending the message. Please try again."
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "subtitle": "Answers to questions our clients ask most often.",
+    "q1": { "q": "Do I need to book an appointment?", "a": "We recommend calling ahead to avoid waiting. Emergencies are accepted without an appointment." },
+    "q2": { "q": "Which animals do you treat?", "a": "We treat dogs, cats, small rodents, birds and exotic pets." },
+    "q3": { "q": "Are you open on weekends?", "a": "Saturdays follow the schedule shown on the page. Sundays we are available only for emergencies." },
+    "q4": { "q": "Can I pay by card?", "a": "Yes, we accept cash and all major payment cards." },
+    "q5": { "q": "How do I prepare my pet for a visit?", "a": "Bring the health booklet and a list of medications. Lab tests may require 8–12 hours of fasting — please consult us in advance." }
   }
 }

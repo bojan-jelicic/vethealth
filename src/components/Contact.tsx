@@ -5,18 +5,24 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
+import { useClinicSettings } from '@/hooks/useClinicSettings';
 
 export const Contact = () => {
   const { t } = useTranslation();
   const { toast } = useToast();
   const [formData, setFormData] = useState({ name: '', email: '', phone: '', message: '' });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { data: clinic } = useClinicSettings();
+  const wh = clinic?.working_hours;
+  const workingHoursText = wh
+    ? `Pon-Pet: ${wh.pon_pet || ''}, Sub: ${wh.sub || ''}`
+    : t('contact.workingHoursContent');
 
   const contactInfo = [
-    { icon: MapPin, titleKey: 'contact.address', content: 'Ulica Primjer 123, 78000 Banjaluka' },
-    { icon: Phone, titleKey: 'contact.phone', content: '+387 51 123 456' },
-    { icon: Mail, titleKey: 'contact.email', content: 'info@vethealth.ba' },
-    { icon: Clock, titleKey: 'contact.workingHours', contentKey: 'contact.workingHoursContent' },
+    { icon: MapPin, titleKey: 'contact.address', content: clinic?.address || 'Banja Luka' },
+    { icon: Phone, titleKey: 'contact.phone', content: clinic?.phone || '+387 51 123 456' },
+    { icon: Mail, titleKey: 'contact.email', content: clinic?.email || 'info@vethealth.ba' },
+    { icon: Clock, titleKey: 'contact.workingHours', content: workingHoursText },
   ];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -56,7 +62,7 @@ export const Contact = () => {
                 </div>
                 <div>
                   <h4 className="font-heading font-medium text-foreground mb-1">{t(item.titleKey)}</h4>
-                  <p className="text-muted-foreground">{item.contentKey ? t(item.contentKey) : item.content}</p>
+                  <p className="text-muted-foreground">{item.content}</p>
                 </div>
               </div>
             ))}

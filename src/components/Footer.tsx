@@ -7,11 +7,13 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
+import { useClinicSettings } from '@/hooks/useClinicSettings';
 
 export const Footer = () => {
   const { t } = useTranslation();
   const { toast } = useToast();
   const [email, setEmail] = useState('');
+  const { data: clinic } = useClinicSettings();
 
   const handleNewsletterSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -59,12 +61,16 @@ export const Footer = () => {
             </Link>
             <p className="text-background/70 mb-6">{t('footer.brandDescription')}</p>
             <div className="flex gap-4">
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-background/10 rounded-full flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
-                <Facebook className="w-5 h-5" />
-              </a>
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-background/10 rounded-full flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
-                <Instagram className="w-5 h-5" />
-              </a>
+              {clinic?.social_facebook && (
+                <a href={clinic.social_facebook} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-background/10 rounded-full flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
+                  <Facebook className="w-5 h-5" />
+                </a>
+              )}
+              {clinic?.social_instagram && (
+                <a href={clinic.social_instagram} target="_blank" rel="noopener noreferrer" className="w-10 h-10 bg-background/10 rounded-full flex items-center justify-center hover:bg-primary hover:text-primary-foreground transition-colors">
+                  <Instagram className="w-5 h-5" />
+                </a>
+              )}
             </div>
           </div>
 
@@ -102,15 +108,15 @@ export const Footer = () => {
             <ul className="space-y-3 mb-6">
               <li className="flex items-center gap-3 text-background/70">
                 <MapPin className="w-4 h-4 text-primary" />
-                <span>Ulica Primjer 123, Banjaluka</span>
+                <span>{clinic?.address || 'Banja Luka'}</span>
               </li>
               <li className="flex items-center gap-3 text-background/70">
                 <Phone className="w-4 h-4 text-primary" />
-                <span>+387 51 123 456</span>
+                <span>{clinic?.phone || '+387 51 123 456'}</span>
               </li>
               <li className="flex items-center gap-3 text-background/70">
                 <Mail className="w-4 h-4 text-primary" />
-                <span>info@vethealth.ba</span>
+                <span>{clinic?.email || 'info@vethealth.ba'}</span>
               </li>
             </ul>
 

@@ -233,5 +233,14 @@
     "closed": "Geschlossen",
     "networkError": "Wir können Ihre Anfrage derzeit nicht bearbeiten. Bitte versuchen Sie es später erneut.",
     "genericError": "Beim Senden der Nachricht ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+  },
+  "faq": {
+    "title": "Häufig gestellte Fragen",
+    "subtitle": "Antworten auf die häufigsten Fragen unserer Kunden.",
+    "q1": { "q": "Muss ich einen Termin vereinbaren?", "a": "Wir empfehlen einen Anruf im Voraus, um Wartezeiten zu vermeiden. Notfälle werden ohne Termin angenommen." },
+    "q2": { "q": "Welche Tiere behandeln Sie?", "a": "Wir behandeln Hunde, Katzen, kleine Nagetiere, Vögel und exotische Haustiere." },
+    "q3": { "q": "Haben Sie am Wochenende geöffnet?", "a": "Samstags gilt der angezeigte Zeitplan. Sonntags sind wir nur für Notfälle erreichbar." },
+    "q4": { "q": "Kann ich mit Karte bezahlen?", "a": "Ja, wir akzeptieren Bargeld und alle gängigen Zahlungskarten." },
+    "q5": { "q": "Wie bereite ich mein Tier auf den Besuch vor?", "a": "Bringen Sie das Gesundheitsheft und eine Liste der Medikamente mit. Für Laboruntersuchungen können 8–12 Stunden Fasten nötig sein — bitte vorher abstimmen." }
   }
 }
