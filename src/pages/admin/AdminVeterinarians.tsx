@@ -23,6 +23,8 @@ import {
 } from '@/components/ui/table';
 import { useToast } from '@/hooks/use-toast';
 import { Plus, Pencil, Trash2, Users } from 'lucide-react';
+import { logAudit } from '@/services/auditService';
+import { useEffect } from 'react';
 
 interface VetForm {
   id?: string;
@@ -60,16 +62,24 @@ const AdminVeterinarians = () => {
     },
   });
 
+  useEffect(() => {
+    if (veterinarians && veterinarians.length >= 0) {
+      logAudit({ action: 'view_list', entity_type: 'veterinarian', metadata: { count: veterinarians.length } });
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [Array.isArray(veterinarians)]);
+
   const createMutation = useMutation({
     mutationFn: async (data: Omit<VetForm, 'id'>) => {
-      const { error } = await supabase.from('veterinarians').insert({
+      const { data: inserted, error } = await supabase.from('veterinarians').insert({
         name: data.name,
         specialization: data.specialization || null,
         email: data.email || null,
         phone: data.phone || null,
         is_active: data.is_active,
-      });
+      }).select('id').single();
       if (error) throw error;
+      await logAudit({ action: 'create', entity_type: 'veterinarian', entity_id: inserted?.id, metadata: { name: data.name } });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-veterinarians'] });
@@ -94,6 +104,7 @@ const AdminVeterinarians = () => {
         })
         .eq('id', data.id);
       if (error) throw error;
+      await logAudit({ action: 'update', entity_type: 'veterinarian', entity_id: data.id, metadata: { name: data.name, is_active: data.is_active } });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-veterinarians'] });
@@ -109,6 +120,7 @@ const AdminVeterinarians = () => {
     mutationFn: async (id: string) => {
       const { error } = await supabase.from('veterinarians').delete().eq('id', id);
       if (error) throw error;
+      await logAudit({ action: 'delete', entity_type: 'veterinarian', entity_id: id });
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['admin-veterinarians'] });
