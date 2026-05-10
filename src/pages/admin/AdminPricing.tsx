@@ -735,7 +735,18 @@ const CategoriesTab = () => {
               />
             </div>
 
-            <div className="grid grid-cols-2 gap-4">
+            <div className="grid grid-cols-[auto_1fr_1fr] gap-4 items-end">
+              {(() => {
+                const PreviewIcon = getCategoryIcon(form.icon);
+                return (
+                  <div
+                    className="h-20 w-20 rounded-lg bg-primary/10 border border-border flex items-center justify-center"
+                    aria-label="Pretpregled ikone"
+                  >
+                    <PreviewIcon className="h-10 w-10 text-primary" />
+                  </div>
+                );
+              })()}
               <div className="space-y-2">
                 <Label htmlFor="c-icon">Ikona</Label>
                 <IconPicker
