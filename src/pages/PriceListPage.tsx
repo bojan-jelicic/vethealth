@@ -93,8 +93,6 @@ const ServiceCategoryCard = ({ category }: { category: CategoryWithServices }) =
 const PriceListPage = () => {
   const { data: categories, isLoading, error } = useServicesWithCategories();
 
-  const breadcrumbs = [{ label: 'Cjenovnik Usluga' }];
-
   const handlePrint = () => {
     window.print();
   };
@@ -113,7 +111,6 @@ const PriceListPage = () => {
 
       <PageHero
         title="Cjenovnik Usluga"
-        breadcrumbs={breadcrumbs}
         compact
       />
 
