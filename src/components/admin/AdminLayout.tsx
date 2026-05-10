@@ -48,23 +48,32 @@ interface AdminLayoutProps {
   children: React.ReactNode;
 }
 
-const navSections = [
+type NavItem = {
+  to: string;
+  icon: any;
+  label: string;
+  end?: boolean;
+  adminOnly?: boolean;
+  flag?: keyof typeof FEATURES;
+};
+
+const allNavSections: { label: string; items: NavItem[] }[] = [
   {
     label: 'Glavno',
     items: [
       { to: '/app/dashboard', icon: LayoutDashboard, label: 'Dashboard', end: true },
-      { to: '/app/clients', icon: Users, label: 'Klijenti' },
-      { to: '/app/pets', icon: PawPrint, label: 'Ljubimci' },
-      { to: '/app/visits', icon: ClipboardList, label: 'Posjete' },
-      { to: '/app/documents', icon: FileText, label: 'Dokumenti' },
+      { to: '/app/clients', icon: Users, label: 'Klijenti', flag: 'adminCRM' },
+      { to: '/app/pets', icon: PawPrint, label: 'Ljubimci', flag: 'adminCRM' },
+      { to: '/app/visits', icon: ClipboardList, label: 'Posjete', flag: 'adminCRM' },
+      { to: '/app/documents', icon: FileText, label: 'Dokumenti', flag: 'adminCRM' },
     ],
   },
   {
     label: 'Upravljanje',
     items: [
       { to: '/app/pricing', icon: DollarSign, label: 'Cjenovnik' },
-      { to: '/app/inventory', icon: Package, label: 'Lager' },
-      { to: '/app/reminders', icon: Bell, label: 'Podsjetnici' },
+      { to: '/app/inventory', icon: Package, label: 'Lager', flag: 'adminInventory' },
+      { to: '/app/reminders', icon: Bell, label: 'Podsjetnici', flag: 'adminReminders' },
     ],
   },
   {
@@ -72,6 +81,7 @@ const navSections = [
     items: [
       { to: '/app/blog', icon: BookOpen, label: 'Blog' },
       { to: '/app/gallery', icon: Image, label: 'Galerija' },
+      { to: '/app/messages', icon: Mail, label: 'Poruke', flag: 'adminMessagesPage' },
     ],
   },
   {
@@ -81,6 +91,10 @@ const navSections = [
     ],
   },
 ];
+
+const navSections = allNavSections
+  .map((s) => ({ ...s, items: s.items.filter((i) => !i.flag || FEATURES[i.flag]) }))
+  .filter((s) => s.items.length > 0);
 
 const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   const { signOut, user, role, isAdmin } = useAuth();
@@ -215,7 +229,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Pretraži klijente, ljubimce..."
+                placeholder={FEATURES.adminCRM ? 'Pretraži klijente, ljubimce...' : 'Pretraži...'}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-9 h-9 bg-muted/50 border-transparent focus:border-border focus:bg-background"
@@ -224,6 +238,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
           </form>
 
           {/* Quick Actions */}
+          {FEATURES.adminQuickActions && (
           <div className="hidden sm:flex items-center gap-2 ml-auto">
             <Button
               variant="default"
@@ -244,8 +259,10 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               Novi nalaz
             </Button>
           </div>
+          )}
 
           {/* Mobile quick actions */}
+          {FEATURES.adminQuickActions && (
           <DropdownMenu>
             <DropdownMenuTrigger asChild className="sm:hidden">
               <Button variant="default" size="icon" className="h-9 w-9">
@@ -263,11 +280,12 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
+          )}
 
           {/* User Menu */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="gap-2 h-9 px-2">
+              <Button variant="ghost" className={cn("gap-2 h-9 px-2", !FEATURES.adminQuickActions && "ml-auto")}>
                 <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
                   <User className="w-4 h-4 text-primary" />
                 </div>
