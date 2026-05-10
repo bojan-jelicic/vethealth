@@ -8,6 +8,7 @@ export const FEATURES = {
   publicPetShop: false,
   publicAppointments: false,
   publicChat: false,
+  publicBlog: true,
   themeToggle: false,
 
   // Admin modules
