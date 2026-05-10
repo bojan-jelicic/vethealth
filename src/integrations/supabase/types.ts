@@ -78,13 +78,6 @@ export type Database = {
             foreignKeyName: "appointments_veterinarian_id_fkey"
             columns: ["veterinarian_id"]
             isOneToOne: false
-            referencedRelation: "public_veterinarians"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "appointments_veterinarian_id_fkey"
-            columns: ["veterinarian_id"]
-            isOneToOne: false
             referencedRelation: "veterinarians"
             referencedColumns: ["id"]
           },
@@ -893,13 +886,6 @@ export type Database = {
             foreignKeyName: "visits_vet_id_fkey"
             columns: ["vet_id"]
             isOneToOne: false
-            referencedRelation: "public_veterinarians"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "visits_vet_id_fkey"
-            columns: ["vet_id"]
-            isOneToOne: false
             referencedRelation: "veterinarians"
             referencedColumns: ["id"]
           },
@@ -907,30 +893,18 @@ export type Database = {
       }
     }
     Views: {
-      public_veterinarians: {
-        Row: {
-          id: string | null
-          is_active: boolean | null
-          name: string | null
-          specialization: string | null
-        }
-        Insert: {
-          id?: string | null
-          is_active?: boolean | null
-          name?: string | null
-          specialization?: string | null
-        }
-        Update: {
-          id?: string | null
-          is_active?: boolean | null
-          name?: string | null
-          specialization?: string | null
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Functions: {
       get_client_id_for_user: { Args: { _user_id: string }; Returns: string }
+      get_public_veterinarians: {
+        Args: never
+        Returns: {
+          id: string
+          name: string
+          specialization: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]
