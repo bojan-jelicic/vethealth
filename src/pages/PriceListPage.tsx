@@ -3,19 +3,12 @@ import { Layout } from '@/components/Layout';
 import { PageHero } from '@/components/PageHero';
 import { useServicesWithCategories, CategoryWithServices } from '@/hooks/useAppointmentData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, AlertCircle, Clock, Printer, Stethoscope, Syringe, Scissors, Bone, Microscope, HelpCircle } from 'lucide-react';
+import { Loader2, AlertCircle, Clock, Printer } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-
-const iconMap: Record<string, React.ElementType> = {
-  Stethoscope,
-  Syringe,
-  Scissors,
-  Bone,
-  Microscope,
-};
+import { getCategoryIcon } from '@/lib/categoryIcons';
 
 const ServiceCategoryCard = ({ category }: { category: CategoryWithServices }) => {
-  const IconComponent = category.icon ? iconMap[category.icon] || HelpCircle : HelpCircle;
+  const IconComponent = getCategoryIcon(category.icon);
 
   if (category.services.length === 0) return null;
 
