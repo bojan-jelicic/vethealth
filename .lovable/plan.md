@@ -1,37 +1,68 @@
-## Problem
+## Cilj
 
-Prijava radi, ali svaka stranica u admin panelu prikazuje "Pristup odbijen". Mrežni pozivi pokazuju da `GET /user_roles?...` vraća **403** sa porukom:
+Pri prvoj posjeti javnom sajtu, jezik treba da se izabere automatski na osnovu **geografske lokacije** korisnika:
 
+- **Balkan** (BA, RS, ME, HR, MK, SI) → `sr`
+- **Njemačko govorno područje** (DE, AT, CH, LI) → `de`
+- **Sve ostale zemlje** → `en`
+
+Kasniji ručni izbor jezika kroz `LanguageSwitcher` (već čuva u `localStorage`) ima prioritet — geo-detekcija se izvršava samo ako korisnik nikad ranije nije birao jezik.
+
+## Pristup
+
+Geo-lociranje radimo na **klijentskoj strani** kroz besplatan, no-key API (`https://ipapi.co/json/`). Fallback redoslijed:
+
+1. `localStorage.i18nextLng` postoji → koristi se (postojeće ponašanje).
+2. Inače → `fetch` ka geo API-ju, mapiraj `country_code` → jezik, sačuvaj u `localStorage` da se sljedeći put ne ponavlja poziv.
+3. Ako API padne (timeout 1.5s ili greška) → fallback na `navigator.language` mapiran istom logikom, pa na kraju `en`.
+
+Geo-detekcija se primjenjuje **samo na javnom dijelu sajta** — admin panel je striktno SR (jezgro pravilo iz memorije) i ne mijenja se.
+
+## Izmjene
+
+### 1. Novi util `src/i18n/geoDetect.ts`
+
+```text
+src/i18n/geoDetect.ts
+  - SR_COUNTRIES = ['BA','RS','ME','HR','MK','SI']
+  - DE_COUNTRIES = ['DE','AT','CH','LI']
+  - mapCountryToLang(code) → 'sr' | 'de' | 'en'
+  - detectLanguageFromGeo(): Promise<'sr'|'de'|'en'>
+      - AbortController sa 1500ms timeoutom
+      - fetch('https://ipapi.co/json/')
+      - na grešku: izvuci country iz navigator.language regiona (npr. 'de-AT' → 'AT')
+      - na potpunu grešku: 'en'
 ```
-permission denied for function has_role
-```
 
-## Uzrok
+### 2. `src/i18n/index.ts` — proširi `detection.order`
 
-U ranijoj sigurnosnoj migraciji `EXECUTE` privilegija na funkciji `public.has_role(uuid, app_role)` je oduzeta i `PUBLIC` i `authenticated` ulozi. Tabela `user_roles` ima dvije SELECT politike koje se procjenjuju zajedno (OR):
+Dodaj custom detector koji koristi `localStorage` flag `i18n_geo_resolved` da se geo poziv izvrši **tačno jednom**. Plan:
 
-1. `Users can view their own roles` — `auth.uid() = user_id`
-2. `Admins can view all roles` — `has_role(auth.uid(), 'admin')`
+- Detector vraća sinhrono `undefined` ako još nije razriješeno → i18next pada na `fallbackLng: 'sr'` privremeno.
+- Pokreni `detectLanguageFromGeo()` async u `init` fazi, pa kada riješi pozovi `i18n.changeLanguage(lang)` i postavi `localStorage.i18nextLng = lang` plus `localStorage.i18n_geo_resolved = '1'`.
+- Ako je već postavljen `i18nextLng` (korisnik ručno izabrao ili je geo već ranije završio) — preskoči geo poziv potpuno.
 
-Postgres prije evaluacije politika provjerava da pozivajuća uloga ima `EXECUTE` na svim funkcijama koje se pojavljuju u **bilo kojoj** politici tabele. Pošto `authenticated` više nema `EXECUTE` na `has_role`, cijeli SELECT pada sa 403, pa frontend ne dobije rolu i `ProtectedRoute` zaključi da korisnik nema ovlaštenja.
+### 3. Bez izmjena na `LanguageSwitcher`
 
-Isti problem će tihi pasti i na svim drugim tabelama čije politike koriste `has_role` (skoro sve admin tabele).
+Postojeći switcher koristi `i18n.changeLanguage` koji već piše u `localStorage`, što automatski isključuje buduće geo pokušaje.
 
-## Rješenje
+### 4. Privatnost / mreža
 
-Vratiti `EXECUTE` privilegije na `has_role` ulozi `authenticated` (i `anon`, pošto se koristi u politikama na javnim tabelama poput `appointments` INSERT putanje preko `authenticated` policy evaluacije). Sigurnost se ne narušava — funkcija samo provjerava postojanje reda u `user_roles` za prosljeđenog korisnika; ne otkriva podatke pozivaoca.
-
-Plan migracije:
-
-```sql
-GRANT EXECUTE ON FUNCTION public.has_role(uuid, public.app_role) TO authenticated, anon;
-GRANT EXECUTE ON FUNCTION public.get_client_id_for_user(uuid) TO authenticated;
-```
-
-Druga linija isto vraća pristup `get_client_id_for_user` jer se koristi u politikama `clients`, `pets`, `visits`, `visit_documents` i bi izazvala isti pad za bilo kog autentifikovanog korisnika koji čita te tabele (npr. budući klijentski portal).
+- ipapi.co je besplatan za do 30k poziva/mjesec, bez ključa.
+- Poziv se izvršava **jednom po pretraživaču** (zbog `i18nextLng` cache-a).
+- Nema slanja ličnih podataka — koristi se samo IP koji ionako ide ka serveru.
+- Ako želimo strožu privatnost kasnije — može se preseliti u edge funkciju i čitati `cf-ipcountry` / `x-vercel-ip-country` header bez vanjskog API poziva.
 
 ## Validacija
 
-1. Pokrenuti migraciju.
-2. Osvježiti `/app/dashboard` — `user_roles` upit treba da vrati 200 sa `role: 'admin'` i dashboard se učitava.
-3. Otvoriti `/app/audit-logs` (admin-only) i potvrditi da se zapisi prikazuju.
+1. Obriši `localStorage.i18nextLng` i `localStorage.i18n_geo_resolved`, otvori sajt.
+2. Provjeri Network tab: jedan poziv ka `ipapi.co`, jezik se mijenja prema vraćenom `country_code`.
+3. Promijeni jezik ručno → reload → ostaje na izabranom jeziku (geo se ne poziva).
+4. Simuliraj fail (offline za ipapi.co) → fallback na `navigator.language` ili `en`.
+
+## Tehnički detalji
+
+- Tip povratka detektora: `'sr' | 'en' | 'de'`.
+- Timeout: `AbortController` + `setTimeout(1500)`.
+- Greška u `fetch` se **ne loguje** kao toast — tiho fallback.
+- Admin/portal rute (`/app/*`, `/portal/*`) ne pokreću promjenu jer admin layout ne koristi `i18n.t` za UI tekst koji se prevodi (sve admin kopije su hard-coded SR).
