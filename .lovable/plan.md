@@ -1,52 +1,57 @@
+## Problem
+
+Polje „Ikona" u formi za kategoriju je obični tekstualni input — admin treba da pogodi tačno ime Lucide ikone (npr. `Syringe`). Ako pogriješi ili odabere nešto što ne postoji u `iconMap` na javnom cjenovniku, prikaže se fallback `HelpCircle`. Trenutno javni `iconMap` u `PriceListPage.tsx` poznaje samo **5** ikona (Stethoscope, Syringe, Scissors, Bone, Microscope), tako da skoro sve ostalo ne radi.
+
 ## Cilj
 
-1. Preimenovati admin stranicu „Cjenovnik" → „Usluge" (sidebar + naziv stranice).
-2. Ukloniti veliki naslov i podnaslov koji bezvezno zauzimaju prostor.
-3. Dodati dva taba:
-   - **Usluge** — postojeći CRUD nad `services` (sa filterima, kliznim panelom).
-   - **Kategorije** — CRUD nad `service_categories` (kreiraj, izmijeni, obriši, aktiviraj/deaktiviraj, redoslijed).
+Zamijeniti tekstualno polje **vizualnim icon picker-om** sa pretragom, ograničenim na kurirani set ikona prikladnih za veterinarsku ordinaciju, koji su garantovano podržani na javnom cjenovniku.
 
-## Stanje
+## Pristup
 
-- `AdminPricing.tsx` — postojeći full CRUD nad `services` (već implementiran u prethodnom koraku).
-- `AdminCategories.tsx` — već postoji 300-linija full CRUD nad `service_categories`, ali **nigdje nije rutiran** (mrtav kod, isto kao bivši AdminServices).
-- Sidebar link `/app/pricing` → label „Cjenovnik" sa `DollarSign` ikonom.
+### 1. Centralizovati listu ikona
 
-## Izmjene
+Novi fajl `src/lib/categoryIcons.ts`:
+- Eksportuje `CATEGORY_ICONS: { name: string; label: string; Icon: LucideIcon }[]` — kurirani set od ~30–40 Lucide ikona relevantnih za veterinu (medicina, životinje, dijagnostika, hirurgija, ljekarne, oprema, itd.).
+- Eksportuje `getCategoryIcon(name?: string | null): LucideIcon` koji vraća odgovarajuću ikonu ili `HelpCircle` fallback.
+- Eksportuje `categoryIconMap: Record<string, LucideIcon>` za jednostavno korištenje na javnoj strani.
 
-### 1. Refactor `AdminPricing.tsx` → `AdminCatalog.tsx` (ili zadržati ime, samo izmijeniti sadržaj)
+Primjer izbora ikona:
+`Stethoscope, Syringe, Scissors, Bone, Microscope, HeartPulse, Pill, Activity, Thermometer, Bandage, ClipboardList, Dog, Cat, Bird, Rabbit, Fish, PawPrint, Hospital, Cross, ShieldCheck, FlaskConical, TestTube, Ambulance, Brain, Eye, Ear, Smile, Tooth (ako postoji — Lucide ima `Tooth`? — fallback `Smile`), Bath, Bug, Leaf, Sparkles, Camera, Calendar, FileText`.
 
-Ostaviti naziv fajla `AdminPricing.tsx` da izbjegnemo lančane preimenovanja u rutama. Na vrhu komponente:
+### 2. Nova komponenta `IconPicker`
 
-- Ukloniti veliki blok sa `<h1>Cjenovnik</h1>` + podnaslov i `Nova stavka` dugme iz desnog ugla.
-- Umotati sadržaj u `Tabs` komponentu (`@/components/ui/tabs`) sa dva `TabsTrigger`-a: **Usluge** i **Kategorije**.
-- Dugme za kreiranje („Nova usluga" / „Nova kategorija") preseliti u traku iznad tabele, desno od filtera, ovisno o aktivnom tabu.
+Putanja: `src/components/admin/IconPicker.tsx`.
 
-### 2. Sadržaj tabova
+Ponašanje:
+- Trigger dugme (umjesto Input polja) prikazuje izabranu ikonu + njen naziv (ili „Odaberi ikonu" ako nije izabrano).
+- Klik otvara `Popover` (shadcn) sa:
+  - `Input` za pretragu po `label` ili `name` (case-insensitive).
+  - Grid 6 kolona × N redova prikazanih ikona; svaki dugme prikazuje samu ikonu + tooltip sa nazivom.
+  - Hover/aktivni stil koristeći semantic tokens (`bg-accent`, `text-primary`).
+  - Dugme „Ukloni ikonu" pri dnu (postavlja na `''`).
+- Props: `value: string`, `onChange: (name: string) => void`.
 
-- **TabsContent „services"** — postojeća tabela usluga + pretraga + filter kategorija + filter status + klizni `Sheet` panel sa formom (sve već postoji, samo se izvuče u podkomponentu `<ServicesTab />` ili ostane inline).
-- **TabsContent „categories"** — preseliti logiku iz `AdminCategories.tsx`, ali **zamijeniti `Dialog` sa `Sheet`** (klizni desni panel, konzistentno sa uslugama). Tabela sa kolonama: Naziv, Opis, Ikona, Redoslijed, Status, Akcije (uredi / obriši sa potvrdom).
+### 3. Integracija u `CategoriesTab` (`src/pages/admin/AdminPricing.tsx`)
 
-### 3. Sidebar i navigacija
+Zamijeniti postojeće polje:
+```tsx
+<Input id="c-icon" value={form.icon} onChange=... placeholder="Npr. Syringe" />
+```
+sa:
+```tsx
+<IconPicker value={form.icon} onChange={(name) => setForm({ ...form, icon: name })} />
+```
 
-`src/components/admin/AdminLayout.tsx`:
-- Promijeniti label `Cjenovnik` → `Usluge`.
-- Ikonu `DollarSign` zamijeniti sa `Stethoscope` (logičnije za usluge).
-- Ruta `/app/pricing` ostaje ista (izbjegavamo redirektovanja).
+Takođe u koloni „Ikona" u tabeli: umjesto sirovog teksta `c.icon`, prikazati pravu ikonu sa labelom, koristeći `getCategoryIcon`.
 
-### 4. Brisanje mrtvog koda
+### 4. Sinhronizacija sa javnim cjenovnikom
 
-Obrisati `src/pages/admin/AdminCategories.tsx` (sav njen kod je preseljen u tab).
-
-### 5. Brisanje kategorije sa zaštitom
-
-Pri brisanju kategorije provjeriti da li postoji bar jedna usluga u njoj (`services.category_id = X`). Ako da, prikazati `AlertDialog` sa porukom „Nije moguće obrisati kategoriju koja sadrži usluge. Prvo prebacite ili obrišite usluge." Inače obrisati uz potvrdu.
+`src/pages/PriceListPage.tsx` — zamijeniti lokalni `iconMap` sa `getCategoryIcon` iz `src/lib/categoryIcons.ts`. Tako sve što admin može da izabere garantovano radi i na javnoj strani.
 
 ## Validacija
 
-1. `/app/usluge` u sidebar-u kao „Usluge"; otvaranje vodi na `/app/pricing`.
-2. Tab „Usluge" prikazuje postojeću funkcionalnost (filteri, panel za kreiranje).
-3. Tab „Kategorije" prikazuje listu kategorija; „Nova kategorija" otvara klizni panel.
-4. Kreirana kategorija odmah dostupna u Select-u za usluge i u filteru.
-5. Brisanje kategorije sa povezanim uslugama je blokirano sa jasnom porukom.
-6. Naslov „Cjenovnik" + podnaslov potpuno uklonjeni — tabovi su na vrhu sadržaja.
+1. Otvoriti tab „Kategorije" → uredi postojeću → polje za ikonu sada je dugme sa preview-om.
+2. Klik otvara popover; pretraga „pas" filtrira na `Dog`, `PawPrint`, itd.
+3. Izabrana ikona se odmah prikazuje u tabeli kategorija.
+4. Otvoriti `/cjenovnik-usluga` → ista ikona se renderuje pored naslova kategorije.
+5. Brisanje ikone vraća na default `HelpCircle` na javnoj strani.
