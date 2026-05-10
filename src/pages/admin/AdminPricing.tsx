@@ -204,8 +204,12 @@ const AdminPricing = () => {
   const filtered = useMemo(() => {
     if (!services) return [];
     const q = search.trim().toLowerCase();
-    if (!q) return services;
     return services.filter((s: any) => {
+      if (categoryFilter === 'none' && s.category_id) return false;
+      if (categoryFilter !== 'all' && categoryFilter !== 'none' && s.category_id !== categoryFilter) return false;
+      if (statusFilter === 'active' && !s.is_active) return false;
+      if (statusFilter === 'inactive' && s.is_active) return false;
+      if (!q) return true;
       const cat = (s.service_categories as any)?.name || '';
       return (
         s.name?.toLowerCase().includes(q) ||
@@ -213,7 +217,7 @@ const AdminPricing = () => {
         cat.toLowerCase().includes(q)
       );
     });
-  }, [services, search]);
+  }, [services, search, categoryFilter, statusFilter]);
 
   return (
     <div className="space-y-6">
