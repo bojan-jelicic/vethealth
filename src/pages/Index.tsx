@@ -5,13 +5,14 @@ import { PetShop } from '@/components/PetShop';
 import { About } from '@/components/About';
 import { Testimonials } from '@/components/Testimonials';
 import { Contact } from '@/components/Contact';
+import { FEATURES } from '@/config/features';
 
 const Index = () => {
   return (
     <Layout>
       <Hero />
       <Services />
-      <PetShop />
+      {FEATURES.publicPetShop && <PetShop />}
       <About />
       <Testimonials />
       <Contact />
