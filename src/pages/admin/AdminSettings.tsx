@@ -1,5 +1,6 @@
-import { useState } from 'react';
-import { Settings, Mail, Send, CheckCircle, Loader2 } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
+import { Mail, Send, CheckCircle, Loader2, Save } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,8 +10,68 @@ import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
 import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { useClinicSettings } from '@/hooks/useClinicSettings';
 
 const AdminSettings = () => {
+  const queryClient = useQueryClient();
+  const { data: clinic } = useClinicSettings();
+
+  const [form, setForm] = useState({
+    name: '',
+    phone: '',
+    email: '',
+    address: '',
+    pon_pet: '',
+    sub: '',
+    ned: '',
+    social_facebook: '',
+    social_instagram: '',
+  });
+  const [savingClinic, setSavingClinic] = useState(false);
+
+  useEffect(() => {
+    if (!clinic) return;
+    setForm({
+      name: clinic.name || '',
+      phone: clinic.phone || '',
+      email: clinic.email || '',
+      address: clinic.address || '',
+      pon_pet: clinic.working_hours?.pon_pet || '',
+      sub: clinic.working_hours?.sub || '',
+      ned: clinic.working_hours?.ned || '',
+      social_facebook: clinic.social_facebook || '',
+      social_instagram: clinic.social_instagram || '',
+    });
+  }, [clinic]);
+
+  const saveClinicSettings = async () => {
+    if (!clinic?.id) return;
+    setSavingClinic(true);
+    const { error } = await (supabase as any)
+      .from('clinic_settings')
+      .update({
+        name: form.name,
+        phone: form.phone || null,
+        email: form.email || null,
+        address: form.address || null,
+        working_hours: {
+          pon_pet: form.pon_pet,
+          sub: form.sub,
+          ned: form.ned,
+        },
+        social_facebook: form.social_facebook || null,
+        social_instagram: form.social_instagram || null,
+      })
+      .eq('id', clinic.id);
+    setSavingClinic(false);
+    if (error) {
+      toast({ title: 'Greška pri snimanju', description: error.message, variant: 'destructive' });
+      return;
+    }
+    queryClient.invalidateQueries({ queryKey: ['clinic-settings'] });
+    toast({ title: 'Postavke ordinacije sačuvane' });
+  };
+
   // Email config (mock/local storage for MVP)
   const [emailConfig, setEmailConfig] = useState(() => {
     const stored = localStorage.getItem('vethealth_email_config');
@@ -71,28 +132,62 @@ const AdminSettings = () => {
       <Card>
         <CardHeader>
           <CardTitle className="text-lg">Informacije o ordinaciji</CardTitle>
-          <CardDescription>Osnovni podaci o veterinarskoj ordinaciji</CardDescription>
+          <CardDescription>Ovi podaci se prikazuju na javnom sajtu</CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label>Naziv ordinacije</Label>
-            <Input defaultValue="VetHealth.ba" />
+            <Input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
           </div>
           <div className="grid sm:grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>Telefon</Label>
-              <Input defaultValue="+387 51 123 456" />
+              <Input value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} />
             </div>
             <div className="space-y-2">
               <Label>Email</Label>
-              <Input defaultValue="info@vethealth.ba" />
+              <Input value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} />
             </div>
           </div>
           <div className="space-y-2">
             <Label>Adresa</Label>
-            <Input defaultValue="Ulica Primjer 123, 78000 Banjaluka" />
+            <Input value={form.address} onChange={(e) => setForm({ ...form, address: e.target.value })} />
           </div>
-          <Button>Sačuvaj promjene</Button>
+
+          <Separator />
+          <p className="text-sm font-medium text-foreground">Radno vrijeme</p>
+          <div className="grid sm:grid-cols-3 gap-4">
+            <div className="space-y-2">
+              <Label>Pon - Pet</Label>
+              <Input value={form.pon_pet} onChange={(e) => setForm({ ...form, pon_pet: e.target.value })} placeholder="08:00 - 20:00" />
+            </div>
+            <div className="space-y-2">
+              <Label>Subota</Label>
+              <Input value={form.sub} onChange={(e) => setForm({ ...form, sub: e.target.value })} placeholder="09:00 - 14:00" />
+            </div>
+            <div className="space-y-2">
+              <Label>Nedjelja</Label>
+              <Input value={form.ned} onChange={(e) => setForm({ ...form, ned: e.target.value })} placeholder="Zatvoreno" />
+            </div>
+          </div>
+
+          <Separator />
+          <p className="text-sm font-medium text-foreground">Društvene mreže</p>
+          <div className="grid sm:grid-cols-2 gap-4">
+            <div className="space-y-2">
+              <Label>Facebook URL</Label>
+              <Input value={form.social_facebook} onChange={(e) => setForm({ ...form, social_facebook: e.target.value })} placeholder="https://facebook.com/..." />
+            </div>
+            <div className="space-y-2">
+              <Label>Instagram URL</Label>
+              <Input value={form.social_instagram} onChange={(e) => setForm({ ...form, social_instagram: e.target.value })} placeholder="https://instagram.com/..." />
+            </div>
+          </div>
+
+          <Button onClick={saveClinicSettings} disabled={savingClinic} className="gap-2">
+            {savingClinic ? <Loader2 className="h-4 w-4 animate-spin" /> : <Save className="h-4 w-4" />}
+            Sačuvaj promjene
+          </Button>
         </CardContent>
       </Card>
 
