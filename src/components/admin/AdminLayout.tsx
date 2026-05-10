@@ -33,8 +33,10 @@ import {
   Plus,
   FilePlus,
   X,
+  Mail,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { FEATURES } from '@/config/features';
 import {
   Dialog,
   DialogContent,
