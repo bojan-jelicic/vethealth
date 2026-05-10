@@ -67,6 +67,8 @@ const AdminPricing = () => {
   const [form, setForm] = useState<ServiceForm>(initialForm);
   const [isEditing, setIsEditing] = useState(false);
   const [search, setSearch] = useState('');
+  const [categoryFilter, setCategoryFilter] = useState<string>('all');
+  const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive'>('all');
   const [deleteId, setDeleteId] = useState<string | null>(null);
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -202,8 +204,12 @@ const AdminPricing = () => {
   const filtered = useMemo(() => {
     if (!services) return [];
     const q = search.trim().toLowerCase();
-    if (!q) return services;
     return services.filter((s: any) => {
+      if (categoryFilter === 'none' && s.category_id) return false;
+      if (categoryFilter !== 'all' && categoryFilter !== 'none' && s.category_id !== categoryFilter) return false;
+      if (statusFilter === 'active' && !s.is_active) return false;
+      if (statusFilter === 'inactive' && s.is_active) return false;
+      if (!q) return true;
       const cat = (s.service_categories as any)?.name || '';
       return (
         s.name?.toLowerCase().includes(q) ||
@@ -211,7 +217,7 @@ const AdminPricing = () => {
         cat.toLowerCase().includes(q)
       );
     });
-  }, [services, search]);
+  }, [services, search, categoryFilter, statusFilter]);
 
   return (
     <div className="space-y-6">
@@ -229,16 +235,53 @@ const AdminPricing = () => {
       </div>
 
       <div className="bg-card rounded-lg border border-border">
-        <div className="p-4 border-b border-border">
-          <div className="relative max-w-sm">
+        <div className="p-4 border-b border-border flex flex-col sm:flex-row gap-3 sm:items-center">
+          <div className="relative flex-1 sm:max-w-sm">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
-              placeholder="Pretraži cjenovnik..."
+              placeholder="Pretraži po nazivu..."
               className="pl-9"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
+          <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+            <SelectTrigger className="w-full sm:w-56">
+              <SelectValue placeholder="Kategorija" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Sve kategorije</SelectItem>
+              <SelectItem value="none">Bez kategorije</SelectItem>
+              {categories?.map((cat) => (
+                <SelectItem key={cat.id} value={cat.id}>
+                  {cat.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+          <Select value={statusFilter} onValueChange={(v) => setStatusFilter(v as any)}>
+            <SelectTrigger className="w-full sm:w-40">
+              <SelectValue placeholder="Status" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">Svi statusi</SelectItem>
+              <SelectItem value="active">Aktivne</SelectItem>
+              <SelectItem value="inactive">Neaktivne</SelectItem>
+            </SelectContent>
+          </Select>
+          {(search || categoryFilter !== 'all' || statusFilter !== 'all') && (
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                setSearch('');
+                setCategoryFilter('all');
+                setStatusFilter('all');
+              }}
+            >
+              Poništi filtere
+            </Button>
+          )}
         </div>
 
         {isLoading ? (
