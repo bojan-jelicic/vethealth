@@ -32,7 +32,12 @@ const ServiceCategoryCard = ({ category }: { category: CategoryWithServices }) =
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0">
-        <table className="w-full">
+        <table className="w-full table-fixed">
+          <colgroup>
+            <col />
+            <col className="hidden sm:table-column" style={{ width: '140px' }} />
+            <col style={{ width: '140px' }} />
+          </colgroup>
           <tbody>
             {category.services.map((service, index) => (
               <tr
