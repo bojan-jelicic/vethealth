@@ -897,6 +897,14 @@ export type Database = {
     }
     Functions: {
       get_client_id_for_user: { Args: { _user_id: string }; Returns: string }
+      get_public_veterinarians: {
+        Args: never
+        Returns: {
+          id: string
+          name: string
+          specialization: string
+        }[]
+      }
       has_role: {
         Args: {
           _role: Database["public"]["Enums"]["app_role"]

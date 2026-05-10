@@ -119,14 +119,10 @@ export const useVeterinarians = () => {
   return useQuery({
     queryKey: ['veterinarians'],
     queryFn: async () => {
-      const { data, error } = await supabase
-        .from('veterinarians')
-        .select('id, name, specialization')
-        .eq('is_active', true)
-        .order('name');
-      
+      const { data, error } = await supabase.rpc('get_public_veterinarians');
+
       if (error) throw error;
-      return data as Veterinarian[];
+      return (data ?? []) as Veterinarian[];
     },
   });
 };
