@@ -1,68 +1,62 @@
+## Problem
+
+Admin stranica `/app/pricing` (`AdminPricing.tsx`) trenutno je samo statički prototip sa hard-kodovanim primjerima — nema veze sa bazom. Zato:
+- Javni cjenovnik (`/cjenovnik-usluga`) prikazuje stvarne podatke iz tabele `services` + `service_categories`, ali admin ih ne uređuje.
+- Dugme **„Nova stavka"** ne radi jer nema `onClick` handlera.
+
+Postoji već skoro identična, funkcionalna implementacija u `AdminServices.tsx` (CRUD nad `services` koristeći `Dialog`), ali ona **nije nigdje rutirana niti linkovana** — pa je u praksi mrtav kod.
+
 ## Cilj
 
-Pri prvoj posjeti javnom sajtu, jezik treba da se izabere automatski na osnovu **geografske lokacije** korisnika:
-
-- **Balkan** (BA, RS, ME, HR, MK, SI) → `sr`
-- **Njemačko govorno područje** (DE, AT, CH, LI) → `de`
-- **Sve ostale zemlje** → `en`
-
-Kasniji ručni izbor jezika kroz `LanguageSwitcher` (već čuva u `localStorage`) ima prioritet — geo-detekcija se izvršava samo ako korisnik nikad ranije nije birao jezik.
-
-## Pristup
-
-Geo-lociranje radimo na **klijentskoj strani** kroz besplatan, no-key API (`https://ipapi.co/json/`). Fallback redoslijed:
-
-1. `localStorage.i18nextLng` postoji → koristi se (postojeće ponašanje).
-2. Inače → `fetch` ka geo API-ju, mapiraj `country_code` → jezik, sačuvaj u `localStorage` da se sljedeći put ne ponavlja poziv.
-3. Ako API padne (timeout 1.5s ili greška) → fallback na `navigator.language` mapiran istom logikom, pa na kraju `en`.
-
-Geo-detekcija se primjenjuje **samo na javnom dijelu sajta** — admin panel je striktno SR (jezgro pravilo iz memorije) i ne mijenja se.
+Spojiti dvije stranice u jednu funkcionalnu „Cjenovnik" stranicu koja:
+1. Čita i piše u istu `services`/`service_categories` tabelu koju koristi javni `/cjenovnik-usluga` → automatska sinhronizacija.
+2. Otvara **`Sheet` (klizni panel sa desne strane)** umjesto modal dijaloga, za kreiranje i izmjenu stavki.
+3. Funkcionalna pretraga, prikaz po kategorijama, edit i brisanje.
 
 ## Izmjene
 
-### 1. Novi util `src/i18n/geoDetect.ts`
+### 1. `src/pages/admin/AdminPricing.tsx` — kompletan rewrite
 
-```text
-src/i18n/geoDetect.ts
-  - SR_COUNTRIES = ['BA','RS','ME','HR','MK','SI']
-  - DE_COUNTRIES = ['DE','AT','CH','LI']
-  - mapCountryToLang(code) → 'sr' | 'de' | 'en'
-  - detectLanguageFromGeo(): Promise<'sr'|'de'|'en'>
-      - AbortController sa 1500ms timeoutom
-      - fetch('https://ipapi.co/json/')
-      - na grešku: izvuci country iz navigator.language regiona (npr. 'de-AT' → 'AT')
-      - na potpunu grešku: 'en'
+Osnova: kopirati logiku iz `AdminServices.tsx` (queries, mutations, validacija) i prilagoditi:
+
+- Zamijeniti `Dialog` sa `Sheet` (`@/components/ui/sheet`) — `side="right"`, `className="w-full sm:max-w-lg overflow-y-auto"`.
+- Dugme **„Nova stavka"** otvara `Sheet` sa praznom formom; klik na ikonu olovke otvara isti `Sheet` u edit modu.
+- Forma sadrži: naziv*, opis, cijena (KM), trajanje (min), kategorija (Select iz `service_categories`), `is_active` Switch.
+- Pretraga (`Input`) filtrira lokalno po `name`, `description` i `service_categories.name` (case-insensitive).
+- Prikaz: tabela kao trenutno, ali sa pravim podacima i kolonom Akcije (Uredi / Obriši sa potvrdom kroz `AlertDialog`).
+- Brisanje umotati u `AlertDialog` da se izbjegne nehotično klikanje.
+- Naslov: „Cjenovnik" (zadržati), opis: „Upravljanje cijenama i uslugama prikazanim na javnom cjenovniku".
+
+### 2. Cache invalidation
+
+Mutacije pozivaju:
+```ts
+queryClient.invalidateQueries({ queryKey: ['admin-services'] });
+queryClient.invalidateQueries({ queryKey: ['services-with-categories'] }); // koristi useServicesWithCategories
 ```
 
-### 2. `src/i18n/index.ts` — proširi `detection.order`
+Ovo osigurava da se javni cjenovnik osvježi bez full reloada (ako je hook keširan tim ključem). Provjeriti tačan ključ u `useAppointmentData.ts` i koristiti njegov `queryKey`.
 
-Dodaj custom detector koji koristi `localStorage` flag `i18n_geo_resolved` da se geo poziv izvrši **tačno jednom**. Plan:
+### 3. Brisanje mrtvog koda
 
-- Detector vraća sinhrono `undefined` ako još nije razriješeno → i18next pada na `fallbackLng: 'sr'` privremeno.
-- Pokreni `detectLanguageFromGeo()` async u `init` fazi, pa kada riješi pozovi `i18n.changeLanguage(lang)` i postavi `localStorage.i18nextLng = lang` plus `localStorage.i18n_geo_resolved = '1'`.
-- Ako je već postavljen `i18nextLng` (korisnik ručno izabrao ili je geo već ranije završio) — preskoči geo poziv potpuno.
+Obrisati `src/pages/admin/AdminServices.tsx` (nije nigdje rutiran) da se izbjegne duplikat i konfuzija.
 
-### 3. Bez izmjena na `LanguageSwitcher`
+### 4. Tekst i jezik
 
-Postojeći switcher koristi `i18n.changeLanguage` koji već piše u `localStorage`, što automatski isključuje buduće geo pokušaje.
-
-### 4. Privatnost / mreža
-
-- ipapi.co je besplatan za do 30k poziva/mjesec, bez ključa.
-- Poziv se izvršava **jednom po pretraživaču** (zbog `i18nextLng` cache-a).
-- Nema slanja ličnih podataka — koristi se samo IP koji ionako ide ka serveru.
-- Ako želimo strožu privatnost kasnije — može se preseliti u edge funkciju i čitati `cf-ipcountry` / `x-vercel-ip-country` header bez vanjskog API poziva.
-
-## Validacija
-
-1. Obriši `localStorage.i18nextLng` i `localStorage.i18n_geo_resolved`, otvori sajt.
-2. Provjeri Network tab: jedan poziv ka `ipapi.co`, jezik se mijenja prema vraćenom `country_code`.
-3. Promijeni jezik ručno → reload → ostaje na izabranom jeziku (geo se ne poziva).
-4. Simuliraj fail (offline za ipapi.co) → fallback na `navigator.language` ili `en`.
+Striktno SR (ijekavica), prema Core memoriji: „Nova stavka", „Uredi stavku", „Obriši", „Pretraži cjenovnik…", „Aktivna/Neaktivna", toast poruke „Stavka kreirana / ažurirana / obrisana".
 
 ## Tehnički detalji
 
-- Tip povratka detektora: `'sr' | 'en' | 'de'`.
-- Timeout: `AbortController` + `setTimeout(1500)`.
-- Greška u `fetch` se **ne loguje** kao toast — tiho fallback.
-- Admin/portal rute (`/app/*`, `/portal/*`) ne pokreću promjenu jer admin layout ne koristi `i18n.t` za UI tekst koji se prevodi (sve admin kopije su hard-coded SR).
+- Tabela: `services` (već ima sve potrebne kolone: name, description, price numeric, duration_minutes, category_id, is_active).
+- RLS: već postoje admin policies (insert/update/delete za admin role) — nema potrebe za migracijom.
+- `Sheet` komponenta već postoji u `@/components/ui/sheet` (shadcn standardna).
+- Validacija: naziv obavezan; cijena opciona (numerička); trajanje pozitivan integer.
+
+## Validacija
+
+1. Otvoriti `/app/pricing` → vidjeti stvarne stavke iz `services` tabele.
+2. Klik na „Nova stavka" → klizni panel sa desne strane se otvara, forma je prazna.
+3. Sačuvati novu stavku → toast „Stavka kreirana", panel se zatvara, tabela se osvježava.
+4. Otvoriti `/cjenovnik-usluga` u drugoj tabu → nova stavka je vidljiva u odgovarajućoj kategoriji.
+5. Edit postojeće → panel se otvara sa popunjenim podacima; izmjene se reflektuju i u admin i na javnom cjenovniku.
+6. Brisanje traži potvrdu (AlertDialog), pa briše.
