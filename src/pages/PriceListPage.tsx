@@ -88,10 +88,7 @@ const ServiceCategoryCard = ({ category }: { category: CategoryWithServices }) =
 const PriceListPage = () => {
   const { data: categories, isLoading, error } = useServicesWithCategories();
 
-  const breadcrumbs = [
-    { label: 'Početna', href: '/' },
-    { label: 'Cjenovnik Usluga' },
-  ];
+  const breadcrumbs = [{ label: 'Cjenovnik Usluga' }];
 
   const handlePrint = () => {
     window.print();
@@ -111,14 +108,14 @@ const PriceListPage = () => {
 
       <PageHero
         title="Cjenovnik Usluga"
-        description="Pregled svih naših veterinarskih usluga sa transparentnim cijenama. Cijene su izražene u konvertibilnim markama (KM)."
         breadcrumbs={breadcrumbs}
+        compact
       />
 
-      <section className="section-padding bg-background print:py-4">
+      <section className="py-6 md:py-10 bg-background print:py-4">
         <div className="container-custom">
           {/* Print Button */}
-          <div className="flex justify-end mb-6 print:hidden">
+          <div className="flex justify-end mb-4 print:hidden">
             <Button variant="outline" onClick={handlePrint}>
               <Printer className="w-4 h-4 mr-2" />
               Štampaj Cjenovnik
@@ -168,7 +165,7 @@ const PriceListPage = () => {
               <Card className="bg-primary/5 border-primary/20 print:hidden">
                 <CardContent className="p-4">
                   <p className="text-sm text-foreground">
-                    <strong>Napomena:</strong> Sve navedene cijene su informativnog karaktera. 
+                    <strong>Napomena:</strong> Cijene su izražene u konvertibilnim markama (KM) i informativnog su karaktera.
                     Konačna cijena može varirati ovisno o složenosti tretmana i potrebnim materijalima. 
                     Za tačnu procjenu, molimo kontaktirajte nas.
                   </p>
