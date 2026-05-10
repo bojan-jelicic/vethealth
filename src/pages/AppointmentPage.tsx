@@ -5,10 +5,7 @@ import { AppointmentForm } from '@/components/appointment/AppointmentForm';
 import { Phone, Clock, MapPin } from 'lucide-react';
 
 const AppointmentPage = () => {
-  const breadcrumbs = [
-    { label: 'Početna', href: '/' },
-    { label: 'Zakazivanje Termina' },
-  ];
+  const breadcrumbs = [{ label: 'Zakazivanje Termina' }];
 
   return (
     <Layout>
