@@ -912,6 +912,7 @@ export type Database = {
         }
         Returns: boolean
       }
+      purge_audit_logs: { Args: { _older_than_days?: number }; Returns: number }
     }
     Enums: {
       app_role: "admin" | "user" | "vet" | "client"

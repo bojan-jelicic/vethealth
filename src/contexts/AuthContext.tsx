@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, useCallback, useRef } from 'react';
 import { User, Session } from '@supabase/supabase-js';
 import { supabase } from '@/integrations/supabase/client';
+import { logAudit } from '@/services/auditService';
 
 export type AppRole = 'admin' | 'vet' | 'user';
 
@@ -132,6 +133,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const signIn = async (email: string, password: string) => {
     setSessionExpired(false);
     const { error } = await supabase.auth.signInWithPassword({ email, password });
+    if (!error) {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) await logAudit({ actor_user_id: user.id, action: 'login', entity_type: 'auth', entity_id: user.id, metadata: { email } });
+    } else {
+      await logAudit({ action: 'login_failed', entity_type: 'auth', metadata: { email } });
+    }
     return { error: error as Error | null };
   };
 
@@ -145,7 +152,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   const signOut = async () => {
+    const currentUserId = user?.id;
     clearSessionTimeout();
+    if (currentUserId) {
+      await logAudit({ actor_user_id: currentUserId, action: 'logout', entity_type: 'auth', entity_id: currentUserId });
+    }
     await supabase.auth.signOut();
     setUser(null);
     setSession(null);
