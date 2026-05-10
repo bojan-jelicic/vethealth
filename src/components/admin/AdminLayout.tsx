@@ -72,7 +72,7 @@ const allNavSections: { label: string; items: NavItem[] }[] = [
   {
     label: 'Upravljanje',
     items: [
-      { to: '/app/pricing', icon: DollarSign, label: 'Cjenovnik' },
+      { to: '/app/pricing', icon: Stethoscope, label: 'Usluge' },
       { to: '/app/inventory', icon: Package, label: 'Lager', flag: 'adminInventory' },
       { to: '/app/reminders', icon: Bell, label: 'Podsjetnici', flag: 'adminReminders' },
     ],
