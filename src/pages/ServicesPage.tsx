@@ -53,7 +53,6 @@ const ServicesPage = () => {
       <PageHero
         title={t('servicesPage.title')}
         description={t('servicesPage.description')}
-        breadcrumbs={[{ label: t('nav.services') }]}
       />
 
       <section className="section-padding">
