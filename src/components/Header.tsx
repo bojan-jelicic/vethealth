@@ -14,6 +14,7 @@ const allNavLinks = [
   { key: 'home', href: '/', flag: null },
   { key: 'services', href: '/services', flag: null },
   { key: 'priceList', href: '/cjenovnik-usluga', flag: null },
+  { key: 'blog', href: '/blog', flag: 'publicBlog' as const },
   { key: 'petShop', href: '/pet-shop', flag: 'publicPetShop' as const },
   { key: 'about', href: '/about', flag: null },
   { key: 'contact', href: '/contact', flag: null },
