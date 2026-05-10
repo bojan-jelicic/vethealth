@@ -109,10 +109,7 @@ const PriceListPage = () => {
         />
       </Helmet>
 
-      <PageHero
-        title="Cjenovnik Usluga"
-        compact
-      />
+      <PageHero title="Cjenovnik Usluga" />
 
       <section className="py-6 md:py-10 bg-background print:py-4">
         <div className="container-custom">
