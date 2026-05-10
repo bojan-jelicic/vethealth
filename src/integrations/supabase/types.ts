@@ -182,6 +182,42 @@ export type Database = {
         }
         Relationships: []
       }
+      clinic_settings: {
+        Row: {
+          address: string | null
+          email: string | null
+          id: string
+          name: string
+          phone: string | null
+          social_facebook: string | null
+          social_instagram: string | null
+          updated_at: string
+          working_hours: Json
+        }
+        Insert: {
+          address?: string | null
+          email?: string | null
+          id?: string
+          name?: string
+          phone?: string | null
+          social_facebook?: string | null
+          social_instagram?: string | null
+          updated_at?: string
+          working_hours?: Json
+        }
+        Update: {
+          address?: string | null
+          email?: string | null
+          id?: string
+          name?: string
+          phone?: string | null
+          social_facebook?: string | null
+          social_instagram?: string | null
+          updated_at?: string
+          working_hours?: Json
+        }
+        Relationships: []
+      }
       contact_submissions: {
         Row: {
           created_at: string
