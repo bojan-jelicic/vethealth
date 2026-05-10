@@ -96,7 +96,7 @@ const ContactPage = () => {
         <title>{t('contactPage.seoTitle')}</title>
         <meta name="description" content={t('contactPage.seoDescription')} />
       </Helmet>
-      <PageHero title={t('contactPage.title')} description={t('contactPage.description')} breadcrumbs={[{ label: t('nav.contact') }]} />
+      <PageHero title={t('contactPage.title')} description={t('contactPage.description')} />
 
       <section className="section-padding">
         <div className="container-custom">
