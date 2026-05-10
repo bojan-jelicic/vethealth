@@ -659,7 +659,21 @@ const CategoriesTab = () => {
                   <TableCell className="max-w-xs truncate text-muted-foreground">
                     {c.description || '—'}
                   </TableCell>
-                  <TableCell className="text-muted-foreground">{c.icon || '—'}</TableCell>
+                  <TableCell className="text-muted-foreground">
+                    {c.icon ? (
+                      (() => {
+                        const Icon = getCategoryIcon(c.icon);
+                        return (
+                          <div className="flex items-center gap-2">
+                            <Icon className="h-4 w-4 text-primary" />
+                            <span className="text-xs">{c.icon}</span>
+                          </div>
+                        );
+                      })()
+                    ) : (
+                      '—'
+                    )}
+                  </TableCell>
                   <TableCell className="text-center text-muted-foreground">
                     {serviceCounts?.[c.id] || 0}
                   </TableCell>
@@ -723,12 +737,11 @@ const CategoriesTab = () => {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="c-icon">Ikona (Lucide)</Label>
-                <Input
+                <Label htmlFor="c-icon">Ikona</Label>
+                <IconPicker
                   id="c-icon"
                   value={form.icon}
-                  onChange={(e) => setForm({ ...form, icon: e.target.value })}
-                  placeholder="Npr. Syringe"
+                  onChange={(name) => setForm({ ...form, icon: name })}
                 />
               </div>
               <div className="space-y-2">
