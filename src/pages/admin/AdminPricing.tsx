@@ -43,6 +43,8 @@ import {
 } from '@/components/ui/table';
 import { useToast } from '@/hooks/use-toast';
 import { Plus, Pencil, Trash2, Search, Stethoscope, FolderOpen } from 'lucide-react';
+import { IconPicker } from '@/components/admin/IconPicker';
+import { getCategoryIcon } from '@/lib/categoryIcons';
 
 // =================== USLUGE TAB ===================
 
