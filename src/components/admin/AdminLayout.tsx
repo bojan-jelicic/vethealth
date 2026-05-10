@@ -23,6 +23,7 @@ import {
   BookOpen,
   Image,
   Settings,
+  ScrollText,
   LogOut,
   User,
   Shield,
@@ -88,6 +89,7 @@ const allNavSections: { label: string; items: NavItem[] }[] = [
     label: 'Sistem',
     items: [
       { to: '/app/settings', icon: Settings, label: 'Postavke', adminOnly: true },
+      { to: '/app/audit-logs', icon: ScrollText, label: 'Audit zapisi', adminOnly: true },
     ],
   },
 ];
