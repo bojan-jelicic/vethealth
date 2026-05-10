@@ -11,6 +11,7 @@ import { Badge } from '@/components/ui/badge';
 import { toast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useClinicSettings } from '@/hooks/useClinicSettings';
+import { logAudit } from '@/services/auditService';
 
 const AdminSettings = () => {
   const queryClient = useQueryClient();
@@ -68,6 +69,17 @@ const AdminSettings = () => {
       toast({ title: 'Greška pri snimanju', description: error.message, variant: 'destructive' });
       return;
     }
+    await logAudit({
+      action: 'update',
+      entity_type: 'clinic_settings',
+      entity_id: clinic.id,
+      metadata: {
+        name: form.name,
+        phone_changed: (clinic.phone || '') !== form.phone,
+        email_changed: (clinic.email || '') !== form.email,
+        address_changed: (clinic.address || '') !== form.address,
+      },
+    });
     queryClient.invalidateQueries({ queryKey: ['clinic-settings'] });
     toast({ title: 'Postavke ordinacije sačuvane' });
   };
