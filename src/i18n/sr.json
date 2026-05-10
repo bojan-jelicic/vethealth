@@ -233,5 +233,29 @@
     "closed": "Zatvoreno",
     "networkError": "Trenutno nismo u mogućnosti da obradimo vaš zahtjev. Pokušajte ponovo kasnije.",
     "genericError": "Došlo je do greške pri slanju poruke. Molimo pokušajte ponovo."
+  },
+  "faq": {
+    "title": "Često postavljana pitanja",
+    "subtitle": "Odgovori na pitanja koja klijenti najčešće postavljaju.",
+    "q1": {
+      "q": "Da li je potrebno zakazati termin?",
+      "a": "Preporučujemo da nas pozovete unaprijed kako biste izbjegli čekanje. Hitne slučajeve primamo bez zakazivanja."
+    },
+    "q2": {
+      "q": "Koje vrste životinja primate?",
+      "a": "Pružamo veterinarske usluge psima, mačkama, malim glodarima, pticama i egzotičnim ljubimcima."
+    },
+    "q3": {
+      "q": "Da li radite vikendom?",
+      "a": "Subotom radimo prema rasporedu prikazanom na stranici. Nedjeljom smo dostupni samo za hitne slučajeve."
+    },
+    "q4": {
+      "q": "Mogu li platiti karticom?",
+      "a": "Da, prihvatamo gotovinu i sve standardne platne kartice."
+    },
+    "q5": {
+      "q": "Kako da pripremim ljubimca za pregled?",
+      "a": "Donesite zdravstveni karton i listu lijekova koje ljubimac koristi. Za laboratorijske analize može biti potreban gladovanje 8-12 sati - obavezno se konsultujte unaprijed."
+    }
   }
 }
