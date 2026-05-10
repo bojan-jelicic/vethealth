@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { Badge } from '@/components/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import {
   Sheet,
   SheetContent,
@@ -41,7 +42,9 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { useToast } from '@/hooks/use-toast';
-import { Plus, Pencil, Trash2, Search, DollarSign } from 'lucide-react';
+import { Plus, Pencil, Trash2, Search, Stethoscope, FolderOpen } from 'lucide-react';
+
+// =================== USLUGE TAB ===================
 
 interface ServiceForm {
   id?: string;
@@ -53,7 +56,7 @@ interface ServiceForm {
   is_active: boolean;
 }
 
-const initialForm: ServiceForm = {
+const initialServiceForm: ServiceForm = {
   name: '',
   description: '',
   price: '',
@@ -62,9 +65,9 @@ const initialForm: ServiceForm = {
   is_active: true,
 };
 
-const AdminPricing = () => {
+const ServicesTab = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [form, setForm] = useState<ServiceForm>(initialForm);
+  const [form, setForm] = useState<ServiceForm>(initialServiceForm);
   const [isEditing, setIsEditing] = useState(false);
   const [search, setSearch] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -117,12 +120,11 @@ const AdminPricing = () => {
     },
     onSuccess: () => {
       invalidateAll();
-      toast({ title: 'Stavka kreirana' });
+      toast({ title: 'Usluga kreirana' });
       handleClose();
     },
-    onError: (e: any) => {
-      toast({ title: 'Greška pri kreiranju', description: e?.message, variant: 'destructive' });
-    },
+    onError: (e: any) =>
+      toast({ title: 'Greška pri kreiranju', description: e?.message, variant: 'destructive' }),
   });
 
   const updateMutation = useMutation({
@@ -142,12 +144,11 @@ const AdminPricing = () => {
     },
     onSuccess: () => {
       invalidateAll();
-      toast({ title: 'Stavka ažurirana' });
+      toast({ title: 'Usluga ažurirana' });
       handleClose();
     },
-    onError: (e: any) => {
-      toast({ title: 'Greška pri ažuriranju', description: e?.message, variant: 'destructive' });
-    },
+    onError: (e: any) =>
+      toast({ title: 'Greška pri ažuriranju', description: e?.message, variant: 'destructive' }),
   });
 
   const deleteMutation = useMutation({
@@ -157,35 +158,34 @@ const AdminPricing = () => {
     },
     onSuccess: () => {
       invalidateAll();
-      toast({ title: 'Stavka obrisana' });
+      toast({ title: 'Usluga obrisana' });
       setDeleteId(null);
     },
-    onError: (e: any) => {
-      toast({ title: 'Greška pri brisanju', description: e?.message, variant: 'destructive' });
-    },
+    onError: (e: any) =>
+      toast({ title: 'Greška pri brisanju', description: e?.message, variant: 'destructive' }),
   });
 
   const handleClose = () => {
     setIsOpen(false);
-    setForm(initialForm);
+    setForm(initialServiceForm);
     setIsEditing(false);
   };
 
   const handleNew = () => {
-    setForm(initialForm);
+    setForm(initialServiceForm);
     setIsEditing(false);
     setIsOpen(true);
   };
 
-  const handleEdit = (service: any) => {
+  const handleEdit = (s: any) => {
     setForm({
-      id: service.id,
-      name: service.name,
-      description: service.description || '',
-      price: service.price?.toString() || '',
-      duration_minutes: service.duration_minutes.toString(),
-      category_id: service.category_id || '',
-      is_active: service.is_active,
+      id: s.id,
+      name: s.name,
+      description: s.description || '',
+      price: s.price?.toString() || '',
+      duration_minutes: s.duration_minutes.toString(),
+      category_id: s.category_id || '',
+      is_active: s.is_active,
     });
     setIsEditing(true);
     setIsOpen(true);
@@ -194,7 +194,7 @@ const AdminPricing = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!form.name.trim()) {
-      toast({ title: 'Unesite naziv stavke', variant: 'destructive' });
+      toast({ title: 'Unesite naziv usluge', variant: 'destructive' });
       return;
     }
     if (isEditing) updateMutation.mutate(form);
@@ -206,7 +206,8 @@ const AdminPricing = () => {
     const q = search.trim().toLowerCase();
     return services.filter((s: any) => {
       if (categoryFilter === 'none' && s.category_id) return false;
-      if (categoryFilter !== 'all' && categoryFilter !== 'none' && s.category_id !== categoryFilter) return false;
+      if (categoryFilter !== 'all' && categoryFilter !== 'none' && s.category_id !== categoryFilter)
+        return false;
       if (statusFilter === 'active' && !s.is_active) return false;
       if (statusFilter === 'inactive' && s.is_active) return false;
       if (!q) return true;
@@ -220,20 +221,7 @@ const AdminPricing = () => {
   }, [services, search, categoryFilter, statusFilter]);
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-2xl font-heading font-bold text-foreground">Cjenovnik</h1>
-          <p className="text-sm text-muted-foreground">
-            Upravljanje cijenama i uslugama prikazanim na javnom cjenovniku
-          </p>
-        </div>
-        <Button onClick={handleNew}>
-          <Plus className="w-4 h-4 mr-2" />
-          Nova stavka
-        </Button>
-      </div>
-
+    <div className="space-y-4">
       <div className="bg-card rounded-lg border border-border">
         <div className="p-4 border-b border-border flex flex-col sm:flex-row gap-3 sm:items-center">
           <div className="relative flex-1 sm:max-w-sm">
@@ -282,14 +270,19 @@ const AdminPricing = () => {
               Poništi filtere
             </Button>
           )}
+          <div className="flex-1" />
+          <Button onClick={handleNew}>
+            <Plus className="w-4 h-4 mr-2" />
+            Nova usluga
+          </Button>
         </div>
 
         {isLoading ? (
           <div className="text-center py-12 text-muted-foreground">Učitavanje...</div>
         ) : filtered.length === 0 ? (
           <div className="text-center py-12 text-muted-foreground">
-            <DollarSign className="h-12 w-12 mx-auto mb-3 opacity-40" />
-            <p>{search ? 'Nema rezultata pretrage' : 'Nema stavki u cjenovniku'}</p>
+            <Stethoscope className="h-12 w-12 mx-auto mb-3 opacity-40" />
+            <p>{search ? 'Nema rezultata pretrage' : 'Nema usluga'}</p>
           </div>
         ) : (
           <Table>
@@ -346,7 +339,7 @@ const AdminPricing = () => {
       <Sheet open={isOpen} onOpenChange={(o) => (o ? setIsOpen(true) : handleClose())}>
         <SheetContent side="right" className="w-full sm:max-w-lg overflow-y-auto">
           <SheetHeader>
-            <SheetTitle>{isEditing ? 'Uredi stavku' : 'Nova stavka cjenovnika'}</SheetTitle>
+            <SheetTitle>{isEditing ? 'Uredi uslugu' : 'Nova usluga'}</SheetTitle>
             <SheetDescription>
               Podaci se sinhronizuju sa javnim cjenovnikom u realnom vremenu.
             </SheetDescription>
@@ -354,9 +347,9 @@ const AdminPricing = () => {
 
           <form onSubmit={handleSubmit} className="space-y-4 mt-6">
             <div className="space-y-2">
-              <Label htmlFor="name">Naziv *</Label>
+              <Label htmlFor="s-name">Naziv *</Label>
               <Input
-                id="name"
+                id="s-name"
                 value={form.name}
                 onChange={(e) => setForm({ ...form, name: e.target.value })}
                 placeholder="Npr. Opšti pregled"
@@ -364,9 +357,9 @@ const AdminPricing = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="description">Opis</Label>
+              <Label htmlFor="s-desc">Opis</Label>
               <Textarea
-                id="description"
+                id="s-desc"
                 value={form.description}
                 onChange={(e) => setForm({ ...form, description: e.target.value })}
                 placeholder="Kratak opis usluge..."
@@ -376,9 +369,9 @@ const AdminPricing = () => {
 
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
-                <Label htmlFor="price">Cijena (KM)</Label>
+                <Label htmlFor="s-price">Cijena (KM)</Label>
                 <Input
-                  id="price"
+                  id="s-price"
                   type="number"
                   step="0.01"
                   min="0"
@@ -388,9 +381,9 @@ const AdminPricing = () => {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="duration">Trajanje (min)</Label>
+                <Label htmlFor="s-dur">Trajanje (min)</Label>
                 <Input
-                  id="duration"
+                  id="s-dur"
                   type="number"
                   min="1"
                   value={form.duration_minutes}
@@ -400,7 +393,7 @@ const AdminPricing = () => {
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="category">Kategorija</Label>
+              <Label htmlFor="s-cat">Kategorija</Label>
               <Select
                 value={form.category_id}
                 onValueChange={(value) => setForm({ ...form, category_id: value })}
@@ -420,13 +413,13 @@ const AdminPricing = () => {
 
             <div className="flex items-center justify-between rounded-lg border border-border p-3">
               <div>
-                <Label htmlFor="active" className="cursor-pointer">Aktivna stavka</Label>
+                <Label htmlFor="s-active" className="cursor-pointer">Aktivna usluga</Label>
                 <p className="text-xs text-muted-foreground mt-0.5">
                   Vidljiva na javnom cjenovniku
                 </p>
               </div>
               <Switch
-                id="active"
+                id="s-active"
                 checked={form.is_active}
                 onCheckedChange={(checked) => setForm({ ...form, is_active: checked })}
               />
@@ -440,7 +433,7 @@ const AdminPricing = () => {
                 type="submit"
                 disabled={createMutation.isPending || updateMutation.isPending}
               >
-                {isEditing ? 'Sačuvaj izmjene' : 'Kreiraj stavku'}
+                {isEditing ? 'Sačuvaj izmjene' : 'Kreiraj uslugu'}
               </Button>
             </SheetFooter>
           </form>
@@ -450,9 +443,9 @@ const AdminPricing = () => {
       <AlertDialog open={!!deleteId} onOpenChange={(o) => !o && setDeleteId(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>Obrisati stavku?</AlertDialogTitle>
+            <AlertDialogTitle>Obrisati uslugu?</AlertDialogTitle>
             <AlertDialogDescription>
-              Ova radnja je nepovratna. Stavka će biti uklonjena i sa javnog cjenovnika.
+              Ova radnja je nepovratna. Usluga će biti uklonjena i sa javnog cjenovnika.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
@@ -467,6 +460,370 @@ const AdminPricing = () => {
         </AlertDialogContent>
       </AlertDialog>
     </div>
+  );
+};
+
+// =================== KATEGORIJE TAB ===================
+
+interface CategoryForm {
+  id?: string;
+  name: string;
+  description: string;
+  icon: string;
+  sort_order: string;
+  is_active: boolean;
+}
+
+const initialCategoryForm: CategoryForm = {
+  name: '',
+  description: '',
+  icon: '',
+  sort_order: '0',
+  is_active: true,
+};
+
+const CategoriesTab = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [form, setForm] = useState<CategoryForm>(initialCategoryForm);
+  const [isEditing, setIsEditing] = useState(false);
+  const [deleteTarget, setDeleteTarget] = useState<{ id: string; serviceCount: number } | null>(null);
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+
+  const { data: categories, isLoading } = useQuery({
+    queryKey: ['admin-pricing-categories'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('service_categories')
+        .select('*')
+        .order('sort_order');
+      if (error) throw error;
+      return data;
+    },
+  });
+
+  // Map kategorija -> broj usluga (za zaštitu pri brisanju)
+  const { data: serviceCounts } = useQuery({
+    queryKey: ['admin-category-service-counts'],
+    queryFn: async () => {
+      const { data, error } = await supabase.from('services').select('category_id');
+      if (error) throw error;
+      const counts: Record<string, number> = {};
+      data?.forEach((s: any) => {
+        if (s.category_id) counts[s.category_id] = (counts[s.category_id] || 0) + 1;
+      });
+      return counts;
+    },
+  });
+
+  const invalidateAll = () => {
+    queryClient.invalidateQueries({ queryKey: ['admin-pricing-categories'] });
+    queryClient.invalidateQueries({ queryKey: ['admin-category-service-counts'] });
+    queryClient.invalidateQueries({ queryKey: ['services-with-categories'] });
+    queryClient.invalidateQueries({ queryKey: ['service-categories'] });
+  };
+
+  const createMutation = useMutation({
+    mutationFn: async (data: CategoryForm) => {
+      const { error } = await supabase.from('service_categories').insert({
+        name: data.name,
+        description: data.description || null,
+        icon: data.icon || null,
+        sort_order: parseInt(data.sort_order) || 0,
+        is_active: data.is_active,
+      });
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      invalidateAll();
+      toast({ title: 'Kategorija kreirana' });
+      handleClose();
+    },
+    onError: (e: any) =>
+      toast({ title: 'Greška pri kreiranju', description: e?.message, variant: 'destructive' }),
+  });
+
+  const updateMutation = useMutation({
+    mutationFn: async (data: CategoryForm) => {
+      const { error } = await supabase
+        .from('service_categories')
+        .update({
+          name: data.name,
+          description: data.description || null,
+          icon: data.icon || null,
+          sort_order: parseInt(data.sort_order) || 0,
+          is_active: data.is_active,
+        })
+        .eq('id', data.id!);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      invalidateAll();
+      toast({ title: 'Kategorija ažurirana' });
+      handleClose();
+    },
+    onError: (e: any) =>
+      toast({ title: 'Greška pri ažuriranju', description: e?.message, variant: 'destructive' }),
+  });
+
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const { error } = await supabase.from('service_categories').delete().eq('id', id);
+      if (error) throw error;
+    },
+    onSuccess: () => {
+      invalidateAll();
+      toast({ title: 'Kategorija obrisana' });
+      setDeleteTarget(null);
+    },
+    onError: (e: any) =>
+      toast({ title: 'Greška pri brisanju', description: e?.message, variant: 'destructive' }),
+  });
+
+  const handleClose = () => {
+    setIsOpen(false);
+    setForm(initialCategoryForm);
+    setIsEditing(false);
+  };
+
+  const handleNew = () => {
+    setForm(initialCategoryForm);
+    setIsEditing(false);
+    setIsOpen(true);
+  };
+
+  const handleEdit = (c: any) => {
+    setForm({
+      id: c.id,
+      name: c.name,
+      description: c.description || '',
+      icon: c.icon || '',
+      sort_order: c.sort_order?.toString() || '0',
+      is_active: c.is_active,
+    });
+    setIsEditing(true);
+    setIsOpen(true);
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.name.trim()) {
+      toast({ title: 'Unesite naziv kategorije', variant: 'destructive' });
+      return;
+    }
+    if (isEditing) updateMutation.mutate(form);
+    else createMutation.mutate(form);
+  };
+
+  const requestDelete = (id: string) => {
+    setDeleteTarget({ id, serviceCount: serviceCounts?.[id] || 0 });
+  };
+
+  return (
+    <div className="space-y-4">
+      <div className="bg-card rounded-lg border border-border">
+        <div className="p-4 border-b border-border flex justify-end">
+          <Button onClick={handleNew}>
+            <Plus className="w-4 h-4 mr-2" />
+            Nova kategorija
+          </Button>
+        </div>
+
+        {isLoading ? (
+          <div className="text-center py-12 text-muted-foreground">Učitavanje...</div>
+        ) : !categories || categories.length === 0 ? (
+          <div className="text-center py-12 text-muted-foreground">
+            <FolderOpen className="h-12 w-12 mx-auto mb-3 opacity-40" />
+            <p>Nema kategorija</p>
+          </div>
+        ) : (
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead className="w-20">Redoslijed</TableHead>
+                <TableHead>Naziv</TableHead>
+                <TableHead>Opis</TableHead>
+                <TableHead>Ikona</TableHead>
+                <TableHead className="text-center">Br. usluga</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead className="text-right">Akcije</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {categories.map((c: any) => (
+                <TableRow key={c.id}>
+                  <TableCell className="text-muted-foreground">{c.sort_order}</TableCell>
+                  <TableCell className="font-medium">{c.name}</TableCell>
+                  <TableCell className="max-w-xs truncate text-muted-foreground">
+                    {c.description || '—'}
+                  </TableCell>
+                  <TableCell className="text-muted-foreground">{c.icon || '—'}</TableCell>
+                  <TableCell className="text-center text-muted-foreground">
+                    {serviceCounts?.[c.id] || 0}
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={c.is_active ? 'secondary' : 'outline'}>
+                      {c.is_active ? 'Aktivna' : 'Neaktivna'}
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex items-center justify-end gap-1">
+                      <Button size="sm" variant="ghost" onClick={() => handleEdit(c)}>
+                        <Pencil className="h-4 w-4" />
+                      </Button>
+                      <Button
+                        size="sm"
+                        variant="ghost"
+                        className="text-destructive hover:text-destructive"
+                        onClick={() => requestDelete(c.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        )}
+      </div>
+
+      <Sheet open={isOpen} onOpenChange={(o) => (o ? setIsOpen(true) : handleClose())}>
+        <SheetContent side="right" className="w-full sm:max-w-lg overflow-y-auto">
+          <SheetHeader>
+            <SheetTitle>{isEditing ? 'Uredi kategoriju' : 'Nova kategorija'}</SheetTitle>
+            <SheetDescription>
+              Kategorije grupišu usluge na javnom cjenovniku.
+            </SheetDescription>
+          </SheetHeader>
+
+          <form onSubmit={handleSubmit} className="space-y-4 mt-6">
+            <div className="space-y-2">
+              <Label htmlFor="c-name">Naziv *</Label>
+              <Input
+                id="c-name"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                placeholder="Npr. Vakcinacije"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="c-desc">Opis</Label>
+              <Textarea
+                id="c-desc"
+                value={form.description}
+                onChange={(e) => setForm({ ...form, description: e.target.value })}
+                placeholder="Kratak opis kategorije..."
+                rows={3}
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label htmlFor="c-icon">Ikona (Lucide)</Label>
+                <Input
+                  id="c-icon"
+                  value={form.icon}
+                  onChange={(e) => setForm({ ...form, icon: e.target.value })}
+                  placeholder="Npr. Syringe"
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="c-sort">Redoslijed</Label>
+                <Input
+                  id="c-sort"
+                  type="number"
+                  value={form.sort_order}
+                  onChange={(e) => setForm({ ...form, sort_order: e.target.value })}
+                />
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between rounded-lg border border-border p-3">
+              <div>
+                <Label htmlFor="c-active" className="cursor-pointer">Aktivna kategorija</Label>
+                <p className="text-xs text-muted-foreground mt-0.5">
+                  Vidljiva na javnom cjenovniku
+                </p>
+              </div>
+              <Switch
+                id="c-active"
+                checked={form.is_active}
+                onCheckedChange={(checked) => setForm({ ...form, is_active: checked })}
+              />
+            </div>
+
+            <SheetFooter className="gap-2 pt-4">
+              <Button type="button" variant="outline" onClick={handleClose}>
+                Otkaži
+              </Button>
+              <Button
+                type="submit"
+                disabled={createMutation.isPending || updateMutation.isPending}
+              >
+                {isEditing ? 'Sačuvaj izmjene' : 'Kreiraj kategoriju'}
+              </Button>
+            </SheetFooter>
+          </form>
+        </SheetContent>
+      </Sheet>
+
+      <AlertDialog open={!!deleteTarget} onOpenChange={(o) => !o && setDeleteTarget(null)}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>
+              {deleteTarget && deleteTarget.serviceCount > 0
+                ? 'Brisanje nije moguće'
+                : 'Obrisati kategoriju?'}
+            </AlertDialogTitle>
+            <AlertDialogDescription>
+              {deleteTarget && deleteTarget.serviceCount > 0
+                ? `Ova kategorija sadrži ${deleteTarget.serviceCount} ${
+                    deleteTarget.serviceCount === 1 ? 'uslugu' : 'usluga'
+                  }. Prvo prebacite ili obrišite te usluge, pa pokušajte ponovo.`
+                : 'Ova radnja je nepovratna.'}
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel>Otkaži</AlertDialogCancel>
+            {deleteTarget && deleteTarget.serviceCount === 0 && (
+              <AlertDialogAction
+                onClick={() => deleteTarget && deleteMutation.mutate(deleteTarget.id)}
+                className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+              >
+                Obriši
+              </AlertDialogAction>
+            )}
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </div>
+  );
+};
+
+// =================== WRAPPER ===================
+
+const AdminPricing = () => {
+  return (
+    <Tabs defaultValue="services" className="space-y-4">
+      <TabsList>
+        <TabsTrigger value="services">
+          <Stethoscope className="w-4 h-4 mr-2" />
+          Usluge
+        </TabsTrigger>
+        <TabsTrigger value="categories">
+          <FolderOpen className="w-4 h-4 mr-2" />
+          Kategorije
+        </TabsTrigger>
+      </TabsList>
+      <TabsContent value="services">
+        <ServicesTab />
+      </TabsContent>
+      <TabsContent value="categories">
+        <CategoriesTab />
+      </TabsContent>
+    </Tabs>
   );
 };
 
