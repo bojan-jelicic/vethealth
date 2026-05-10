@@ -37,7 +37,7 @@ const AboutPage = () => {
         <title>{t('aboutPage.seoTitle')}</title>
         <meta name="description" content={t('aboutPage.seoDescription')} />
       </Helmet>
-      <PageHero title={t('aboutPage.title')} description={t('aboutPage.description')} breadcrumbs={[{ label: t('nav.about') }]} />
+      <PageHero title={t('aboutPage.title')} description={t('aboutPage.description')} />
 
       {/* Our Story */}
       <section className="section-padding">
