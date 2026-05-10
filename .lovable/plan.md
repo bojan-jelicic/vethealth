@@ -1,62 +1,52 @@
-## Problem
-
-Admin stranica `/app/pricing` (`AdminPricing.tsx`) trenutno je samo statički prototip sa hard-kodovanim primjerima — nema veze sa bazom. Zato:
-- Javni cjenovnik (`/cjenovnik-usluga`) prikazuje stvarne podatke iz tabele `services` + `service_categories`, ali admin ih ne uređuje.
-- Dugme **„Nova stavka"** ne radi jer nema `onClick` handlera.
-
-Postoji već skoro identična, funkcionalna implementacija u `AdminServices.tsx` (CRUD nad `services` koristeći `Dialog`), ali ona **nije nigdje rutirana niti linkovana** — pa je u praksi mrtav kod.
-
 ## Cilj
 
-Spojiti dvije stranice u jednu funkcionalnu „Cjenovnik" stranicu koja:
-1. Čita i piše u istu `services`/`service_categories` tabelu koju koristi javni `/cjenovnik-usluga` → automatska sinhronizacija.
-2. Otvara **`Sheet` (klizni panel sa desne strane)** umjesto modal dijaloga, za kreiranje i izmjenu stavki.
-3. Funkcionalna pretraga, prikaz po kategorijama, edit i brisanje.
+1. Preimenovati admin stranicu „Cjenovnik" → „Usluge" (sidebar + naziv stranice).
+2. Ukloniti veliki naslov i podnaslov koji bezvezno zauzimaju prostor.
+3. Dodati dva taba:
+   - **Usluge** — postojeći CRUD nad `services` (sa filterima, kliznim panelom).
+   - **Kategorije** — CRUD nad `service_categories` (kreiraj, izmijeni, obriši, aktiviraj/deaktiviraj, redoslijed).
+
+## Stanje
+
+- `AdminPricing.tsx` — postojeći full CRUD nad `services` (već implementiran u prethodnom koraku).
+- `AdminCategories.tsx` — već postoji 300-linija full CRUD nad `service_categories`, ali **nigdje nije rutiran** (mrtav kod, isto kao bivši AdminServices).
+- Sidebar link `/app/pricing` → label „Cjenovnik" sa `DollarSign` ikonom.
 
 ## Izmjene
 
-### 1. `src/pages/admin/AdminPricing.tsx` — kompletan rewrite
+### 1. Refactor `AdminPricing.tsx` → `AdminCatalog.tsx` (ili zadržati ime, samo izmijeniti sadržaj)
 
-Osnova: kopirati logiku iz `AdminServices.tsx` (queries, mutations, validacija) i prilagoditi:
+Ostaviti naziv fajla `AdminPricing.tsx` da izbjegnemo lančane preimenovanja u rutama. Na vrhu komponente:
 
-- Zamijeniti `Dialog` sa `Sheet` (`@/components/ui/sheet`) — `side="right"`, `className="w-full sm:max-w-lg overflow-y-auto"`.
-- Dugme **„Nova stavka"** otvara `Sheet` sa praznom formom; klik na ikonu olovke otvara isti `Sheet` u edit modu.
-- Forma sadrži: naziv*, opis, cijena (KM), trajanje (min), kategorija (Select iz `service_categories`), `is_active` Switch.
-- Pretraga (`Input`) filtrira lokalno po `name`, `description` i `service_categories.name` (case-insensitive).
-- Prikaz: tabela kao trenutno, ali sa pravim podacima i kolonom Akcije (Uredi / Obriši sa potvrdom kroz `AlertDialog`).
-- Brisanje umotati u `AlertDialog` da se izbjegne nehotično klikanje.
-- Naslov: „Cjenovnik" (zadržati), opis: „Upravljanje cijenama i uslugama prikazanim na javnom cjenovniku".
+- Ukloniti veliki blok sa `<h1>Cjenovnik</h1>` + podnaslov i `Nova stavka` dugme iz desnog ugla.
+- Umotati sadržaj u `Tabs` komponentu (`@/components/ui/tabs`) sa dva `TabsTrigger`-a: **Usluge** i **Kategorije**.
+- Dugme za kreiranje („Nova usluga" / „Nova kategorija") preseliti u traku iznad tabele, desno od filtera, ovisno o aktivnom tabu.
 
-### 2. Cache invalidation
+### 2. Sadržaj tabova
 
-Mutacije pozivaju:
-```ts
-queryClient.invalidateQueries({ queryKey: ['admin-services'] });
-queryClient.invalidateQueries({ queryKey: ['services-with-categories'] }); // koristi useServicesWithCategories
-```
+- **TabsContent „services"** — postojeća tabela usluga + pretraga + filter kategorija + filter status + klizni `Sheet` panel sa formom (sve već postoji, samo se izvuče u podkomponentu `<ServicesTab />` ili ostane inline).
+- **TabsContent „categories"** — preseliti logiku iz `AdminCategories.tsx`, ali **zamijeniti `Dialog` sa `Sheet`** (klizni desni panel, konzistentno sa uslugama). Tabela sa kolonama: Naziv, Opis, Ikona, Redoslijed, Status, Akcije (uredi / obriši sa potvrdom).
 
-Ovo osigurava da se javni cjenovnik osvježi bez full reloada (ako je hook keširan tim ključem). Provjeriti tačan ključ u `useAppointmentData.ts` i koristiti njegov `queryKey`.
+### 3. Sidebar i navigacija
 
-### 3. Brisanje mrtvog koda
+`src/components/admin/AdminLayout.tsx`:
+- Promijeniti label `Cjenovnik` → `Usluge`.
+- Ikonu `DollarSign` zamijeniti sa `Stethoscope` (logičnije za usluge).
+- Ruta `/app/pricing` ostaje ista (izbjegavamo redirektovanja).
 
-Obrisati `src/pages/admin/AdminServices.tsx` (nije nigdje rutiran) da se izbjegne duplikat i konfuzija.
+### 4. Brisanje mrtvog koda
 
-### 4. Tekst i jezik
+Obrisati `src/pages/admin/AdminCategories.tsx` (sav njen kod je preseljen u tab).
 
-Striktno SR (ijekavica), prema Core memoriji: „Nova stavka", „Uredi stavku", „Obriši", „Pretraži cjenovnik…", „Aktivna/Neaktivna", toast poruke „Stavka kreirana / ažurirana / obrisana".
+### 5. Brisanje kategorije sa zaštitom
 
-## Tehnički detalji
-
-- Tabela: `services` (već ima sve potrebne kolone: name, description, price numeric, duration_minutes, category_id, is_active).
-- RLS: već postoje admin policies (insert/update/delete za admin role) — nema potrebe za migracijom.
-- `Sheet` komponenta već postoji u `@/components/ui/sheet` (shadcn standardna).
-- Validacija: naziv obavezan; cijena opciona (numerička); trajanje pozitivan integer.
+Pri brisanju kategorije provjeriti da li postoji bar jedna usluga u njoj (`services.category_id = X`). Ako da, prikazati `AlertDialog` sa porukom „Nije moguće obrisati kategoriju koja sadrži usluge. Prvo prebacite ili obrišite usluge." Inače obrisati uz potvrdu.
 
 ## Validacija
 
-1. Otvoriti `/app/pricing` → vidjeti stvarne stavke iz `services` tabele.
-2. Klik na „Nova stavka" → klizni panel sa desne strane se otvara, forma je prazna.
-3. Sačuvati novu stavku → toast „Stavka kreirana", panel se zatvara, tabela se osvježava.
-4. Otvoriti `/cjenovnik-usluga` u drugoj tabu → nova stavka je vidljiva u odgovarajućoj kategoriji.
-5. Edit postojeće → panel se otvara sa popunjenim podacima; izmjene se reflektuju i u admin i na javnom cjenovniku.
-6. Brisanje traži potvrdu (AlertDialog), pa briše.
+1. `/app/usluge` u sidebar-u kao „Usluge"; otvaranje vodi na `/app/pricing`.
+2. Tab „Usluge" prikazuje postojeću funkcionalnost (filteri, panel za kreiranje).
+3. Tab „Kategorije" prikazuje listu kategorija; „Nova kategorija" otvara klizni panel.
+4. Kreirana kategorija odmah dostupna u Select-u za usluge i u filteru.
+5. Brisanje kategorije sa povezanim uslugama je blokirano sa jasnom porukom.
+6. Naslov „Cjenovnik" + podnaslov potpuno uklonjeni — tabovi su na vrhu sadržaja.
