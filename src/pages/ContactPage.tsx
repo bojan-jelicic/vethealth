@@ -9,9 +9,12 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/integrations/supabase/client';
 import { contactFormSchema, type ContactFormData } from '@/lib/validations';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
+import { useClinicSettings, telLink, mailLink } from '@/hooks/useClinicSettings';
 
 const ContactPage = () => {
   const { t } = useTranslation();
+  const { data: clinic } = useClinicSettings();
   const [formData, setFormData] = useState<ContactFormData>({ name: '', email: '', phone: '', subject: '', message: '' });
   const [errors, setErrors] = useState<Partial<Record<keyof ContactFormData, string>>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
