@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Send, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
-import { useClinicSettings } from '@/hooks/useClinicSettings';
+import { useClinicSettings, telLink, mailLink, mapsLink } from '@/hooks/useClinicSettings';
 
 export const Contact = () => {
   const { t } = useTranslation();
@@ -19,9 +19,9 @@ export const Contact = () => {
     : t('contact.workingHoursContent');
 
   const contactInfo = [
-    { icon: MapPin, titleKey: 'contact.address', content: clinic?.address || 'Banja Luka' },
-    { icon: Phone, titleKey: 'contact.phone', content: clinic?.phone || '+387 51 123 456' },
-    { icon: Mail, titleKey: 'contact.email', content: clinic?.email || 'info@vethealth.ba' },
+    { icon: MapPin, titleKey: 'contact.address', content: clinic?.address || 'Banja Luka', link: mapsLink(clinic?.address) },
+    { icon: Phone, titleKey: 'contact.phone', content: clinic?.phone || '+387 51 123 456', link: telLink(clinic?.phone) },
+    { icon: Mail, titleKey: 'contact.email', content: clinic?.email || 'info@vethealth.ba', link: mailLink(clinic?.email) },
     { icon: Clock, titleKey: 'contact.workingHours', content: workingHoursText },
   ];
 
