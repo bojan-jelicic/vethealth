@@ -143,9 +143,6 @@ const AboutPage = () => {
           <p className="text-primary-foreground/80 mb-8 max-w-xl mx-auto">{t('aboutPage.ctaDesc')}</p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button variant="accent" size="lg" asChild>
-              <Link to="/contact">{t('aboutPage.bookAppointment')}</Link>
-            </Button>
-            <Button variant="outline" size="lg" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
               <Link to="/cjenovnik-usluga">{t('aboutPage.viewServices')}</Link>
             </Button>
           </div>

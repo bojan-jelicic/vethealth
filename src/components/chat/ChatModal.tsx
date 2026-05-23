@@ -138,13 +138,6 @@ export const ChatModal = () => {
               </p>
               <div className="mt-4 space-y-2">
                 <button
-                  onClick={() => sendMessage('Želim zakazati termin za pregled')}
-                  className="block w-full text-left px-3 py-2 rounded-lg bg-primary/10 hover:bg-primary/20 text-sm transition-colors border border-primary/20"
-                >
-                  <CalendarCheck className="w-4 h-4 inline mr-2 text-primary" />
-                  Želim zakazati termin
-                </button>
-                <button
                   onClick={() => sendMessage('Koje usluge nudite?')}
                   className="block w-full text-left px-3 py-2 rounded-lg bg-secondary hover:bg-secondary/80 text-sm transition-colors"
                 >
