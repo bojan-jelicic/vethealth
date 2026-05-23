@@ -51,7 +51,7 @@ export const Header = () => {
       }`}
     >
       <div className="container-custom">
-        <div className="flex items-center justify-between h-16 md:h-20">
+        <div className="flex items-center justify-between h-20 md:h-20 pt-2 md:pt-0">
           {/* Logo */}
           <Link to="/" className="group">
             <img
