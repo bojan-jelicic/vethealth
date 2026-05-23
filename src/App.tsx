@@ -12,6 +12,7 @@ import ProtectedRoute from "@/components/admin/ProtectedRoute";
 import FeatureRoute from "@/components/FeatureRoute";
 import { FEATURES } from "@/config/features";
 import AdminLayout from "@/components/admin/AdminLayout";
+import ScrollToTop from "@/components/ScrollToTop";
 import Index from "./pages/Index";
 import ServicesPage from "./pages/ServicesPage";
 import ServiceDetailsPage from "./pages/ServiceDetailsPage";
@@ -58,6 +59,7 @@ const App = () => (
             <Toaster />
             <Sonner />
             <BrowserRouter>
+              <ScrollToTop />
               <Routes>
                 {/* Public Routes */}
                 <Route path="/" element={<Index />} />
