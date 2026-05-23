@@ -519,35 +519,47 @@ export type Database = {
       services: {
         Row: {
           category_id: string | null
+          content_blocks: Json
           created_at: string
           description: string | null
           duration_minutes: number
+          hero_image_url: string | null
           id: string
           is_active: boolean
+          long_description: string | null
           name: string
           price: number | null
+          slug: string | null
           updated_at: string
         }
         Insert: {
           category_id?: string | null
+          content_blocks?: Json
           created_at?: string
           description?: string | null
           duration_minutes?: number
+          hero_image_url?: string | null
           id?: string
           is_active?: boolean
+          long_description?: string | null
           name: string
           price?: number | null
+          slug?: string | null
           updated_at?: string
         }
         Update: {
           category_id?: string | null
+          content_blocks?: Json
           created_at?: string
           description?: string | null
           duration_minutes?: number
+          hero_image_url?: string | null
           id?: string
           is_active?: boolean
+          long_description?: string | null
           name?: string
           price?: number | null
+          slug?: string | null
           updated_at?: string
         }
         Relationships: [
