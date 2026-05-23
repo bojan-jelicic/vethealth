@@ -146,7 +146,7 @@ const AboutPage = () => {
               <Link to="/contact">{t('aboutPage.bookAppointment')}</Link>
             </Button>
             <Button variant="outline" size="lg" className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground hover:text-primary" asChild>
-              <Link to="/services">{t('aboutPage.viewServices')}</Link>
+              <Link to="/cjenovnik-usluga">{t('aboutPage.viewServices')}</Link>
             </Button>
           </div>
         </div>

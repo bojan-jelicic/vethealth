@@ -64,7 +64,7 @@ export const Services = () => {
 
         <div className="text-center mt-12">
           <Button variant="default" size="lg" asChild>
-            <Link to="/services">{t('services.viewAll')}</Link>
+            <Link to="/cjenovnik-usluga">{t('services.viewAll')}</Link>
           </Button>
         </div>
       </div>
