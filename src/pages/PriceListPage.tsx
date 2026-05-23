@@ -50,9 +50,19 @@ const ServiceCategoryCard = ({ category }: { category: CategoryWithServices }) =
               >
                 <td className="py-4 px-6">
                   <div>
-                    <p className="font-medium text-foreground">
-                      {service.name}
-                    </p>
+                    {hasServiceDetails(service) ? (
+                      <Link
+                        to={`/services/${service.slug}`}
+                        className="font-medium text-foreground hover:text-primary transition-colors inline-flex items-center gap-1.5 group"
+                      >
+                        {service.name}
+                        <ExternalLink className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-primary" />
+                      </Link>
+                    ) : (
+                      <p className="font-medium text-foreground">
+                        {service.name}
+                      </p>
+                    )}
                     {service.description && (
                       <p className="text-sm text-muted-foreground mt-1 hidden md:block">
                         {service.description}
