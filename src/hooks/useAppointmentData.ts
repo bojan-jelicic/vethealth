@@ -103,14 +103,19 @@ export const useServicesWithCategories = () => {
       
       if (svcError) throw svcError;
 
+      const normalized = (services || []).map((s: any): Service => ({
+        ...s,
+        content_blocks: Array.isArray(s.content_blocks) ? (s.content_blocks as ServiceContentBlock[]) : [],
+      }));
+
       // Group services by category
       const categoriesWithServices: CategoryWithServices[] = (categories || []).map(cat => ({
         ...cat,
-        services: (services || []).filter(svc => svc.category_id === cat.id)
+        services: normalized.filter(svc => svc.category_id === cat.id)
       }));
 
       // Add uncategorized services
-      const uncategorizedServices = (services || []).filter(svc => !svc.category_id);
+      const uncategorizedServices = normalized.filter(svc => !svc.category_id);
       if (uncategorizedServices.length > 0) {
         categoriesWithServices.push({
           id: 'uncategorized',
