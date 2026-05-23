@@ -98,7 +98,7 @@ const ContactPage = () => {
       </Helmet>
       <PageHero title={t('contactPage.title')} description={t('contactPage.description')} />
 
-      <section className="section-padding">
+      <section className="pt-8 pb-16 md:pt-10 md:pb-20">
         <div className="container-custom">
           {/* Emergency Banner */}
           <div className="mb-12 bg-destructive/10 border border-destructive/20 rounded-card p-6 md:p-8">
