@@ -1,48 +1,32 @@
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { 
-  PawPrint, Facebook, Instagram, Mail, Phone, MapPin, Send
+  PawPrint, Facebook, Instagram, Mail, Phone, MapPin
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { useToast } from '@/hooks/use-toast';
 import { useClinicSettings, telLink, mailLink, mapsLink } from '@/hooks/useClinicSettings';
+import { FEATURES } from '@/config/features';
 
 export const Footer = () => {
   const { t } = useTranslation();
-  const { toast } = useToast();
-  const [email, setEmail] = useState('');
   const { data: clinic } = useClinicSettings();
 
-  const handleNewsletterSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast({
-      title: t('footer.newsletterSuccess'),
-      description: t('footer.newsletterMessage'),
-    });
-    setEmail('');
-  };
-
   const serviceLinks = [
-    { name: t('services.generalExams'), href: '#services' },
-    { name: t('services.vaccinations'), href: '#services' },
-    { name: t('services.surgery'), href: '#services' },
-    { name: t('services.laboratory'), href: '#services' },
-    { name: t('services.dentistry'), href: '#services' },
+    { name: t('services.generalExams'), to: '/services/opsti-pregledi' },
+    { name: t('services.vaccinations'), to: '/services/vakcinacije' },
+    { name: t('services.surgery'), to: '/services/operacije' },
+    { name: t('services.laboratory'), to: '/services/laboratorija' },
+    { name: t('services.dentistry'), to: '/services/stomatologija' },
   ];
 
   const companyLinks = [
-    { name: t('footer.aboutUs'), href: '#about' },
-    { name: t('footer.ourTeam'), href: '#about' },
-    { name: t('footer.blogTips'), href: '#' },
-    { name: t('footer.careers'), href: '#' },
+    { key: 'home', name: t('nav.home'), to: '/' },
+    { key: 'services', name: t('nav.services'), to: '/services' },
+    { key: 'priceList', name: t('nav.priceList'), to: '/cjenovnik-usluga' },
+    ...(FEATURES.publicBlog ? [{ key: 'blog', name: t('nav.blog'), to: '/blog' }] : []),
+    ...(FEATURES.publicPetShop ? [{ key: 'petShop', name: t('nav.petShop'), to: '/pet-shop' }] : []),
+    { key: 'about', name: t('nav.about'), to: '/about' },
+    { key: 'contact', name: t('nav.contact'), to: '/contact' },
   ];
-
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) element.scrollIntoView({ behavior: 'smooth' });
-  };
 
   return (
     <footer className="bg-foreground text-background">
@@ -80,9 +64,9 @@ export const Footer = () => {
             <ul className="space-y-3">
               {serviceLinks.map((link) => (
                 <li key={link.name}>
-                  <button onClick={() => scrollToSection(link.href)} className="text-background/70 hover:text-primary transition-colors">
+                  <Link to={link.to} className="text-background/70 hover:text-primary transition-colors">
                     {link.name}
-                  </button>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -94,18 +78,18 @@ export const Footer = () => {
             <ul className="space-y-3">
               {companyLinks.map((link) => (
                 <li key={link.name}>
-                  <button onClick={() => scrollToSection(link.href)} className="text-background/70 hover:text-primary transition-colors">
+                  <Link to={link.to} className="text-background/70 hover:text-primary transition-colors">
                     {link.name}
-                  </button>
+                  </Link>
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* Contact & Newsletter */}
+          {/* Contact */}
           <div>
             <h4 className="font-heading font-semibold text-background mb-6">{t('footer.contactTitle')}</h4>
-            <ul className="space-y-3 mb-6">
+            <ul className="space-y-3">
               <li>
                 <a href={mapsLink(clinic?.address)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-background/70 hover:text-primary transition-colors">
                   <MapPin className="w-4 h-4 text-primary" />
@@ -125,18 +109,6 @@ export const Footer = () => {
                 </a>
               </li>
             </ul>
-
-            <h5 className="font-medium text-background mb-3">{t('footer.newsletter')}</h5>
-            <form onSubmit={handleNewsletterSubmit} className="flex gap-2">
-              <Input
-                type="email" placeholder={t('footer.emailPlaceholder')} value={email}
-                onChange={(e) => setEmail(e.target.value)} required
-                className="bg-background/10 border-background/20 text-background placeholder:text-background/50 rounded-input"
-              />
-              <Button type="submit" variant="accent" size="icon">
-                <Send className="w-4 h-4" />
-              </Button>
-            </form>
           </div>
         </div>
 
