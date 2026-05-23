@@ -4,7 +4,7 @@ import { Layout } from '@/components/Layout';
 import { PageHero } from '@/components/PageHero';
 import { useServicesWithCategories, CategoryWithServices, hasServiceDetails } from '@/hooks/useAppointmentData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, AlertCircle, Clock, ArrowRight } from 'lucide-react';
+import { Loader2, AlertCircle, Clock, ExternalLink } from 'lucide-react';
 import { getCategoryIcon } from '@/lib/categoryIcons';
 
 const ServiceCategoryCard = ({ category }: { category: CategoryWithServices }) => {
@@ -50,9 +50,19 @@ const ServiceCategoryCard = ({ category }: { category: CategoryWithServices }) =
               >
                 <td className="py-4 px-6">
                   <div>
-                    <p className="font-medium text-foreground">
-                      {service.name}
-                    </p>
+                    {hasServiceDetails(service) ? (
+                      <Link
+                        to={`/services/${service.slug}`}
+                        className="font-medium text-foreground hover:text-primary transition-colors inline-flex items-center gap-1.5 group"
+                      >
+                        {service.name}
+                        <ExternalLink className="w-3.5 h-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-primary" />
+                      </Link>
+                    ) : (
+                      <p className="font-medium text-foreground">
+                        {service.name}
+                      </p>
+                    )}
                     {service.description && (
                       <p className="text-sm text-muted-foreground mt-1 hidden md:block">
                         {service.description}
@@ -72,22 +82,12 @@ const ServiceCategoryCard = ({ category }: { category: CategoryWithServices }) =
                   </div>
                 </td>
                 <td className="py-4 px-6 text-right">
-                  <div className="flex flex-col items-end gap-1">
-                    <div>
-                      <span className="text-lg font-bold text-primary">
-                        {service.price?.toFixed(2) || '—'}
-                      </span>
-                      {service.price && (
-                        <span className="text-sm text-muted-foreground ml-1">KM</span>
-                      )}
-                    </div>
-                    {hasServiceDetails(service) && (
-                      <Link
-                        to={`/services/${service.slug}`}
-                        className="text-xs text-primary hover:underline inline-flex items-center gap-1"
-                      >
-                        Detalji <ArrowRight className="w-3 h-3" />
-                      </Link>
+                  <div>
+                    <span className="text-lg font-bold text-primary">
+                      {service.price?.toFixed(2) || '—'}
+                    </span>
+                    {service.price && (
+                      <span className="text-sm text-muted-foreground ml-1">KM</span>
                     )}
                   </div>
                 </td>
