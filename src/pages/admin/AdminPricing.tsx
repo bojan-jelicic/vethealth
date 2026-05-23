@@ -45,6 +45,9 @@ import { useToast } from '@/hooks/use-toast';
 import { Plus, Pencil, Trash2, Search, Stethoscope, FolderOpen } from 'lucide-react';
 import { IconPicker } from '@/components/admin/IconPicker';
 import { getCategoryIcon } from '@/lib/categoryIcons';
+import { ServiceContentEditor, ImageField } from '@/components/admin/ServiceContentEditor';
+import { slugify, isValidSlug } from '@/lib/slug';
+import type { ServiceContentBlock } from '@/hooks/useAppointmentData';
 
 // =================== USLUGE TAB ===================
 
@@ -56,6 +59,10 @@ interface ServiceForm {
   duration_minutes: string;
   category_id: string;
   is_active: boolean;
+  slug: string;
+  hero_image_url: string;
+  long_description: string;
+  content_blocks: ServiceContentBlock[];
 }
 
 const initialServiceForm: ServiceForm = {
@@ -65,6 +72,10 @@ const initialServiceForm: ServiceForm = {
   duration_minutes: '30',
   category_id: '',
   is_active: true,
+  slug: '',
+  hero_image_url: '',
+  long_description: '',
+  content_blocks: [],
 };
 
 const ServicesTab = () => {
@@ -117,6 +128,10 @@ const ServicesTab = () => {
         duration_minutes: parseInt(data.duration_minutes) || 30,
         category_id: data.category_id || null,
         is_active: data.is_active,
+        slug: data.slug || null,
+        hero_image_url: data.hero_image_url || null,
+        long_description: data.long_description || null,
+        content_blocks: data.content_blocks as any,
       });
       if (error) throw error;
     },
@@ -140,6 +155,10 @@ const ServicesTab = () => {
           duration_minutes: parseInt(data.duration_minutes) || 30,
           category_id: data.category_id || null,
           is_active: data.is_active,
+          slug: data.slug || null,
+          hero_image_url: data.hero_image_url || null,
+          long_description: data.long_description || null,
+          content_blocks: data.content_blocks as any,
         })
         .eq('id', data.id!);
       if (error) throw error;
@@ -188,6 +207,10 @@ const ServicesTab = () => {
       duration_minutes: s.duration_minutes.toString(),
       category_id: s.category_id || '',
       is_active: s.is_active,
+      slug: s.slug || '',
+      hero_image_url: s.hero_image_url || '',
+      long_description: s.long_description || '',
+      content_blocks: Array.isArray(s.content_blocks) ? s.content_blocks : [],
     });
     setIsEditing(true);
     setIsOpen(true);
@@ -197,6 +220,15 @@ const ServicesTab = () => {
     e.preventDefault();
     if (!form.name.trim()) {
       toast({ title: 'Unesite naziv usluge', variant: 'destructive' });
+      return;
+    }
+    const hasDetails = !!form.hero_image_url || !!form.long_description.trim() || form.content_blocks.length > 0;
+    if (hasDetails && !form.slug.trim()) {
+      toast({ title: 'Slug je obavezan kada usluga ima detaljnu stranicu', variant: 'destructive' });
+      return;
+    }
+    if (form.slug && !isValidSlug(form.slug)) {
+      toast({ title: 'Neispravan slug', description: 'Dozvoljena su mala slova, brojevi i crtice.', variant: 'destructive' });
       return;
     }
     if (isEditing) updateMutation.mutate(form);
