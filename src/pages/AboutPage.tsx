@@ -40,7 +40,7 @@ const AboutPage = () => {
       <PageHero title={t('aboutPage.title')} description={t('aboutPage.description')} />
 
       {/* Our Story */}
-      <section className="pt-8 pb-16 md:pt-10 md:pb-20">
+      <section className="pt-4 pb-16 md:pt-6 md:pb-20">
         <div className="container-custom">
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div>
