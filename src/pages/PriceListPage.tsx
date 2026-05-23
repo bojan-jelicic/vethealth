@@ -3,8 +3,7 @@ import { Layout } from '@/components/Layout';
 import { PageHero } from '@/components/PageHero';
 import { useServicesWithCategories, CategoryWithServices } from '@/hooks/useAppointmentData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, AlertCircle, Clock, Printer } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Loader2, AlertCircle, Clock } from 'lucide-react';
 import { getCategoryIcon } from '@/lib/categoryIcons';
 
 const ServiceCategoryCard = ({ category }: { category: CategoryWithServices }) => {
@@ -93,10 +92,6 @@ const ServiceCategoryCard = ({ category }: { category: CategoryWithServices }) =
 const PriceListPage = () => {
   const { data: categories, isLoading, error } = useServicesWithCategories();
 
-  const handlePrint = () => {
-    window.print();
-  };
-
   const totalServices = categories?.reduce((sum, cat) => sum + cat.services.length, 0) || 0;
 
   return (
@@ -109,18 +104,14 @@ const PriceListPage = () => {
         />
       </Helmet>
 
-      <PageHero title="Cjenovnik Usluga" />
-
-      <section className="py-6 md:py-10 bg-background print:py-4">
+      <section className="pt-24 md:pt-28 pb-2">
         <div className="container-custom">
-          {/* Print Button */}
-          <div className="flex justify-end mb-4 print:hidden">
-            <Button variant="outline" onClick={handlePrint}>
-              <Printer className="w-4 h-4 mr-2" />
-              Štampaj Cjenovnik
-            </Button>
-          </div>
+          <h1 className="text-h1 text-foreground">Cjenovnik Usluga</h1>
+        </div>
+      </section>
 
+      <section className="pt-4 pb-6 md:pb-10 bg-background print:py-4">
+        <div className="container-custom">
           {/* Loading State */}
           {isLoading && (
             <div className="flex flex-col items-center justify-center py-16">
