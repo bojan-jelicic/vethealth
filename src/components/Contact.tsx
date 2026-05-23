@@ -58,7 +58,7 @@ export const Contact = () => {
             {contactInfo.map((item) => {
               const CardContent = (
                 <div className="flex items-start gap-4 p-4 bg-card rounded-card shadow-card group">
-                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-2">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
                     <item.icon className="w-6 h-6 text-primary" />
                   </div>
                   <div className="flex-1 min-w-1">
