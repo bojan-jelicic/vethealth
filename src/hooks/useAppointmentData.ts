@@ -8,7 +8,19 @@ export interface Service {
   duration_minutes: number;
   price: number | null;
   category_id: string | null;
+  slug?: string | null;
+  hero_image_url?: string | null;
+  long_description?: string | null;
+  content_blocks?: ServiceContentBlock[] | null;
 }
+
+export type ServiceContentBlock =
+  | { id: string; type: 'text'; title?: string; body: string }
+  | { id: string; type: 'image'; title?: string; image_url: string }
+  | { id: string; type: 'list'; title?: string; body: string };
+
+export const hasServiceDetails = (s: Pick<Service, 'slug' | 'hero_image_url' | 'long_description' | 'content_blocks'>) =>
+  !!s.slug && (!!s.hero_image_url || !!s.long_description || ((s.content_blocks?.length ?? 0) > 0));
 
 export interface ServiceCategory {
   id: string;
@@ -85,7 +97,7 @@ export const useServicesWithCategories = () => {
       // Fetch services
       const { data: services, error: svcError } = await supabase
         .from('services')
-        .select('id, name, description, duration_minutes, price, category_id')
+        .select('id, name, description, duration_minutes, price, category_id, slug, hero_image_url, long_description, content_blocks')
         .eq('is_active', true)
         .order('name');
       
