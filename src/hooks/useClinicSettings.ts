@@ -56,3 +56,5 @@ export const telLink = (phone?: string | null) =>
   phone ? `tel:${phone.replace(/\s+/g, '')}` : '#';
 export const mailLink = (email?: string | null) =>
   email ? `mailto:${email}` : '#';
+export const mapsLink = (address?: string | null) =>
+  address ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}` : '#';
