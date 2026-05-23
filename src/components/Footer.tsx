@@ -7,7 +7,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useToast } from '@/hooks/use-toast';
-import { useClinicSettings } from '@/hooks/useClinicSettings';
+import { useClinicSettings, telLink, mailLink, mapsLink } from '@/hooks/useClinicSettings';
 
 export const Footer = () => {
   const { t } = useTranslation();
