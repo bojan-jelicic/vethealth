@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { Calendar, Heart, Shield, Clock } from 'lucide-react';
-import { FEATURES } from '@/config/features';
+import { List, Heart, Shield, Clock } from 'lucide-react';
 
 export const Hero = () => {
   const { t } = useTranslation();
