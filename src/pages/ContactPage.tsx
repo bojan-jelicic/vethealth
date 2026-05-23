@@ -4,7 +4,6 @@ import { Phone, Clock, AlertTriangle } from 'lucide-react';
 import { Layout } from '@/components/Layout';
 import { PageHero } from '@/components/PageHero';
 import { ContactSection } from '@/components/ContactSection';
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/ui/accordion';
 import { useClinicSettings } from '@/hooks/useClinicSettings';
 
 const ContactPage = () => {
@@ -18,8 +17,6 @@ const ContactPage = () => {
     { dayKey: 'contactPage.sunday', hours: wh?.ned || t('contactPage.closed'), active: false },
     { dayKey: 'contactPage.emergencyCases', hours: '24/7', active: true },
   ];
-
-  const faqKeys = ['q1', 'q2', 'q3', 'q4', 'q5'];
 
   return (
     <Layout>
@@ -63,26 +60,6 @@ const ContactPage = () => {
           </div>
 
           <ContactSection variant="plain" />
-
-          {/* FAQ */}
-          <div className="mt-16 max-w-3xl mx-auto">
-            <div className="text-center mb-8">
-              <h2 className="text-h3 text-foreground mb-2">{t('faq.title')}</h2>
-              <p className="text-muted-foreground">{t('faq.subtitle')}</p>
-            </div>
-            <Accordion type="single" collapsible className="bg-card rounded-card shadow-card px-6">
-              {faqKeys.map((k) => (
-                <AccordionItem key={k} value={k}>
-                  <AccordionTrigger className="text-left font-heading font-medium">
-                    {t(`faq.${k}.q`)}
-                  </AccordionTrigger>
-                  <AccordionContent className="text-muted-foreground">
-                    {t(`faq.${k}.a`)}
-                  </AccordionContent>
-                </AccordionItem>
-              ))}
-            </Accordion>
-          </div>
         </div>
       </section>
     </Layout>
