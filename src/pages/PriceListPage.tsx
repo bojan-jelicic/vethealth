@@ -4,7 +4,7 @@ import { Layout } from '@/components/Layout';
 import { PageHero } from '@/components/PageHero';
 import { useServicesWithCategories, CategoryWithServices, hasServiceDetails } from '@/hooks/useAppointmentData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, AlertCircle, Clock, ArrowRight } from 'lucide-react';
+import { Loader2, AlertCircle, Clock, ExternalLink } from 'lucide-react';
 import { getCategoryIcon } from '@/lib/categoryIcons';
 
 const ServiceCategoryCard = ({ category }: { category: CategoryWithServices }) => {
