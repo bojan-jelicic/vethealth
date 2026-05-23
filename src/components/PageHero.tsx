@@ -18,7 +18,7 @@ export const PageHero = ({ title, description, breadcrumbs, backgroundImage }: P
   const { t } = useTranslation();
 
   return (
-    <section className="relative pt-24 pb-16 md:pt-32 md:pb-20 overflow-hidden">
+    <section className="relative pt-24 pb-6 md:pt-28 md:pb-8 overflow-hidden">
       {backgroundImage && (
         <div
           className="absolute inset-0 opacity-10"
