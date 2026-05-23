@@ -1,8 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { Calendar, Heart, Shield, Clock } from 'lucide-react';
-import { FEATURES } from '@/config/features';
+import { List, Heart, Shield, Clock } from 'lucide-react';
 
 export const Hero = () => {
   const { t } = useTranslation();
@@ -40,14 +39,9 @@ export const Hero = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up delay-300">
               <Button variant="hero" size="xl" asChild>
-                <Link to={FEATURES.publicAppointments ? '/zakazivanje-termina' : '/contact'}>
-                  <Calendar className="w-5 h-5" />
-                  {t('hero.ctaPrimary')}
-                </Link>
-              </Button>
-              <Button variant="outline" size="xl" asChild>
                 <Link to="/services">
-                  {t('hero.ctaSecondary')}
+                  <List className="w-5 h-5" />
+                  {t('hero.ctaPrimary')}
                 </Link>
               </Button>
             </div>
