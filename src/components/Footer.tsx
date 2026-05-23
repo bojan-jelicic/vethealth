@@ -106,17 +106,23 @@ export const Footer = () => {
           <div>
             <h4 className="font-heading font-semibold text-background mb-6">{t('footer.contactTitle')}</h4>
             <ul className="space-y-3 mb-6">
-              <li className="flex items-center gap-3 text-background/70">
-                <MapPin className="w-4 h-4 text-primary" />
-                <span>{clinic?.address || 'Banja Luka'}</span>
+              <li>
+                <a href={mapsLink(clinic?.address)} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-background/70 hover:text-primary transition-colors">
+                  <MapPin className="w-4 h-4 text-primary" />
+                  <span>{clinic?.address || 'Banja Luka'}</span>
+                </a>
               </li>
-              <li className="flex items-center gap-3 text-background/70">
-                <Phone className="w-4 h-4 text-primary" />
-                <span>{clinic?.phone || '+387 51 123 456'}</span>
+              <li>
+                <a href={telLink(clinic?.phone)} className="flex items-center gap-3 text-background/70 hover:text-primary transition-colors">
+                  <Phone className="w-4 h-4 text-primary" />
+                  <span>{clinic?.phone || '+387 51 123 456'}</span>
+                </a>
               </li>
-              <li className="flex items-center gap-3 text-background/70">
-                <Mail className="w-4 h-4 text-primary" />
-                <span>{clinic?.email || 'info@vethealth.ba'}</span>
+              <li>
+                <a href={mailLink(clinic?.email)} className="flex items-center gap-3 text-background/70 hover:text-primary transition-colors">
+                  <Mail className="w-4 h-4 text-primary" />
+                  <span>{clinic?.email || 'info@vethealth.ba'}</span>
+                </a>
               </li>
             </ul>
 
