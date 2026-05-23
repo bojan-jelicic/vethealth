@@ -7,17 +7,16 @@ import {
   HeartPulse, 
   Microscope, 
   Bone,
-  ArrowRight
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const serviceKeys = [
-  { slug: 'opsti-pregledi', icon: Stethoscope, titleKey: 'generalExams', descKey: 'generalExamsDesc', color: 'primary' },
-  { slug: 'vakcinacije', icon: Syringe, titleKey: 'vaccinations', descKey: 'vaccinationsDesc', color: 'accent' },
-  { slug: 'operacije', icon: Scissors, titleKey: 'surgery', descKey: 'surgeryDesc', color: 'success' },
-  { slug: 'hitna-pomoc', icon: HeartPulse, titleKey: 'emergencyCare', descKey: 'emergencyCareDesc', color: 'destructive' },
-  { slug: 'laboratorija', icon: Microscope, titleKey: 'laboratory', descKey: 'laboratoryDesc', color: 'primary' },
-  { slug: 'stomatologija', icon: Bone, titleKey: 'dentistry', descKey: 'dentistryDesc', color: 'accent' },
+  { icon: Stethoscope, titleKey: 'generalExams', descKey: 'generalExamsDesc', color: 'primary' },
+  { icon: Syringe, titleKey: 'vaccinations', descKey: 'vaccinationsDesc', color: 'accent' },
+  { icon: Scissors, titleKey: 'surgery', descKey: 'surgeryDesc', color: 'success' },
+  { icon: HeartPulse, titleKey: 'emergencyCare', descKey: 'emergencyCareDesc', color: 'destructive' },
+  { icon: Microscope, titleKey: 'laboratory', descKey: 'laboratoryDesc', color: 'primary' },
+  { icon: Bone, titleKey: 'dentistry', descKey: 'dentistryDesc', color: 'accent' },
 ];
 
 const colorClasses = {
@@ -45,25 +44,20 @@ export const Services = () => {
           {serviceKeys.map((service) => {
             const colors = colorClasses[service.color as keyof typeof colorClasses];
             return (
-              <Link
+              <div
                 key={service.titleKey}
-                to={`/services/${service.slug}`}
-                className="group bg-card p-6 rounded-card shadow-card card-hover cursor-pointer block"
+                className="bg-card p-6 rounded-card shadow-card"
               >
-                <div className={`w-14 h-14 rounded-lg ${colors.bg} ${colors.text} ${colors.hover} flex items-center justify-center mb-5 transition-all duration-300`}>
+                <div className={`w-14 h-14 rounded-lg ${colors.bg} ${colors.text} flex items-center justify-center mb-5`}>
                   <service.icon className="w-7 h-7" />
                 </div>
                 <h3 className="text-h4 font-heading font-semibold text-foreground mb-3">
                   {t(`services.${service.titleKey}`)}
                 </h3>
-                <p className="text-muted-foreground mb-4">
+                <p className="text-muted-foreground">
                   {t(`services.${service.descKey}`)}
                 </p>
-                <div className="flex items-center text-primary font-medium group-hover:gap-2 transition-all">
-                  <span>{t('services.learnMore')}</span>
-                  <ArrowRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
-                </div>
-              </Link>
+              </div>
             );
           })}
         </div>
