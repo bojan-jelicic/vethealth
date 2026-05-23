@@ -155,9 +155,6 @@ const ServiceDetailsPage = () => {
                     <Clock className="w-4 h-4" />
                     <span>{service.duration_minutes} min</span>
                   </div>
-                  <Button variant="accent" className="w-full" asChild>
-                    <Link to="/contact">Zakaži Termin</Link>
-                  </Button>
                   <Button variant="outline" className="w-full" asChild>
                     <Link to="/cjenovnik-usluga">Sve usluge</Link>
                   </Button>
