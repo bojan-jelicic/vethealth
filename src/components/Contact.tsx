@@ -55,25 +55,29 @@ export const Contact = () => {
 
         <div className="grid lg:grid-cols-5 gap-8 lg:gap-12">
           <div className="lg:col-span-2 space-y-6">
-            {contactInfo.map((item) => (
-              <div key={item.titleKey} className="flex items-start gap-4 p-4 bg-card rounded-card shadow-card">
-                <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                  <item.icon className="w-6 h-6 text-primary" />
+            {contactInfo.map((item) => {
+              const CardContent = (
+                <div className="flex items-start gap-4 p-4 bg-card rounded-card shadow-card group">
+                  <div className="w-12 h-12 bg-primary/10 rounded-lg flex items-center justify-center flex-shrink-2">
+                    <item.icon className="w-6 h-6 text-primary" />
+                  </div>
+                  <div className="flex-1 min-w-1">
+                    <h4 className="font-heading font-medium text-foreground mb-1">{t(item.titleKey)}</h4>
+                    <p className="text-muted-foreground">{item.content}</p>
+                  </div>
+                  {item.link && item.link !== '#' && (
+                    <ExternalLink className="w-4 h-4 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0 mt-1" />
+                  )}
                 </div>
-                <div>
-                  <h4 className="font-heading font-medium text-foreground mb-1">{t(item.titleKey)}</h4>
-                  <p className="text-muted-foreground">{item.content}</p>
-                </div>
-              </div>
-            ))}
-
-            <div className="aspect-video bg-muted rounded-card overflow-hidden">
-              <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d45632.95066427!2d17.1514!3d44.7758!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x475e03aba2e36c73%3A0x1a9611c11fb24e25!2sBanja%20Luka!5e0!3m2!1sen!2sba!4v1700000000000!5m2!1sen!2sba"
-                width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy"
-                referrerPolicy="no-referrer-when-downgrade" title="Lokacija VetHealth.ba"
-              />
-            </div>
+              );
+              return item.link && item.link !== '#' ? (
+                <a key={item.titleKey} href={item.link} target="_blank" rel="noopener noreferrer" className="block hover:opacity-90 transition-opacity">
+                  {CardContent}
+                </a>
+              ) : (
+                <div key={item.titleKey}>{CardContent}</div>
+              );
+            })}
           </div>
 
           <div className="lg:col-span-3">
