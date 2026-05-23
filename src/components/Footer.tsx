@@ -20,8 +20,7 @@ export const Footer = () => {
 
   const companyLinks = [
     { key: 'home', name: t('nav.home'), to: '/' },
-    { key: 'services', name: t('nav.services'), to: '/services' },
-    { key: 'priceList', name: t('nav.priceList'), to: '/cjenovnik-usluga' },
+    { key: 'services', name: t('nav.services'), to: '/cjenovnik-usluga' },
     ...(FEATURES.publicBlog ? [{ key: 'blog', name: t('nav.blog'), to: '/blog' }] : []),
     ...(FEATURES.publicPetShop ? [{ key: 'petShop', name: t('nav.petShop'), to: '/pet-shop' }] : []),
     { key: 'about', name: t('nav.about'), to: '/about' },
