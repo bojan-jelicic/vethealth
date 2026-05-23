@@ -385,7 +385,14 @@ const ServicesTab = () => {
               <Input
                 id="s-name"
                 value={form.name}
-                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                onChange={(e) => {
+                  const name = e.target.value;
+                  setForm((f) => ({
+                    ...f,
+                    name,
+                    slug: !isEditing && !f.slug ? slugify(name) : f.slug,
+                  }));
+                }}
                 placeholder="Npr. Opšti pregled"
               />
             </div>
@@ -457,6 +464,63 @@ const ServicesTab = () => {
                 checked={form.is_active}
                 onCheckedChange={(checked) => setForm({ ...form, is_active: checked })}
               />
+            </div>
+
+            <div className="space-y-4 rounded-lg border border-border p-4">
+              <div>
+                <h4 className="font-semibold text-sm">Detaljna stranica (opciono)</h4>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Popunite ako želite da se na cjenovniku pojavi link "Detalji" sa zasebnom stranicom.
+                </p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="s-slug">Slug (URL)</Label>
+                <div className="flex gap-2">
+                  <Input
+                    id="s-slug"
+                    value={form.slug}
+                    onChange={(e) => setForm({ ...form, slug: e.target.value })}
+                    placeholder="npr. opsti-pregledi"
+                  />
+                  <Button type="button" variant="outline" size="sm" onClick={() => setForm({ ...form, slug: slugify(form.name) })}>
+                    Generiši
+                  </Button>
+                </div>
+                {form.slug && (
+                  <p className="text-xs text-muted-foreground">/services/{form.slug}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <Label>Hero slika</Label>
+                <ImageField
+                  value={form.hero_image_url}
+                  folder={form.id || 'new'}
+                  onChange={(url) => setForm({ ...form, hero_image_url: url })}
+                  onError={(msg) => toast({ title: 'Greška', description: msg, variant: 'destructive' })}
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="s-long">Uvodni opis</Label>
+                <Textarea
+                  id="s-long"
+                  rows={4}
+                  value={form.long_description}
+                  onChange={(e) => setForm({ ...form, long_description: e.target.value })}
+                  placeholder="Glavni paragraf koji opisuje uslugu..."
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label>Sadržaj (sekcije)</Label>
+                <ServiceContentEditor
+                  blocks={form.content_blocks}
+                  onChange={(blocks) => setForm({ ...form, content_blocks: blocks })}
+                  folder={form.id || 'new'}
+                />
+              </div>
             </div>
 
             <SheetFooter className="gap-2 pt-4">
