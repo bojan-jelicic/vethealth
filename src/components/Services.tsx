@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { 
   Stethoscope, 
   Syringe, 
@@ -11,12 +12,12 @@ import {
 import { Button } from '@/components/ui/button';
 
 const serviceKeys = [
-  { icon: Stethoscope, titleKey: 'generalExams', descKey: 'generalExamsDesc', color: 'primary' },
-  { icon: Syringe, titleKey: 'vaccinations', descKey: 'vaccinationsDesc', color: 'accent' },
-  { icon: Scissors, titleKey: 'surgery', descKey: 'surgeryDesc', color: 'success' },
-  { icon: HeartPulse, titleKey: 'emergencyCare', descKey: 'emergencyCareDesc', color: 'destructive' },
-  { icon: Microscope, titleKey: 'laboratory', descKey: 'laboratoryDesc', color: 'primary' },
-  { icon: Bone, titleKey: 'dentistry', descKey: 'dentistryDesc', color: 'accent' },
+  { slug: 'opsti-pregledi', icon: Stethoscope, titleKey: 'generalExams', descKey: 'generalExamsDesc', color: 'primary' },
+  { slug: 'vakcinacije', icon: Syringe, titleKey: 'vaccinations', descKey: 'vaccinationsDesc', color: 'accent' },
+  { slug: 'operacije', icon: Scissors, titleKey: 'surgery', descKey: 'surgeryDesc', color: 'success' },
+  { slug: 'hitna-pomoc', icon: HeartPulse, titleKey: 'emergencyCare', descKey: 'emergencyCareDesc', color: 'destructive' },
+  { slug: 'laboratorija', icon: Microscope, titleKey: 'laboratory', descKey: 'laboratoryDesc', color: 'primary' },
+  { slug: 'stomatologija', icon: Bone, titleKey: 'dentistry', descKey: 'dentistryDesc', color: 'accent' },
 ];
 
 const colorClasses = {
@@ -44,7 +45,11 @@ export const Services = () => {
           {serviceKeys.map((service) => {
             const colors = colorClasses[service.color as keyof typeof colorClasses];
             return (
-              <div key={service.titleKey} className="group bg-card p-6 rounded-card shadow-card card-hover cursor-pointer">
+              <Link
+                key={service.titleKey}
+                to={`/services/${service.slug}`}
+                className="group bg-card p-6 rounded-card shadow-card card-hover cursor-pointer block"
+              >
                 <div className={`w-14 h-14 rounded-lg ${colors.bg} ${colors.text} ${colors.hover} flex items-center justify-center mb-5 transition-all duration-300`}>
                   <service.icon className="w-7 h-7" />
                 </div>
@@ -58,13 +63,15 @@ export const Services = () => {
                   <span>{t('services.learnMore')}</span>
                   <ArrowRight className="w-4 h-4 opacity-0 -ml-4 group-hover:opacity-100 group-hover:ml-0 transition-all" />
                 </div>
-              </div>
+              </Link>
             );
           })}
         </div>
 
         <div className="text-center mt-12">
-          <Button variant="default" size="lg">{t('services.viewAll')}</Button>
+          <Button variant="default" size="lg" asChild>
+            <Link to="/services">{t('services.viewAll')}</Link>
+          </Button>
         </div>
       </div>
     </section>
