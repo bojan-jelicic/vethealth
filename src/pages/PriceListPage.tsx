@@ -82,22 +82,12 @@ const ServiceCategoryCard = ({ category }: { category: CategoryWithServices }) =
                   </div>
                 </td>
                 <td className="py-4 px-6 text-right">
-                  <div className="flex flex-col items-end gap-1">
-                    <div>
-                      <span className="text-lg font-bold text-primary">
-                        {service.price?.toFixed(2) || '—'}
-                      </span>
-                      {service.price && (
-                        <span className="text-sm text-muted-foreground ml-1">KM</span>
-                      )}
-                    </div>
-                    {hasServiceDetails(service) && (
-                      <Link
-                        to={`/services/${service.slug}`}
-                        className="text-xs text-primary hover:underline inline-flex items-center gap-1"
-                      >
-                        Detalji <ArrowRight className="w-3 h-3" />
-                      </Link>
+                  <div>
+                    <span className="text-lg font-bold text-primary">
+                      {service.price?.toFixed(2) || '—'}
+                    </span>
+                    {service.price && (
+                      <span className="text-sm text-muted-foreground ml-1">KM</span>
                     )}
                   </div>
                 </td>
