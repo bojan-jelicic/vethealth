@@ -39,7 +39,7 @@ export const Hero = () => {
 
             <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up delay-300">
               <Button variant="hero" size="xl" asChild>
-                <Link to="/services">
+                <Link to="/cjenovnik-usluga">
                   <List className="w-5 h-5" />
                   {t('hero.ctaPrimary')}
                 </Link>
