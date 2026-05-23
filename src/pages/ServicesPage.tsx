@@ -55,7 +55,7 @@ const ServicesPage = () => {
         description={t('servicesPage.description')}
       />
 
-      <section className="section-padding">
+      <section className="section-padding pt-8 md:pt-12">
         <div className="container-custom">
           <div className="mb-12"><EmergencyBanner /></div>
 
