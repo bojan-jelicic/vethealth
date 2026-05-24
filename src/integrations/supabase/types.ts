@@ -146,6 +146,51 @@ export type Database = {
         }
         Relationships: []
       }
+      blog_posts: {
+        Row: {
+          author_name: string | null
+          content_blocks: Json
+          created_at: string
+          excerpt: string
+          hero_image_url: string | null
+          id: string
+          published_at: string | null
+          read_time_minutes: number
+          slug: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          author_name?: string | null
+          content_blocks?: Json
+          created_at?: string
+          excerpt?: string
+          hero_image_url?: string | null
+          id?: string
+          published_at?: string | null
+          read_time_minutes?: number
+          slug: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          author_name?: string | null
+          content_blocks?: Json
+          created_at?: string
+          excerpt?: string
+          hero_image_url?: string | null
+          id?: string
+          published_at?: string | null
+          read_time_minutes?: number
+          slug?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       clients: {
         Row: {
           address: string | null
