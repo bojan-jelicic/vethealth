@@ -1,19 +1,24 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, Clock, Search, Tag, ArrowRight, User } from 'lucide-react';
+import { useQuery } from '@tanstack/react-query';
+import { Calendar, Clock, Search, ArrowRight, User, Loader2 } from 'lucide-react';
 import { Layout } from '@/components/Layout';
 import { PageHero } from '@/components/PageHero';
 import { Input } from '@/components/ui/input';
+import { supabase } from '@/integrations/supabase/client';
 
-const categories = [
-  { id: 'all', name: 'Sve', count: 12 },
-  { id: 'health', name: 'Zdravlje', count: 4 },
-  { id: 'nutrition', name: 'Ishrana', count: 3 },
-  { id: 'behavior', name: 'Ponašanje', count: 2 },
-  { id: 'care', name: 'Njega', count: 3 },
-];
+interface PublicBlogPost {
+  id: string;
+  title: string;
+  slug: string;
+  excerpt: string;
+  hero_image_url: string | null;
+  author_name: string | null;
+  read_time_minutes: number;
+  published_at: string | null;
+}
 
-const articles = [
+const _unused_articles_placeholder = [
   {
     id: 1,
     slug: 'vakcinacija-stenaca',
