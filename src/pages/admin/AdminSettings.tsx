@@ -296,29 +296,32 @@ const AdminSettings = () => {
         </Card>
       )}
 
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-lg">Notifikacije</CardTitle>
-          <CardDescription>Upravljanje automatskim obavještenjima</CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-medium text-foreground">Email podsjetnici</p>
-              <p className="text-sm text-muted-foreground">Šalji automatske podsjetnike klijentima</p>
+      {/* Notifikacije — SKRIVENO za sada */}
+      {false && (
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-lg">Notifikacije</CardTitle>
+            <CardDescription>Upravljanje automatskim obavještenjima</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-medium text-foreground">Email podsjetnici</p>
+                <p className="text-sm text-muted-foreground">Šalji automatske podsjetnike klijentima</p>
+              </div>
+              <Switch defaultChecked />
             </div>
-            <Switch defaultChecked />
-          </div>
-          <Separator />
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="font-medium text-foreground">Nova zakazivanja</p>
-              <p className="text-sm text-muted-foreground">Obavijesti o novim terminima</p>
+            <Separator />
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="font-medium text-foreground">Nova zakazivanja</p>
+                <p className="text-sm text-muted-foreground">Obavijesti o novim terminima</p>
+              </div>
+              <Switch defaultChecked />
             </div>
-            <Switch defaultChecked />
-          </div>
-        </CardContent>
-      </Card>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 };
