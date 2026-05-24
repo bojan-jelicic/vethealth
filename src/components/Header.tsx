@@ -91,18 +91,14 @@ export const Header = () => {
             <LanguageSwitcher />
             {FEATURES.themeToggle && <ThemeToggle />}
             {FEATURES.publicAppointments ? (
-              <Button variant="accent" asChild>
-                <Link to="/zakazivanje-termina">
-                  <Calendar className="w-4 h-4" />
-                  {t('nav.bookAppointment')}
-                </Link>
+              <Button variant="accent" onClick={() => navigate('/zakazivanje-termina')}>
+                <Calendar className="w-4 h-4" />
+                {t('nav.bookAppointment')}
               </Button>
             ) : (
-              <Button variant="accent" asChild>
-                <Link to="/contact">
-                  <Phone className="w-4 h-4" />
-                  {t('nav.contact')}
-                </Link>
+              <Button variant="accent" onClick={() => navigate('/contact')}>
+                <Phone className="w-4 h-4" />
+                {t('nav.contact')}
               </Button>
             )}
           </div>
@@ -151,18 +147,14 @@ export const Header = () => {
                     )}
                   </div>
                   {FEATURES.publicAppointments ? (
-                    <Button variant="accent" className="w-full" asChild>
-                      <Link to="/zakazivanje-termina" onClick={() => setIsOpen(false)}>
-                        <Calendar className="w-4 h-4" />
-                        {t('nav.bookAppointment')}
-                      </Link>
+                    <Button variant="accent" className="w-full" onClick={() => { setIsOpen(false); navigate('/zakazivanje-termina'); }}>
+                      <Calendar className="w-4 h-4" />
+                      {t('nav.bookAppointment')}
                     </Button>
                   ) : (
-                    <Button variant="accent" className="w-full" asChild>
-                      <Link to="/contact" onClick={() => setIsOpen(false)}>
-                        <Phone className="w-4 h-4" />
-                        {t('nav.contact')}
-                      </Link>
+                    <Button variant="accent" className="w-full" onClick={() => { setIsOpen(false); navigate('/contact'); }}>
+                      <Phone className="w-4 h-4" />
+                      {t('nav.contact')}
                     </Button>
                   )}
                 </div>
