@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { supabase } from '@/integrations/supabase/client';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Stethoscope, Mail, BookOpen, Image as ImageIcon } from 'lucide-react';
+import { Stethoscope, Mail, BookOpen } from 'lucide-react';
 import { format } from 'date-fns';
 import { sr } from 'date-fns/locale';
 
@@ -141,10 +141,6 @@ const AdminDashboard = () => {
             <Button variant="outline" className="w-full justify-start" onClick={() => navigate('/app/blog')}>
               <BookOpen className="h-4 w-4 mr-2" />
               Napiši novi blog
-            </Button>
-            <Button variant="outline" className="w-full justify-start" onClick={() => navigate('/app/gallery')}>
-              <ImageIcon className="h-4 w-4 mr-2" />
-              Upravljaj galerijom
             </Button>
           </CardContent>
         </Card>
