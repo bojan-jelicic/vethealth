@@ -71,6 +71,7 @@ const BlogPostPage = () => {
       <PageHero
         title={post.title}
         description={post.excerpt || undefined}
+        centered
         breadcrumbs={[
           { label: 'Blog', href: '/blog' },
           { label: post.title },
