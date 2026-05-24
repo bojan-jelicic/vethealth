@@ -125,7 +125,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
   };
 
   return (
-    <div className="min-h-screen bg-background flex">
+    <div className="h-screen overflow-hidden bg-background flex">
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
@@ -213,7 +213,7 @@ const AdminLayout: React.FC<AdminLayoutProps> = ({ children }) => {
       </aside>
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 h-screen">
         {/* Top Bar */}
         <header className="h-16 border-b border-border bg-card flex items-center gap-3 px-4 lg:px-6 flex-shrink-0">
           {/* Mobile menu trigger */}
