@@ -81,7 +81,7 @@ const allNavSections: { label: string; items: NavItem[] }[] = [
     label: 'Sadržaj',
     items: [
       { to: '/app/blog', icon: BookOpen, label: 'Blog' },
-      { to: '/app/gallery', icon: Image, label: 'Galerija' },
+      { to: '/app/gallery', icon: Image, label: 'Galerija', flag: 'adminGallery' },
       { to: '/app/messages', icon: Mail, label: 'Poruke', flag: 'adminMessagesPage' },
     ],
   },

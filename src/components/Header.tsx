@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Menu, Phone, Calendar } from 'lucide-react';
 import vethealthLogo from '@/assets/vethealth-logo.png';
@@ -26,6 +26,7 @@ export const Header = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
   const { data: clinic } = useClinicSettings();
   const phone = clinic?.phone || '+387 51 123 456';
 
