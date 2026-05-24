@@ -18,6 +18,7 @@ export const FEATURES = {
   adminTemplates: false,
   adminMessagesPage: true, // poruke iz kontakt forme
   adminQuickActions: false, // "Nova posjeta" / "Novi nalaz" u top baru
+  adminGallery: false,
 } as const;
 
 export type FeatureFlag = keyof typeof FEATURES;
