@@ -1,30 +1,82 @@
-## Cilj
 
-Trenutno postoje dvije različite implementacije kontakt sekcije:
-- `src/components/Contact.tsx` (početna) — info kartice + forma, lažni submit (toast), bez validacije.
-- `src/pages/ContactPage.tsx` — info kartice + forma sa zod validacijom i pravim slanjem preko `contact-form` edge funkcije, plus mapa (koja je trebala biti obrisana), Hitna pomoć baner, radno vrijeme grid i FAQ.
+# Plan: Funkcionalni blog modul
 
-Obje treba da koriste **istu zajedničku komponentu** kako bi se sve buduće promjene radile na jednom mjestu.
+Cilj: Admin može da kreira, mijenja, briše i objavljuje blog članke kroz panel koji izlazi sa desne strane (Sheet), sa naslovom, slikom, kratkim opisom i sekcijama (tekst / slika / lista) — istom logikom kao kod usluga. Javni `/blog` i `/blog/:slug` čitaju iz baze; bez kategorija.
 
-## Šta se mijenja
+## 1. Baza (migracija)
 
-### 1. Nova komponenta: `src/components/ContactSection.tsx`
-Jedinstvena, "puna" verzija koja sadrži:
-- Lijevu kolonu sa info karticama: Adresa, Telefon, Email, Radno vrijeme (klikabilne — `tel:`, `mailto:`, Google Maps).
-- Desnu kolonu sa formom: Ime, Email, Telefon (opcionalno), Predmet, Poruka (max 500) — sa `contactFormSchema` (zod) validacijom, success/error banerima i pravim slanjem preko `supabase.functions.invoke('contact-form')`.
-- Props: `variant?: 'section' | 'plain'` (kontroliše da li renderuje `<section>` wrapper sa naslovom i pozadinom — za početnu; ili samo grid — za Kontakt stranicu unutar postojeće sekcije).
+Nova tabela `blog_posts`:
 
-### 2. `src/components/Contact.tsx`
-Postaje tanki wrapper koji renderuje `<ContactSection variant="section" />` (zadržava `id="contact"`, naslov, opis i `bg-secondary/30`). Ne mijenja se ništa u `Index.tsx`.
+- `title` (text) — naslov
+- `slug` (text, unique) — URL slug
+- `excerpt` (text) — kratki opis za karticu
+- `hero_image_url` (text, nullable) — naslovna slika
+- `content_blocks` (jsonb, default `[]`) — sekcije (text / image / list), identično shemi `services.content_blocks` da bi mogli ponovo iskoristiti `ServiceContentBlock` tip i `ServiceContentEditor`
+- `author_name` (text, nullable) — npr. "Dr. Marko Petrović"
+- `read_time_minutes` (integer, default 5)
+- `status` (text, default `draft`) — `draft` ili `published`
+- `published_at` (timestamptz, nullable)
+- `created_at`, `updated_at`
 
-### 3. `src/pages/ContactPage.tsx`
-- Briše se mapa (iframe) — kao što je već traženo.
-- Briše se postojeća inline info + forma duplikat.
-- Koristi `<ContactSection variant="plain" />` umjesto toga.
-- Zadržava: `PageHero`, Hitna pomoć baner, Radno vrijeme grid (4 kartice), FAQ accordion.
+RLS:
+- Public SELECT samo za `status = 'published'`
+- Admin SELECT/INSERT/UPDATE/DELETE (`has_role(auth.uid(), 'admin')`)
 
-## Rezultat
-- Identično ponašanje i izgled forme i info kartica na obje stranice.
-- Prava validacija + edge function slanje na obje (početna više nema lažni toast).
-- Mapa uklonjena sa Kontakt stranice.
-- Buduće izmjene info kartica/forme → jedno mjesto (`ContactSection.tsx`).
+Index na `slug` (unique) i `published_at desc`.
+
+Postojeći `service-images` bucket ćemo ponovo iskoristiti (već je javan, već radi upload preko `uploadServiceImage`) — slike blog postova će ići u folder `blog/<post-id>/`.
+
+## 2. Feature flag
+
+`src/config/features.ts` — `publicBlog: true` je već uključeno. Bez izmjena.
+
+## 3. Admin — `src/pages/admin/AdminBlogManager.tsx` (rewrite)
+
+- Lista članaka iz baze (TanStack Query): naslov, status badge, datum, akcije (Izmijeni / Obriši).
+- Dugme "Novi članak" i klik na red otvaraju desni Sheet (`@/components/ui/sheet`, `side="right"`, široki — `sm:max-w-2xl` ili `max-w-3xl`).
+- Sheet sadrži formu (RHF + Zod):
+  - Naslov (auto-generiše slug preko `src/lib/slug.ts`, sa mogućnošću ručne izmjene)
+  - Slug
+  - Kratak opis (excerpt, textarea)
+  - Autor (opciono)
+  - Read time (broj minuta)
+  - Hero slika (`ImageField` iz `ServiceContentEditor`)
+  - Sekcije sadržaja (`ServiceContentEditor` sa `folder="blog/<id>"`)
+  - Status (Draft / Objavljeno) — kad pređe u Objavljeno, postavlja `published_at = now()` ako je prazan
+- Akcije: Sačuvaj, Sačuvaj kao nacrt, Obriši (sa AlertDialog potvrdom).
+- Toast notifikacije, query invalidation.
+
+## 4. Javni `/blog` — `src/pages/BlogPage.tsx` (rewrite)
+
+- Učitava `blog_posts` gdje je `status = 'published'`, sortirano po `published_at desc`.
+- Uklanja kategorije i sidebar — ostaje samo pretraga po naslovu/excerptu (client-side).
+- Grid: `grid-cols-1 md:grid-cols-2 gap-6` — kartice sa hero slikom, naslovom, excerptom, datumom, read time.
+- Loading skeleton, prazno stanje.
+- Skida featured/sidebar/categories blokove i statički `articles` niz.
+
+## 5. Javni `/blog/:slug` — novi `src/pages/BlogPostPage.tsx`
+
+- Učitava jedan post po slug-u (`status = 'published'`).
+- Layout sličan `ServiceDetailsPage`: `PageHero` sa naslovom + breadcrumb (Blog → Naslov), hero slika, excerpt, render `content_blocks` kroz isti `Block` renderer (može se izdvojiti u `src/components/ContentBlocks.tsx` da se dijeli između usluga i bloga).
+- `Helmet` SEO: title, meta description (excerpt), canonical.
+- Dugme "Nazad na blog".
+
+## 6. Rutiranje
+
+`src/App.tsx`:
+- `/blog/:slug` trenutno pogrešno gađa `BlogPage` → promijeniti u novi `BlogPostPage`.
+
+## 7. Realizacija
+
+1. Migracija `blog_posts` + RLS
+2. Rewrite `AdminBlogManager` sa Sheet formom
+3. Rewrite `BlogPage` (lista iz baze)
+4. Kreiraj `BlogPostPage` i izdvoj `ContentBlocks` renderer
+5. Ažuriraj rutu u `App.tsx`
+6. Smoke test: kreiraj članak → objavi → provjeri javnu listu i detalj
+
+## Tehničke napomene
+
+- Reuse: `ServiceContentBlock` tip iz `src/hooks/useAppointmentData.ts`, `ServiceContentEditor`, `ImageField`, `uploadServiceImage`.
+- Sve na ekavici/ijekavici (admin SR), javna strana već koristi `useTranslation` ali blog postovi su jednojezični (kao usluge) — sadržaj se unosi onako kako admin upiše.
+- Bez kategorija u ovom koraku (po zahtjevu).
