@@ -12,9 +12,10 @@ interface PageHeroProps {
   description?: string;
   breadcrumbs?: BreadcrumbItem[];
   backgroundImage?: string;
+  centered?: boolean;
 }
 
-export const PageHero = ({ title, description, breadcrumbs, backgroundImage }: PageHeroProps) => {
+export const PageHero = ({ title, description, breadcrumbs, backgroundImage, centered }: PageHeroProps) => {
   const { t } = useTranslation();
 
   return (
@@ -28,7 +29,7 @@ export const PageHero = ({ title, description, breadcrumbs, backgroundImage }: P
 
       <div className="container-custom relative z-10">
         {breadcrumbs && breadcrumbs.length > 0 && (
-          <nav className="flex items-center gap-2 text-small text-muted-foreground mb-6">
+          <nav className={`flex items-center gap-2 text-small text-muted-foreground mb-6 ${centered ? 'justify-center' : ''}`}>
             <Link to="/" className="flex items-center gap-1 hover:text-primary transition-colors">
               <Home className="w-4 h-4" />
               <span>{t('pageHero.home')}</span>
@@ -46,9 +47,9 @@ export const PageHero = ({ title, description, breadcrumbs, backgroundImage }: P
           </nav>
         )}
 
-        <h1 className="text-h1 text-foreground mb-4">{title}</h1>
+        <h1 className={`text-h1 text-foreground mb-4 ${centered ? 'text-center' : ''}`}>{title}</h1>
         {description && (
-          <p className="text-lg text-muted-foreground max-w-2xl">{description}</p>
+          <p className={`text-lg text-muted-foreground max-w-2xl ${centered ? 'mx-auto text-center' : ''}`}>{description}</p>
         )}
       </div>
     </section>
