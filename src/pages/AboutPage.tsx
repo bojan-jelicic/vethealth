@@ -30,7 +30,6 @@ const AboutPage = () => {
     { dayKey: 'aboutPage.monFri', hours: '09:00 - 19:00' },
     { dayKey: 'aboutPage.saturday', hours: '09:00 - 14:00' },
     { dayKey: 'aboutPage.sunday', hoursKey: 'aboutPage.closed' },
-    { dayKey: 'aboutPage.emergencyCases', hours: '24/7' },
   ];
 
   return (

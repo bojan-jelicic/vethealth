@@ -48,7 +48,7 @@ export const Hero = () => {
             </div>
 
             {/* Trust indicators */}
-            <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-8 animate-fade-in-up delay-400">
+            <div className="grid grid-cols-2 gap-4 sm:gap-6 pt-8 max-w-sm animate-fade-in-up delay-400">
               <div className="flex flex-col items-center text-center">
                 <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-2">
                   <Shield className="w-6 h-6 text-primary" />
@@ -62,13 +62,6 @@ export const Hero = () => {
                 </div>
                 <span className="text-lg sm:text-h4 font-heading font-bold text-foreground">5000+</span>
                 <span className="text-xs sm:text-small text-muted-foreground">{t('hero.happyPets')}</span>
-              </div>
-              <div className="flex flex-col items-center text-center">
-                <div className="w-12 h-12 bg-success/10 rounded-full flex items-center justify-center mb-2">
-                  <Clock className="w-6 h-6 text-success" />
-                </div>
-                <span className="text-lg sm:text-h4 font-heading font-bold text-foreground">24/7</span>
-                <span className="text-xs sm:text-small text-muted-foreground">{t('hero.emergency')}</span>
               </div>
             </div>
           </div>

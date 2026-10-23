@@ -6,7 +6,6 @@ import {
 } from 'lucide-react';
 import { Layout } from '@/components/Layout';
 import { PageHero } from '@/components/PageHero';
-import { EmergencyBanner } from '@/components/EmergencyBanner';
 import { Button } from '@/components/ui/button';
 
 const ServicesPage = () => {
@@ -39,7 +38,6 @@ const ServicesPage = () => {
       nameKey: 'servicesPage.specializedServices',
       services: [
         { slug: 'stomatologija', icon: Bone, titleKey: 'servicesPage.dentistry', descKey: 'servicesPage.dentistryDesc', price: `${t('servicesPage.from')} 40 KM` },
-        { slug: 'hitna-pomoc', icon: HeartPulse, titleKey: 'servicesPage.emergency247', descKey: 'servicesPage.emergency247Desc', price: `${t('servicesPage.from')} 50 KM` },
       ],
     },
   ];
@@ -57,7 +55,6 @@ const ServicesPage = () => {
 
       <section className="section-padding pt-8 md:pt-12">
         <div className="container-custom">
-          <div className="mb-12"><EmergencyBanner /></div>
 
           <div className="space-y-16">
             {serviceCategories.map((category) => (

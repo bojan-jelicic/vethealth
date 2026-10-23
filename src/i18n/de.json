@@ -15,7 +15,7 @@
     "title1": "Ihr Partner Für Die",
     "titleHighlight": "Gesundheit",
     "title2": "Ihrer Haustiere",
-    "description": "VetHealth.ba bietet fachkundige Tierarztpflege in Banja Luka. Von Vorsorgeuntersuchungen bis hin zu Notfällen – wir sind rund um die Uhr für Sie und Ihre Haustiere da.",
+    "description": "VetHealth.ba bietet fachkundige Tierarztpflege in Banja Luka. Von Vorsorgeuntersuchungen bis hin zu Notfällen – wir sind für Sie und Ihre Haustiere da.",
     "ctaPrimary": "Unsere Leistungen",
     "yearsExp": "Jahre Erfahrung",
     "happyPets": "Glückliche Haustiere",
@@ -37,7 +37,7 @@
     "surgery": "Chirurgie",
     "surgeryDesc": "Sterilisation, Kastration und andere chirurgische Eingriffe mit modernster Ausstattung.",
     "emergencyCare": "Notfallhilfe",
-    "emergencyCareDesc": "Rund um die Uhr verfügbar für Notfälle und dringende tierärztliche Versorgung.",
+    "emergencyCareDesc": "Notfälle nehmen wir während der Öffnungszeiten ohne Termin an.",
     "laboratory": "Labor",
     "laboratoryDesc": "Schnelle und präzise Laboranalysen von Blut, Urin und anderen Proben.",
     "dentistry": "Zahnmedizin",
@@ -109,7 +109,7 @@
   },
   "servicesPage": {
     "seoTitle": "Tierärztliche Leistungen | VetHealth.ba Banja Luka",
-    "seoDescription": "Komplettes Spektrum tierärztlicher Leistungen in Banja Luka: Untersuchungen, Impfungen, Chirurgie, Diagnostik, Zahnmedizin und 24/7 Notfallversorgung.",
+    "seoDescription": "Komplettes Spektrum tierärztlicher Leistungen in Banja Luka: Untersuchungen, Impfungen, Chirurgie, Diagnostik, und Zahnmedizin.",
     "title": "Unsere Leistungen",
     "description": "Wir bieten ein breites Spektrum an tierärztlichen Leistungen, um die Gesundheit und das Wohlbefinden Ihres Haustieres in allen Lebensphasen zu gewährleisten.",
     "emergencyTitle": "Tierärztliche Notfallversorgung",
@@ -214,7 +214,7 @@
   },
   "contactPage": {
     "seoTitle": "Kontakt | VetHealth.ba - Tierklinik Banja Luka",
-    "seoDescription": "Kontaktieren Sie die VetHealth.ba Tierklinik in Banja Luka. Adresse, Telefon, Öffnungszeiten und Kontaktformular. Notfallversorgung 24/7.",
+    "seoDescription": "Kontaktieren Sie die VetHealth.ba Tierklinik in Banja Luka. Adresse, Telefon, Öffnungszeiten und Kontaktformular.",
     "title": "Kontaktieren Sie Uns",
     "description": "Haben Sie Fragen oder möchten einen Termin buchen? Melden Sie sich – wir sind für Sie und Ihre Haustiere da.",
     "emergencyTitle": "Tierärztliche Notfallversorgung",
@@ -258,7 +258,7 @@
     },
     "q3": {
       "q": "Haben Sie am Wochenende geöffnet?",
-      "a": "Samstags gilt der angezeigte Zeitplan. Sonntags sind wir nur für Notfälle erreichbar."
+      "a": "Samstags gilt der angezeigte Zeitplan. Sonntags haben wir geschlossen."
     },
     "q4": {
       "q": "Kann ich mit Karte bezahlen?",

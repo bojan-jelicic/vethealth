@@ -15,7 +15,7 @@
     "title1": "Vaš Partner U",
     "titleHighlight": "Zdravlju",
     "title2": "Kućnih Ljubimaca",
-    "description": "VetHealth.ba pruža stručnu veterinarsku njegu u Banjaluci. Od preventivnih pregleda do hitnih intervencija – tu smo za vas i vaše ljubimce 24/7.",
+    "description": "VetHealth.ba pruža stručnu veterinarsku njegu u Banjaluci. Od preventivnih pregleda do hitnih intervencija – tu smo za vas i vaše ljubimce.",
     "ctaPrimary": "Naše Usluge",
     "yearsExp": "Godina Iskustva",
     "happyPets": "Sretnih Ljubimaca",
@@ -37,7 +37,7 @@
     "surgery": "Hirurgija",
     "surgeryDesc": "Sterilizacija, kastracija i druge hirurške intervencije sa najmodernijom opremom.",
     "emergencyCare": "Hitna Pomoć",
-    "emergencyCareDesc": "Dostupni 24/7 za hitne slučajeve i urgentnu veterinarsku pomoć.",
+    "emergencyCareDesc": "Hitne slučajeve primamo bez zakazivanja tokom radnog vremena.",
     "laboratory": "Laboratorija",
     "laboratoryDesc": "Brze i precizne laboratorijske analize krvi, urina i drugih uzoraka.",
     "dentistry": "Stomatologija",
@@ -109,7 +109,7 @@
   },
   "servicesPage": {
     "seoTitle": "Veterinarske Usluge | VetHealth.ba Banja Luka",
-    "seoDescription": "Kompletan spektar veterinarskih usluga u Banjaluci: pregledi, vakcinacije, hirurgija, dijagnostika, stomatologija i hitna pomoć 24/7.",
+    "seoDescription": "Kompletan spektar veterinarskih usluga u Banjaluci: pregledi, vakcinacije, hirurgija, dijagnostika, stomatologija.",
     "title": "Naše Usluge",
     "description": "Pružamo širok spektar veterinarskih usluga kako bismo osigurali zdravlje i dobrobit vašeg ljubimca kroz sve životne faze.",
     "emergencyTitle": "Hitna Veterinarska Pomoć",
@@ -214,7 +214,7 @@
   },
   "contactPage": {
     "seoTitle": "Kontakt | VetHealth.ba - Veterinarska Ordinacija Banja Luka",
-    "seoDescription": "Kontaktirajte VetHealth.ba veterinarsku ordinaciju u Banjaluci. Adresa, telefon, radno vrijeme i kontakt forma. Hitna pomoć 24/7.",
+    "seoDescription": "Kontaktirajte VetHealth.ba veterinarsku ordinaciju u Banjaluci. Adresa, telefon, radno vrijeme i kontakt forma.",
     "title": "Kontaktirajte Nas",
     "description": "Imate pitanja ili želite zakazati termin? Javite nam se - tu smo za vas i vaše ljubimce.",
     "emergencyTitle": "Hitna Veterinarska Pomoć",
@@ -258,7 +258,7 @@
     },
     "q3": {
       "q": "Da li radite vikendom?",
-      "a": "Subotom radimo prema rasporedu prikazanom na stranici. Nedjeljom smo dostupni samo za hitne slučajeve."
+      "a": "Subotom radimo prema rasporedu prikazanom na stranici. Nedjeljom ne radimo."
     },
     "q4": {
       "q": "Mogu li platiti karticom?",
