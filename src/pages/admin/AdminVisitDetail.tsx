@@ -297,7 +297,7 @@ const AdminVisitDetail = () => {
     mutationFn: (docId: string) => visitDocumentService.finalize(docId),
     onSuccess: () => {
       qc.invalidateQueries({ queryKey: ['visit-documents', id] });
-      toast({ title: 'Dokument finaliziran i zaključan' });
+      toast({ title: 'Dokument finalizovan i zaključan' });
       setViewDocOpen(false);
     },
   });
@@ -614,7 +614,7 @@ const AdminVisitDetail = () => {
                         <TableCell><Badge variant="outline">{docTypeLabels[doc.doc_type] || doc.doc_type}</Badge></TableCell>
                         <TableCell>
                           <Badge variant={doc.status === 'finalized' ? 'default' : 'secondary'}>
-                            {doc.status === 'finalized' ? 'Finaliziran' : 'Draft'}
+                            {doc.status === 'finalized' ? 'Finalizovan' : 'Draft'}
                           </Badge>
                         </TableCell>
                         <TableCell className="text-muted-foreground">{format(new Date(doc.created_at), 'dd.MM.yyyy')}</TableCell>
@@ -626,20 +626,20 @@ const AdminVisitDetail = () => {
                             {doc.status === 'draft' && (
                               <AlertDialog>
                                 <AlertDialogTrigger asChild>
-                                  <Button variant="ghost" size="icon" className="h-8 w-8 text-primary" title="Finaliziraj">
+                                  <Button variant="ghost" size="icon" className="h-8 w-8 text-primary" title="Finalizuj">
                                     <CheckCircle className="h-3.5 w-3.5" />
                                   </Button>
                                 </AlertDialogTrigger>
                                 <AlertDialogContent>
                                   <AlertDialogHeader>
-                                    <AlertDialogTitle>Finaliziraj dokument?</AlertDialogTitle>
+                                    <AlertDialogTitle>Finalizuj dokument?</AlertDialogTitle>
                                     <AlertDialogDescription>
-                                      "{doc.title}" će biti finaliziran i zaključan. Samo administrator može otključati dokument nakon finalizacije.
+                                      "{doc.title}" će biti finalizovan i zaključan. Samo administrator može otključati dokument nakon finalizacije.
                                     </AlertDialogDescription>
                                   </AlertDialogHeader>
                                   <AlertDialogFooter>
                                     <AlertDialogCancel>Otkaži</AlertDialogCancel>
-                                    <AlertDialogAction onClick={() => handleFinalize(doc.id)}>Finaliziraj</AlertDialogAction>
+                                    <AlertDialogAction onClick={() => handleFinalize(doc.id)}>Finalizuj</AlertDialogAction>
                                   </AlertDialogFooter>
                                 </AlertDialogContent>
                               </AlertDialog>
@@ -875,7 +875,7 @@ const AdminVisitDetail = () => {
                   {isDocLocked(viewingDoc) && <Lock className="h-4 w-4 text-muted-foreground" />}
                   {viewingDoc.title}
                   <Badge variant={viewingDoc.status === 'finalized' ? 'default' : 'secondary'} className="ml-1">
-                    {viewingDoc.status === 'finalized' ? 'Finaliziran' : 'Draft'}
+                    {viewingDoc.status === 'finalized' ? 'Finalizovan' : 'Draft'}
                   </Badge>
                 </DialogTitle>
               </DialogHeader>
@@ -966,7 +966,7 @@ const AdminVisitDetail = () => {
                   <>
                     <Button variant="outline" size="sm" onClick={() => setIsEditingDoc(true)}>Uredi</Button>
                     <Button size="sm" className="gap-1.5" onClick={() => handleFinalize(viewingDoc.id)}>
-                      <CheckCircle className="h-3.5 w-3.5" />Finaliziraj
+                      <CheckCircle className="h-3.5 w-3.5" />Finalizuj
                     </Button>
                   </>
                 )}
@@ -1005,7 +1005,7 @@ const AdminVisitDetail = () => {
           </DialogHeader>
           <div className="space-y-4">
             <p className="text-sm text-muted-foreground">
-              Ovaj dokument je finaliziran i zaključan. Unesite razlog otključavanja koji će biti zabilježen u audit logu.
+              Ovaj dokument je finalizovan i zaključan. Unesite razlog otključavanja koji će biti zabilježen u audit logu.
             </p>
             <div className="space-y-2">
               <Label>Razlog otključavanja *</Label>
@@ -1185,7 +1185,7 @@ const AdminVisitDetail = () => {
                 }
               }}
             >
-              {finalizeDocMutation.isPending ? 'Finalizacija...' : 'Finaliziraj dokument'}
+              {finalizeDocMutation.isPending ? 'Finalizacija...' : 'Finalizuj dokument'}
             </Button>
           </DialogFooter>
         </DialogContent>
