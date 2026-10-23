@@ -15,7 +15,7 @@
     "title1": "Your Partner In",
     "titleHighlight": "Pet Health",
     "title2": "Care",
-    "description": "VetHealth.ba provides expert veterinary care in Banja Luka. From preventive check-ups to emergency interventions – we are here for you and your pets 24/7.",
+    "description": "VetHealth.ba provides expert veterinary care in Banja Luka. From preventive check-ups to emergency interventions – we are here for you and your pets.",
     "ctaPrimary": "Our Services",
     "yearsExp": "Years of Experience",
     "happyPets": "Happy Pets",
@@ -37,7 +37,7 @@
     "surgery": "Surgery",
     "surgeryDesc": "Sterilization, castration, and other surgical interventions with state-of-the-art equipment.",
     "emergencyCare": "Emergency Care",
-    "emergencyCareDesc": "Available 24/7 for emergencies and urgent veterinary care.",
+    "emergencyCareDesc": "Emergencies are accepted without an appointment during working hours.",
     "laboratory": "Laboratory",
     "laboratoryDesc": "Fast and precise laboratory analyses of blood, urine, and other samples.",
     "dentistry": "Dentistry",
@@ -109,7 +109,7 @@
   },
   "servicesPage": {
     "seoTitle": "Veterinary Services | VetHealth.ba Banja Luka",
-    "seoDescription": "Full range of veterinary services in Banja Luka: exams, vaccinations, surgery, diagnostics, dentistry and 24/7 emergency care.",
+    "seoDescription": "Full range of veterinary services in Banja Luka: exams, vaccinations, surgery, diagnostics, and dentistry.",
     "title": "Our Services",
     "description": "We offer a wide range of veterinary services to ensure the health and well-being of your pet through all life stages.",
     "emergencyTitle": "Emergency Veterinary Care",
@@ -214,7 +214,7 @@
   },
   "contactPage": {
     "seoTitle": "Contact | VetHealth.ba - Veterinary Clinic Banja Luka",
-    "seoDescription": "Contact VetHealth.ba veterinary clinic in Banja Luka. Address, phone, working hours, and contact form. Emergency care 24/7.",
+    "seoDescription": "Contact VetHealth.ba veterinary clinic in Banja Luka. Address, phone, working hours, and contact form.",
     "title": "Contact Us",
     "description": "Have questions or want to book an appointment? Get in touch – we're here for you and your pets.",
     "emergencyTitle": "Emergency Veterinary Care",
@@ -258,7 +258,7 @@
     },
     "q3": {
       "q": "Are you open on weekends?",
-      "a": "Saturdays follow the schedule shown on the page. Sundays we are available only for emergencies."
+      "a": "Saturdays follow the schedule shown on the page. We are closed on Sundays."
     },
     "q4": {
       "q": "Can I pay by card?",
