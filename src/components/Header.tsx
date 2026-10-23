@@ -50,7 +50,7 @@ export const Header = () => {
       }`}
     >
       <TopInfoBar />
-      <div className={`transition-colors duration-300 ${isScrolled ? 'bg-card/95 backdrop-blur-md shadow-card' : 'bg-transparent'}`}>
+      <div className={`transition-all duration-300 ${isScrolled ? 'bg-card/95 backdrop-blur-md shadow-card' : 'bg-transparent pt-3 md:pt-4'}`}>
       <div className="container-custom">
         <div className="flex items-center justify-between h-20 md:h-20 pt-2 md:pt-0">
           {/* Logo */}
