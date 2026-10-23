@@ -45,18 +45,19 @@
   },
   "about": {
     "label": "Über Uns",
-    "title": "Der Gesundheit Ihrer Haustiere Gewidmet Seit 2009",
-    "description1": "VetHealth.ba ist die führende Tierklinik in Banja Luka, gegründet mit dem Ziel, erstklassige Gesundheitsversorgung für alle Arten von Haustieren zu bieten. Unser Team erfahrener Tierärzte verwendet modernste Ausrüstung und Behandlungsmethoden.",
-    "description2": "Wir glauben, dass jedes Haustier die bestmögliche Pflege verdient, deshalb behandeln wir jeden Patienten individuell, mit voller Aufmerksamkeit und Liebe.",
+    "title": "Tierarztpraxis VetHealth Banja Luka",
+    "description1": "VetHealth Banja Luka ist eine Tierarztpraxis, die seit 2016 an derselben Adresse tätig ist und eine fachkundige und engagierte Gesundheitsversorgung für Haustiere bietet. Im Laufe der Jahre haben wir das Vertrauen zahlreicher Besitzer und ihrer Tiere gewonnen und streben stets danach, die Qualität unserer Leistungen zu verbessern.",
+    "description2": "Jedes Jahr bemühen wir uns, eine neue Leistung einzuführen oder unsere Diagnose- und Behandlungsmöglichkeiten zu erweitern – im Einklang mit der Entwicklung der modernen Tiermedizin.",
     "yearsExp": "Jahre Erfahrung",
     "happyClients": "Zufriedene Kunden",
     "treatedAnimals": "Behandelte Tiere",
-    "feature1": "Modern ausgestattete Klinik",
-    "feature2": "Team zertifizierter Tierärzte",
-    "feature3": "Freundliches und professionelles Personal",
-    "feature4": "Notfallversorgung rund um die Uhr",
-    "feature5": "Eigener Tiershop",
-    "feature6": "Online-Terminbuchung"
+    "feature1": "Engagement für Gesundheit und Wohlergehen der Tiere",
+    "feature2": "Umfassender und individueller Ansatz",
+    "feature3": "Klare und offene Kommunikation mit Besitzern",
+    "feature4": "Kontinuierliche Weiterentwicklung von Wissen und Leistungen",
+    "feature5": "Moderne Diagnostik und Ausstattung",
+    "feature6": "Empathie, Vertrauen und Verantwortung",
+    "founded": "Gründungsjahr"
   },
   "testimonials": {
     "label": "Kundenerfahrungen",
@@ -172,15 +173,15 @@
     "seoTitle": "Über Uns | VetHealth.ba - Tierklinik Banja Luka",
     "seoDescription": "Lernen Sie das VetHealth.ba Tierarzt-Team in Banja Luka kennen. 15+ Jahre Erfahrung, 5000+ zufriedene Kunden. Der Gesundheit Ihrer Haustiere gewidmet seit 2009.",
     "title": "Über Uns",
-    "description": "Lernen Sie VetHealth.ba kennen – Ihre vertrauenswürdige Tierklinik in Banja Luka seit 2009.",
+    "description": "Lernen Sie VetHealth Banja Luka kennen – eine Tierarztpraxis, die sich seit 2016 um die Gesundheit Ihrer Haustiere kümmert.",
     "ourStory": "Unsere Geschichte",
-    "storyTitle": "Der Gesundheit Ihrer Haustiere Gewidmet Seit 2009",
+    "storyTitle": "Tierarztpraxis VetHealth Banja Luka",
     "storyP1": "VetHealth.ba wurde 2009 mit einer klaren Vision gegründet – erstklassige tierärztliche Versorgung für alle Haustiere in Banja Luka und der weiteren Region zu bieten. Von bescheidenen Anfängen in einer kleinen Praxis sind wir zu einer modernen Tierklinik mit vollständiger Ausstattung herangewachsen.",
     "storyP2": "Unser Team besteht aus erfahrenen Tierärzten und Spezialisten, die dieselbe Leidenschaft teilen – Liebe zu Tieren und Hingabe an deren Gesundheit. Wir glauben, dass jedes Haustier die bestmögliche Pflege verdient, unabhängig davon, ob es sich um eine Routineuntersuchung oder eine komplexe Operation handelt.",
-    "storyP3": "Im Laufe der Jahre haben wir über 10.000 Tiere behandelt und das Vertrauen von mehr als 5.000 zufriedenen Besitzern gewonnen. Diese Zahl motiviert uns, jeden Tag noch besser zu werden.",
+    "storyP3": "Besondere Aufmerksamkeit widmen wir einem umfassenden und individuellen Ansatz für jeden Patienten. Jeder Hund und jede Katze hat eigene Bedürfnisse, daher passen wir unser Vorgehen an Gesundheitszustand, Alter und Lebensgewohnheiten an.",
     "missionVision": "Mission & Vision",
     "ourValues": "Unsere Werte",
-    "valuesDesc": "Wir glauben, dass qualitativ hochwertige tierärztliche Versorgung mit den richtigen Werten beginnt. Das leitet uns in unserer täglichen Arbeit:",
+    "valuesDesc": "Bei VetHealth glauben wir, dass gute tierärztliche Versorgung mit einem sorgfältigen Umgang mit jedem Patienten und dem Vertrauen seines Besitzers beginnt. Unser Ziel ist es, Fachwissen, moderne Tiermedizin und Verständnis für die Bedürfnisse jedes Tieres zu verbinden.",
     "value1": "Engagement für das Tierwohl",
     "value2": "Transparente Kommunikation mit Besitzern",
     "value3": "Kontinuierliche Weiterbildung und neue Methoden",
@@ -188,18 +189,28 @@
     "value5": "Teamansatz für jeden Patienten",
     "value6": "Empathie und Verständnis",
     "workingHours": "Öffnungszeiten",
-    "monFri": "Montag - Freitag",
+    "monFri": "Montag – Freitag",
     "saturday": "Samstag",
     "sunday": "Sonntag",
     "closed": "Geschlossen",
     "emergencyCases": "Notfälle",
     "ourTeamLabel": "Unser Team",
-    "ourTeamTitle": "Lernen Sie Unsere Experten Kennen",
-    "ourTeamDesc": "Unser Team besteht aus engagierten Fachleuten mit langjähriger Erfahrung in der Veterinärmedizin.",
+    "ourTeamTitle": "Lernen Sie unser Team kennen",
+    "ourTeamDesc": "Fachwissen, Aufmerksamkeit und ein aufrichtiger Umgang mit Tieren und den Menschen, die sich um sie kümmern.",
     "ctaTitle": "Wir Sind Bereit Für Ihr Haustier",
     "ctaDesc": "Buchen Sie heute einen Termin und überzeugen Sie sich, warum uns über 5.000 Besitzer empfehlen.",
     "bookAppointment": "Termin Buchen",
-    "viewServices": "Leistungen Anzeigen"
+    "viewServices": "Leistungen Anzeigen",
+    "storyP4": "Unser Ziel ist eine hochwertige tierärztliche Versorgung an einem Ort – von Vorsorgeuntersuchungen und Diagnostik bis zur Behandlung und Chirurgie – mit Fachwissen, Aufmerksamkeit und einer Beziehung, die langfristiges Vertrauen schafft.",
+    "vetRole": "Tierarzt",
+    "vetBio1": "Vladimir Ilić, DVM, schloss 2011 sein Studium der Veterinärmedizin in Novi Sad ab. In langjähriger Arbeit widmete er sich besonders der Chirurgie und klinischen Praxis, mit ständiger Weiterbildung und Verfolgung der Entwicklungen in der Tiermedizin.",
+    "vetBio2": "Erfahrung in der Labordiagnostik sowie die tägliche Arbeit mit verschiedensten Gesundheitsproblemen bei Hunden und Katzen ermöglichten ihm einen systematischen Ansatz in Diagnose und Behandlung.",
+    "vetBio3": "Besonders wichtig ist ihm, jeden Patienten individuell zu betrachten – mit sorgfältiger Beurteilung des Gesundheitszustands und offener Kommunikation mit dem Besitzer. Er ist überzeugt, dass ein guter Tierarzt neben Fachwissen auch Geduld, Verständnis und eine aufrichtige Beziehung zu Tieren und ihren Menschen braucht.",
+    "vetBio4": "Neben der klinischen Arbeit engagiert er sich in der Aufklärung von Tierbesitzern durch Fachartikel und Inhalte zur Gesundheit und Krankheitsvorbeugung bei Haustieren.",
+    "techRole": "Tiermedizinischer Assistent | Student der Landwirtschaftlichen Fakultät",
+    "techBio1": "Nemanja Dragišić ist tiermedizinischer Assistent und Student der Landwirtschaftlichen Fakultät der Universität Banja Luka. Durch seine Arbeit bei VetHealth sammelt er wertvolle praktische Erfahrung und erweitert täglich sein Wissen im Umgang mit Tieren.",
+    "techBio2": "Bei seiner Arbeit legt er besonderen Wert auf einen sorgfältigen und verantwortungsvollen Umgang mit Patienten sowie auf Unterstützung bei Untersuchungen, Diagnostik und Therapien.",
+    "techBio3": "Mit Hingabe zum Lernen bemüht sich Nemanja, sein Wissen in der Praxis anzuwenden und mit seiner Herangehensweise zu einer guten Versorgung jedes Patienten beizutragen."
   },
   "contactPage": {
     "seoTitle": "Kontakt | VetHealth.ba - Tierklinik Banja Luka",
@@ -237,10 +248,25 @@
   "faq": {
     "title": "Häufig gestellte Fragen",
     "subtitle": "Antworten auf die häufigsten Fragen unserer Kunden.",
-    "q1": { "q": "Muss ich einen Termin vereinbaren?", "a": "Wir empfehlen einen Anruf im Voraus, um Wartezeiten zu vermeiden. Notfälle werden ohne Termin angenommen." },
-    "q2": { "q": "Welche Tiere behandeln Sie?", "a": "Wir behandeln Hunde, Katzen, kleine Nagetiere, Vögel und exotische Haustiere." },
-    "q3": { "q": "Haben Sie am Wochenende geöffnet?", "a": "Samstags gilt der angezeigte Zeitplan. Sonntags sind wir nur für Notfälle erreichbar." },
-    "q4": { "q": "Kann ich mit Karte bezahlen?", "a": "Ja, wir akzeptieren Bargeld und alle gängigen Zahlungskarten." },
-    "q5": { "q": "Wie bereite ich mein Tier auf den Besuch vor?", "a": "Bringen Sie das Gesundheitsheft und eine Liste der Medikamente mit. Für Laboruntersuchungen können 8–12 Stunden Fasten nötig sein — bitte vorher abstimmen." }
+    "q1": {
+      "q": "Muss ich einen Termin vereinbaren?",
+      "a": "Wir empfehlen einen Anruf im Voraus, um Wartezeiten zu vermeiden. Notfälle werden ohne Termin angenommen."
+    },
+    "q2": {
+      "q": "Welche Tiere behandeln Sie?",
+      "a": "Wir behandeln Hunde, Katzen, kleine Nagetiere, Vögel und exotische Haustiere."
+    },
+    "q3": {
+      "q": "Haben Sie am Wochenende geöffnet?",
+      "a": "Samstags gilt der angezeigte Zeitplan. Sonntags sind wir nur für Notfälle erreichbar."
+    },
+    "q4": {
+      "q": "Kann ich mit Karte bezahlen?",
+      "a": "Ja, wir akzeptieren Bargeld und alle gängigen Zahlungskarten."
+    },
+    "q5": {
+      "q": "Wie bereite ich mein Tier auf den Besuch vor?",
+      "a": "Bringen Sie das Gesundheitsheft und eine Liste der Medikamente mit. Für Laboruntersuchungen können 8–12 Stunden Fasten nötig sein — bitte vorher abstimmen."
+    }
   }
 }

@@ -12,7 +12,7 @@ const ContactPage = () => {
   const wh = clinic?.working_hours;
 
   const workingHoursList = [
-    { dayKey: 'contactPage.monFri', hours: wh?.pon_pet || '08:00 - 20:00', active: true },
+    { dayKey: 'contactPage.monFri', hours: wh?.pon_pet || '09:00 - 19:00', active: true },
     { dayKey: 'contactPage.saturday', hours: wh?.sub || '09:00 - 14:00', active: true },
     { dayKey: 'contactPage.sunday', hours: wh?.ned || t('contactPage.closed'), active: false },
     { dayKey: 'contactPage.emergencyCases', hours: '24/7', active: true },
