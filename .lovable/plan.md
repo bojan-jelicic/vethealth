@@ -1,82 +1,44 @@
+# Ubacivanje tekstova iz dokumenta na sajt
 
-# Plan: Funkcionalni blog modul
+## 1. Stranica „O nama“
+- **Naša priča**: naslov „Veterinarska ambulanta VetHealth Banjaluka“ + 4 pasusa iz dokumenta (umjesto 3 sadašnja).
+- **Naše vrijednosti**: novi uvodni pasus + 6 stavki (✓) iz dokumenta.
+- **Radno vrijeme**: Pon–Pet 09:00–19:00, Subota 09:00–14:00, Nedjelja „Ne radimo“. Vrijednosti se čitaju iz Postavki (admin), a podrazumijevane se mijenjaju na nove. Isto se ažurira i na Kontakt stranici.
+- **Tim**: umjesto 4 izmišljene osobe prikazuju se 2 prave: Vladimir Ilić, DVM (Veterinar) i Nemanja Dragišić (Veterinarski tehničar | Student Poljoprivrednog fakulteta), sa punim biografijama u većoj kartici (slika + tekst), jer su tekstovi duži.
+- **Statistika**: „15+ godina iskustva“ mijenja se u „od 2016.“ (10 godina) da bude u skladu s tekstom.
 
-Cilj: Admin može da kreira, mijenja, briše i objavljuje blog članke kroz panel koji izlazi sa desne strane (Sheet), sa naslovom, slikom, kratkim opisom i sekcijama (tekst / slika / lista) — istom logikom kao kod usluga. Javni `/blog` i `/blog/:slug` čitaju iz baze; bez kategorija.
+## 2. Početna – sekcija „O nama“
+Kratka verzija istog teksta (prva 2 pasusa) i 6 vrijednosti umjesto sadašnjih stavki, ista statistika.
 
-## 1. Baza (migracija)
+## 3. Usluge / cjenovnik (podaci u bazi)
+- Napomena o cijenama u KM — tekst iz dokumenta.
+- Kategorije dobijaju opise iz dokumenta: Pregledi i dijagnostika, Vakcinacije, Hirurgija, Stomatologija, Laboratorija, Ostalo/Preventiva.
+- Za usluge: Opšti i specijalistički pregled, Vakcinacija pasa i mačaka, Hirurgija, Stomatologija, Laboratorijske analize, Preventiva, Ultrazvučna dijagnostika — upisuje se uvodni opis (strana detalja postaje dostupna). Postojeće cijene se ne diraju; nove usluge bez cijene (ako ne postoje) dodaju se kao „na upit“.
 
-Nova tabela `blog_posts`:
+## 4. Prevodi
+Svi novi tekstovi na sajtu prevode se na engleski i njemački. Opisi usluga u bazi ostaju samo na srpskom (sistem trenutno nema prevod za njih).
 
-- `title` (text) — naslov
-- `slug` (text, unique) — URL slug
-- `excerpt` (text) — kratki opis za karticu
-- `hero_image_url` (text, nullable) — naslovna slika
-- `content_blocks` (jsonb, default `[]`) — sekcije (text / image / list), identično shemi `services.content_blocks` da bi mogli ponovo iskoristiti `ServiceContentBlock` tip i `ServiceContentEditor`
-- `author_name` (text, nullable) — npr. "Dr. Marko Petrović"
-- `read_time_minutes` (integer, default 5)
-- `status` (text, default `draft`) — `draft` ili `published`
-- `published_at` (timestamptz, nullable)
-- `created_at`, `updated_at`
+## 5. Ispravljene štamparske greške
+- „Nasa prica“ → „Naša priča“; „macaka“ → „mačaka“; „mikrocipovanje“ → „mikročipovanje“
+- „posebno pažnju posvećuje“ → „posebnu pažnju posvećuje“
+- „mikrobiološka dijagnostika,antibiogram“ → dodat razmak; „Analize-dijagnostika“ → „Laboratorijske analize i dijagnostika“
+- „Radno Vrijeme“, „Naše Vrijednosti“ → jedinstveno pisanje („Radno vrijeme“, „Naše vrijednosti“)
+- „tehnicar“ → „tehničar“
 
-RLS:
-- Public SELECT samo za `status = 'published'`
-- Admin SELECT/INSERT/UPDATE/DELETE (`has_role(auth.uid(), 'admin')`)
+## 6. Tekst koji nedostaje (tražim od tebe)
+- **Hitni slučajevi 24/7**: sajt na više mjesta navodi hitnu pomoć 24/7 i broj +387 51 999 888 — da li to postoji? Ako ne, uklanjam.
+- **Početna (hero)**: naslov i podnaslov na vrhu nisu u dokumentu.
+- **Recenzije klijenata**: trenutno izmišljene — prave ili sakriti?
+- **Česta pitanja**: 5 izmišljenih pitanja — trebaju prava pitanja/odgovori.
+- **Kontakt**: tačna adresa, telefon, email (unose se u admin Postavke).
+- **Statistika**: broj klijenata/liječenih životinja (5000+, 10000+) je izmišljen.
+- **Fotografije**: veterinara, tehničara i ambulante (sada su stock slike).
+- **Detalji usluga**: Hirurgija i Preventiva imaju samo jednu rečenicu — korisno bi bilo više teksta.
+- **Footer**: kratki opis ambulante.
 
-Index na `slug` (unique) i `published_at desc`.
+Do tvog odgovora, privremeni tekstovi ostaju kako jesu.
 
-Postojeći `service-images` bucket ćemo ponovo iskoristiti (već je javan, već radi upload preko `uploadServiceImage`) — slike blog postova će ići u folder `blog/<post-id>/`.
-
-## 2. Feature flag
-
-`src/config/features.ts` — `publicBlog: true` je već uključeno. Bez izmjena.
-
-## 3. Admin — `src/pages/admin/AdminBlogManager.tsx` (rewrite)
-
-- Lista članaka iz baze (TanStack Query): naslov, status badge, datum, akcije (Izmijeni / Obriši).
-- Dugme "Novi članak" i klik na red otvaraju desni Sheet (`@/components/ui/sheet`, `side="right"`, široki — `sm:max-w-2xl` ili `max-w-3xl`).
-- Sheet sadrži formu (RHF + Zod):
-  - Naslov (auto-generiše slug preko `src/lib/slug.ts`, sa mogućnošću ručne izmjene)
-  - Slug
-  - Kratak opis (excerpt, textarea)
-  - Autor (opciono)
-  - Read time (broj minuta)
-  - Hero slika (`ImageField` iz `ServiceContentEditor`)
-  - Sekcije sadržaja (`ServiceContentEditor` sa `folder="blog/<id>"`)
-  - Status (Draft / Objavljeno) — kad pređe u Objavljeno, postavlja `published_at = now()` ako je prazan
-- Akcije: Sačuvaj, Sačuvaj kao nacrt, Obriši (sa AlertDialog potvrdom).
-- Toast notifikacije, query invalidation.
-
-## 4. Javni `/blog` — `src/pages/BlogPage.tsx` (rewrite)
-
-- Učitava `blog_posts` gdje je `status = 'published'`, sortirano po `published_at desc`.
-- Uklanja kategorije i sidebar — ostaje samo pretraga po naslovu/excerptu (client-side).
-- Grid: `grid-cols-1 md:grid-cols-2 gap-6` — kartice sa hero slikom, naslovom, excerptom, datumom, read time.
-- Loading skeleton, prazno stanje.
-- Skida featured/sidebar/categories blokove i statički `articles` niz.
-
-## 5. Javni `/blog/:slug` — novi `src/pages/BlogPostPage.tsx`
-
-- Učitava jedan post po slug-u (`status = 'published'`).
-- Layout sličan `ServiceDetailsPage`: `PageHero` sa naslovom + breadcrumb (Blog → Naslov), hero slika, excerpt, render `content_blocks` kroz isti `Block` renderer (može se izdvojiti u `src/components/ContentBlocks.tsx` da se dijeli između usluga i bloga).
-- `Helmet` SEO: title, meta description (excerpt), canonical.
-- Dugme "Nazad na blog".
-
-## 6. Rutiranje
-
-`src/App.tsx`:
-- `/blog/:slug` trenutno pogrešno gađa `BlogPage` → promijeniti u novi `BlogPostPage`.
-
-## 7. Realizacija
-
-1. Migracija `blog_posts` + RLS
-2. Rewrite `AdminBlogManager` sa Sheet formom
-3. Rewrite `BlogPage` (lista iz baze)
-4. Kreiraj `BlogPostPage` i izdvoj `ContentBlocks` renderer
-5. Ažuriraj rutu u `App.tsx`
-6. Smoke test: kreiraj članak → objavi → provjeri javnu listu i detalj
-
-## Tehničke napomene
-
-- Reuse: `ServiceContentBlock` tip iz `src/hooks/useAppointmentData.ts`, `ServiceContentEditor`, `ImageField`, `uploadServiceImage`.
-- Sve na ekavici/ijekavici (admin SR), javna strana već koristi `useTranslation` ali blog postovi su jednojezični (kao usluge) — sadržaj se unosi onako kako admin upiše.
-- Bez kategorija u ovom koraku (po zahtjevu).
+## Tehnički detalji
+- Izmjene: `AboutPage.tsx`, `About.tsx`, `ContactPage.tsx` (podrazumijevano radno vrijeme), `sr/en/de.json`.
+- Tim kao lokalni niz sa i18n ključevima.
+- Opisi kategorija/usluga upisuju se u `service_categories.description` i `services.description`/`intro` putem SQL update-a (podaci, ne šema); slug se generiše tamo gdje fali.
