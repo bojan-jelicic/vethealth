@@ -30,7 +30,7 @@ export const Services = () => {
   const { t } = useTranslation();
 
   return (
-    <section id="services" className="section-padding bg-secondary/30">
+    <section id="services" className="section-padding !pt-8 md:!pt-10 bg-secondary/30">
       <div className="container-custom">
         <div className="text-center max-w-2xl mx-auto mb-16">
           <span className="inline-block text-primary font-medium text-small uppercase tracking-wider mb-4">
