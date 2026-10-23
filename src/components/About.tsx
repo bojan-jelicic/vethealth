@@ -5,7 +5,7 @@ export const About = () => {
   const { t } = useTranslation();
 
   const stats = [
-    { icon: Award, value: '15+', labelKey: 'about.yearsExp' },
+    { icon: Award, value: '2016', labelKey: 'about.founded' },
     { icon: Users, value: '5000+', labelKey: 'about.happyClients' },
     { icon: Heart, value: '10000+', labelKey: 'about.treatedAnimals' },
   ];

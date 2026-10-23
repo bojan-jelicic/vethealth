@@ -7,10 +7,8 @@ import { PageHero } from '@/components/PageHero';
 import { Button } from '@/components/ui/button';
 
 const teamMembers = [
-  { name: 'Dr. Marko Petrović', role: 'Glavni Veterinar', bio: 'Specijalizovan za hirurgiju malih životinja sa 15 godina iskustva.', image: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400&h=400&fit=crop' },
-  { name: 'Dr. Ana Jović', role: 'Veterinar - Internista', bio: 'Specijalista za internu medicinu i dermatologiju kućnih ljubimaca.', image: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=400&fit=crop' },
-  { name: 'Jelena Marić', role: 'Veterinarski Tehničar', bio: 'Stručnjak za njegu i rehabilitaciju životinja.', image: 'https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&h=400&fit=crop' },
-  { name: 'Nikola Savić', role: 'Veterinarski Asistent', bio: 'Odgovoran za laboratorijske analize i dijagnostiku.', image: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&h=400&fit=crop' },
+  { name: 'Vladimir Ilić, DVM', roleKey: 'aboutPage.vetRole', bioKeys: ['vetBio1', 'vetBio2', 'vetBio3', 'vetBio4'], image: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=600&h=600&fit=crop' },
+  { name: 'Nemanja Dragišić', roleKey: 'aboutPage.techRole', bioKeys: ['techBio1', 'techBio2', 'techBio3'], image: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&h=600&fit=crop' },
 ];
 
 const AboutPage = () => {
@@ -22,10 +20,10 @@ const AboutPage = () => {
     { icon: Heart, value: '10000+', labelKey: 'about.treatedAnimals' },
   ];
 
-  const valueKeys = ['value1', 'value2', 'value3', 'value4', 'value5', 'value6'];
+  const valueKeys = ['feature1', 'feature2', 'feature3', 'feature4', 'feature5', 'feature6'];
 
   const workingHours = [
-    { dayKey: 'aboutPage.monFri', hours: '08:00 - 20:00' },
+    { dayKey: 'aboutPage.monFri', hours: '09:00 - 19:00' },
     { dayKey: 'aboutPage.saturday', hours: '09:00 - 14:00' },
     { dayKey: 'aboutPage.sunday', hoursKey: 'aboutPage.closed' },
     { dayKey: 'aboutPage.emergencyCases', hours: '24/7' },
@@ -47,9 +45,10 @@ const AboutPage = () => {
               <span className="inline-block text-primary font-medium text-small uppercase tracking-wider mb-4">{t('aboutPage.ourStory')}</span>
               <h2 className="text-h2 text-foreground mb-6">{t('aboutPage.storyTitle')}</h2>
               <div className="space-y-4 text-muted-foreground">
-                <p>{t('aboutPage.storyP1')}</p>
-                <p>{t('aboutPage.storyP2')}</p>
+                <p>{t('about.description1')}</p>
+                <p>{t('about.description2')}</p>
                 <p>{t('aboutPage.storyP3')}</p>
+                <p>{t('aboutPage.storyP4')}</p>
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
@@ -60,7 +59,7 @@ const AboutPage = () => {
 
           <div className="mt-16 grid sm:grid-cols-3 gap-6">
             {[
-              { icon: Award, value: '15+', labelKey: 'about.yearsExp' },
+              { icon: Award, value: '2016', labelKey: 'about.founded' },
               { icon: Users, value: '5000+', labelKey: 'about.happyClients' },
               { icon: Heart, value: '10000+', labelKey: 'about.treatedAnimals' },
             ].map((stat) => (
@@ -86,7 +85,7 @@ const AboutPage = () => {
                 {valueKeys.map((key) => (
                   <div key={key} className="flex items-start gap-3">
                     <CheckCircle className="w-5 h-5 text-success flex-shrink-0 mt-0.5" />
-                    <span className="text-foreground">{t(`aboutPage.${key}`)}</span>
+                    <span className="text-foreground">{t(`about.${key}`)}</span>
                   </div>
                 ))}
               </div>
@@ -119,16 +118,18 @@ const AboutPage = () => {
             <h2 className="text-h2 text-foreground mb-4">{t('aboutPage.ourTeamTitle')}</h2>
             <p className="text-muted-foreground">{t('aboutPage.ourTeamDesc')}</p>
           </div>
-          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="space-y-8 max-w-5xl mx-auto">
             {teamMembers.map((member) => (
-              <div key={member.name} className="bg-card rounded-card shadow-card overflow-hidden group card-hover">
-                <div className="aspect-square overflow-hidden">
-                  <img src={member.image} alt={member.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+              <div key={member.name} className="bg-card rounded-card shadow-card overflow-hidden grid md:grid-cols-[280px_1fr]">
+                <div className="aspect-square md:aspect-auto overflow-hidden">
+                  <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
                 </div>
-                <div className="p-5 text-center">
-                  <h3 className="font-heading font-semibold text-foreground mb-1">{member.name}</h3>
-                  <p className="text-primary text-small font-medium mb-3">{member.role}</p>
-                  <p className="text-small text-muted-foreground">{member.bio}</p>
+                <div className="p-6 md:p-8">
+                  <h3 className="text-h3 font-heading font-semibold text-foreground mb-1">{member.name}</h3>
+                  <p className="text-primary text-small font-medium mb-4">{t(member.roleKey)}</p>
+                  <div className="space-y-3 text-muted-foreground">
+                    {member.bioKeys.map((k) => <p key={k}>{t(`aboutPage.${k}`)}</p>)}
+                  </div>
                 </div>
               </div>
             ))}
