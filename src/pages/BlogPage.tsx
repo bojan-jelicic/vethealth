@@ -61,9 +61,9 @@ const BlogPage = () => {
         breadcrumbs={[{ label: 'Blog' }]}
       />
 
-      <section className="section-padding">
+      <section className="section-padding !pt-2 md:!pt-4">
         <div className="container-custom">
-          <div className="max-w-md mb-10 mx-auto">
+          <div className="max-w-md mb-8">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
