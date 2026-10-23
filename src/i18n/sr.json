@@ -237,11 +237,11 @@
     "messagePlaceholder": "Opišite vaše pitanje ili zakažite termin...",
     "sending": "Šaljem poruku...",
     "send": "Pošalji Poruku",
-    "monFri": "Ponedjeljak - Petak",
+    "monFri": "Ponedjeljak – Petak",
     "saturday": "Subota",
     "sunday": "Nedjelja",
     "emergencyCases": "Hitni slučajevi",
-    "closed": "Zatvoreno",
+    "closed": "Ne radimo",
     "networkError": "Trenutno nismo u mogućnosti da obradimo vaš zahtjev. Pokušajte ponovo kasnije.",
     "genericError": "Došlo je do greške pri slanju poruke. Molimo pokušajte ponovo."
   },
