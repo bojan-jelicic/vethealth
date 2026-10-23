@@ -1,3 +1,7 @@
+import vetPhoto from '@/assets/photos/vet-buldog.jpg.asset.json';
+import techPhoto from '@/assets/photos/tehnicar-pipeta.jpg.asset.json';
+import bigl from '@/assets/photos/bigl-ulaz.jpg.asset.json';
+import lab from '@/assets/photos/laboratorija.jpg.asset.json';
 import { Award, Users, Heart, Clock, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
@@ -7,8 +11,8 @@ import { PageHero } from '@/components/PageHero';
 import { Button } from '@/components/ui/button';
 
 const teamMembers = [
-  { name: 'Vladimir Ilić, DVM', roleKey: 'aboutPage.vetRole', bioKeys: ['vetBio1', 'vetBio2', 'vetBio3', 'vetBio4'], image: 'https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=600&h=600&fit=crop' },
-  { name: 'Nemanja Dragišić', roleKey: 'aboutPage.techRole', bioKeys: ['techBio1', 'techBio2', 'techBio3'], image: 'https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=600&h=600&fit=crop' },
+  { name: 'Vladimir Ilić, DVM', roleKey: 'aboutPage.vetRole', bioKeys: ['vetBio1', 'vetBio2', 'vetBio3', 'vetBio4'], image: vetPhoto.url, pos: 'object-[40%_center]' },
+  { name: 'Nemanja Dragišić', roleKey: 'aboutPage.techRole', bioKeys: ['techBio1', 'techBio2', 'techBio3'], image: techPhoto.url, pos: 'object-[45%_25%]' },
 ];
 
 const AboutPage = () => {
@@ -52,8 +56,8 @@ const AboutPage = () => {
               </div>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <img src="https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?w=400&h=500&fit=crop" alt="Veterinarska oprema" className="rounded-card shadow-card w-full h-64 object-cover" />
-              <img src="https://images.unsplash.com/photo-1612531386530-97286d97c2d2?w=400&h=500&fit=crop" alt="Veterinar sa psom" className="rounded-card shadow-card w-full h-64 object-cover mt-8" />
+              <img src={bigl.url} alt="Bigl na ulazu u ambulantu" loading="lazy" className="rounded-card shadow-card w-full h-64 object-cover" />
+              <img src={lab.url} alt="Laboratorijska analiza uzorka" loading="lazy" className="rounded-card shadow-card w-full h-64 object-cover mt-8" />
             </div>
           </div>
 
@@ -122,7 +126,7 @@ const AboutPage = () => {
             {teamMembers.map((member) => (
               <div key={member.name} className="bg-card rounded-card shadow-card overflow-hidden grid md:grid-cols-[280px_1fr]">
                 <div className="aspect-square md:aspect-auto overflow-hidden">
-                  <img src={member.image} alt={member.name} className="w-full h-full object-cover" />
+                  <img src={member.image} alt={member.name} loading="lazy" className={`w-full h-full object-cover ${member.pos}`} />
                 </div>
                 <div className="p-6 md:p-8">
                   <h3 className="text-h3 font-heading font-semibold text-foreground mb-1">{member.name}</h3>

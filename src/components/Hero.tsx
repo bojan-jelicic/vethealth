@@ -1,3 +1,4 @@
+import heroPhoto from '@/assets/photos/vet-spaniel-hero.jpg.asset.json';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
@@ -80,9 +81,9 @@ export const Hero = () => {
               <div className="absolute inset-6 bg-gradient-to-br from-primary/15 to-accent/10 rounded-full animate-pulse-gentle" />
               <div className="absolute inset-10 rounded-full overflow-hidden shadow-2xl ring-4 ring-card">
                 <img
-                  src="https://images.unsplash.com/photo-1587300003388-59208cc962cb?w=800&h=800&fit=crop"
-                  alt="Srećan pas u veterinarskoj ordinaciji"
-                  className="w-full h-full object-cover"
+                  src={heroPhoto.url}
+                  alt="Veterinar Vladimir Ilić pregleda koker španijela"
+                  className="w-full h-full object-cover object-[45%_center]"
                   loading="eager"
                 />
               </div>

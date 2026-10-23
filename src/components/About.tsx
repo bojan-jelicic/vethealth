@@ -1,3 +1,7 @@
+import bigl from '@/assets/photos/bigl-ulaz.jpg.asset.json';
+import petri from '@/assets/photos/petrijeve-posude.jpg.asset.json';
+import lab from '@/assets/photos/laboratorija.jpg.asset.json';
+import spaniel from '@/assets/photos/spaniel-pregled.jpg.asset.json';
 import { useTranslation } from 'react-i18next';
 import { Award, Users, Heart, CheckCircle } from 'lucide-react';
 
@@ -21,18 +25,18 @@ export const About = () => {
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-4">
                 <div className="rounded-card overflow-hidden shadow-card">
-                  <img src="https://images.unsplash.com/photo-1612531386530-97286d97c2d2?w=400&h=500&fit=crop" alt="Veterinar sa psom" className="w-full h-64 object-cover" />
+                  <img src={bigl.url} alt="Bigl na ulazu u ambulantu" loading="lazy" className="w-full h-64 object-cover object-[35%_center]" />
                 </div>
                 <div className="rounded-card overflow-hidden shadow-card">
-                  <img src="https://images.unsplash.com/photo-1548767797-d8c844163c4c?w=400&h=300&fit=crop" alt="Mačka na pregledu" className="w-full h-48 object-cover" />
+                  <img src={petri.url} alt="Mikrobiološka analiza na petrijevim posudama" loading="lazy" className="w-full h-48 object-cover object-center" />
                 </div>
               </div>
               <div className="space-y-4 pt-8">
                 <div className="rounded-card overflow-hidden shadow-card">
-                  <img src="https://images.unsplash.com/photo-1628009368231-7bb7cfcb0def?w=400&h=300&fit=crop" alt="Veterinarska oprema" className="w-full h-48 object-cover" />
+                  <img src={lab.url} alt="Laboratorijska analiza uzorka" loading="lazy" className="w-full h-48 object-cover object-center" />
                 </div>
                 <div className="rounded-card overflow-hidden shadow-card">
-                  <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400&h=500&fit=crop" alt="Tim veterinara" className="w-full h-64 object-cover" />
+                  <img src={spaniel.url} alt="Pregled ušiju koker španijela" loading="lazy" className="w-full h-64 object-cover object-[40%_center]" />
                 </div>
               </div>
             </div>
