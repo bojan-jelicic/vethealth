@@ -45,18 +45,19 @@
   },
   "about": {
     "label": "About Us",
-    "title": "Dedicated to Your Pets' Health Since 2009",
-    "description1": "VetHealth.ba is the leading veterinary clinic in Banja Luka, founded with the goal of providing top-quality health care for all types of pets. Our team of experienced veterinarians uses state-of-the-art equipment and treatment methods.",
-    "description2": "We believe every pet deserves the best possible care, which is why we approach each patient individually, with full attention and love.",
+    "title": "VetHealth Banja Luka Veterinary Clinic",
+    "description1": "VetHealth Banja Luka is a veterinary clinic that has operated at the same address since 2016, providing expert and dedicated healthcare for pets. Over the years we have built trust with many owners and their pets, always striving to improve the quality of our services.",
+    "description2": "Every year we strive to introduce a new service or improve our existing diagnostic and treatment capabilities, following the development of modern veterinary medicine.",
     "yearsExp": "Years of Experience",
     "happyClients": "Happy Clients",
     "treatedAnimals": "Treated Animals",
-    "feature1": "Modern equipped clinic",
-    "feature2": "Team of certified veterinarians",
-    "feature3": "Friendly and professional staff",
-    "feature4": "Emergency care available 24/7",
-    "feature5": "On-site Pet Shop",
-    "feature6": "Online appointment booking"
+    "feature1": "Dedication to animal health and welfare",
+    "feature2": "Comprehensive and personalized approach",
+    "feature3": "Clear and open communication with owners",
+    "feature4": "Continuous improvement of knowledge and services",
+    "feature5": "Modern diagnostics and equipment",
+    "feature6": "Empathy, trust and responsibility",
+    "founded": "Year founded"
   },
   "testimonials": {
     "label": "Client Testimonials",
@@ -172,15 +173,15 @@
     "seoTitle": "About Us | VetHealth.ba - Veterinary Clinic Banja Luka",
     "seoDescription": "Meet the VetHealth.ba veterinary team in Banja Luka. 15+ years of experience, 5000+ satisfied clients. Dedicated to your pets' health since 2009.",
     "title": "About Us",
-    "description": "Meet VetHealth.ba – your trusted veterinary clinic in Banja Luka since 2009.",
+    "description": "Meet VetHealth Banja Luka – a veterinary clinic caring for your pets' health since 2016.",
     "ourStory": "Our Story",
-    "storyTitle": "Dedicated to Your Pets' Health Since 2009",
+    "storyTitle": "VetHealth Banja Luka Veterinary Clinic",
     "storyP1": "VetHealth.ba was founded in 2009 with a clear vision – to provide top-quality veterinary care for all pets in Banja Luka and the wider region. From humble beginnings in a small clinic, we have grown into a modern veterinary facility with complete equipment.",
     "storyP2": "Our team consists of experienced veterinarians and specialists who share the same passion – love for animals and dedication to their health. We believe every pet deserves the best possible care, regardless of whether it's a routine check-up or complex surgery.",
-    "storyP3": "Over the years, we have treated over 10,000 animals and earned the trust of more than 5,000 satisfied owners. That number motivates us to be even better every day.",
+    "storyP3": "We pay special attention to a comprehensive and personalized approach to every patient. Every dog and cat has specific needs, so we tailor our approach to their health condition, age and lifestyle.",
     "missionVision": "Mission & Vision",
     "ourValues": "Our Values",
-    "valuesDesc": "We believe quality veterinary care starts with the right values. Here's what guides us in our daily work:",
+    "valuesDesc": "At VetHealth we believe quality veterinary care starts with a careful approach to every patient and the trust we build with its owner. Our goal is to combine expertise, modern veterinary medicine and an understanding of every pet's needs.",
     "value1": "Dedication to animal welfare",
     "value2": "Transparent communication with owners",
     "value3": "Continuous education and following new methods",
@@ -188,18 +189,28 @@
     "value5": "Team approach to every patient",
     "value6": "Empathy and understanding",
     "workingHours": "Working Hours",
-    "monFri": "Monday - Friday",
+    "monFri": "Monday – Friday",
     "saturday": "Saturday",
     "sunday": "Sunday",
     "closed": "Closed",
     "emergencyCases": "Emergency cases",
     "ourTeamLabel": "Our Team",
-    "ourTeamTitle": "Meet Our Experts",
-    "ourTeamDesc": "Our team consists of dedicated professionals with years of experience in veterinary medicine.",
+    "ourTeamTitle": "Meet Our Team",
+    "ourTeamDesc": "Expertise, attention and a sincere attitude towards animals and the people who care for them.",
     "ctaTitle": "We're Ready for Your Pet",
     "ctaDesc": "Book an appointment today and see why over 5,000 owners recommend us.",
     "bookAppointment": "Book Appointment",
-    "viewServices": "View Services"
+    "viewServices": "View Services",
+    "storyP4": "Our goal is to provide quality veterinary care in one place – from preventive check-ups and diagnostics to treatment and surgery – with expertise, attention and a relationship that builds long-term trust.",
+    "vetRole": "Veterinarian",
+    "vetBio1": "Vladimir Ilić, DVM, graduated in veterinary medicine in 2011 in Novi Sad. Over many years of work he has focused especially on surgery and clinical practice, with continuous professional development and following advances in veterinary medicine.",
+    "vetBio2": "Experience in laboratory diagnostics, as well as daily work with a wide range of health problems in dogs and cats, has allowed him to develop a systematic approach to diagnosis and treatment.",
+    "vetBio3": "It is especially important to him to approach every patient individually, with careful assessment of their health and open communication with the owner. He believes a good veterinarian, besides expert knowledge, needs patience, understanding and a sincere attitude towards animals and the people who care for them.",
+    "vetBio4": "Alongside clinical work, he takes part in educating owners through professional articles and content on pet health and disease prevention.",
+    "techRole": "Veterinary Technician | Student at the Faculty of Agriculture",
+    "techBio1": "Nemanja Dragišić is a veterinary technician and a student at the Faculty of Agriculture, University of Banja Luka. Through his work at VetHealth he gains valuable practical experience and improves his knowledge of working with animals every day.",
+    "techBio2": "In his work he pays special attention to careful and responsible handling of patients, as well as providing support during examinations, diagnostics and therapeutic procedures.",
+    "techBio3": "Dedicated to learning and development, Nemanja strives to apply his knowledge through practical work and to contribute to quality care for every patient."
   },
   "contactPage": {
     "seoTitle": "Contact | VetHealth.ba - Veterinary Clinic Banja Luka",
@@ -237,10 +248,25 @@
   "faq": {
     "title": "Frequently Asked Questions",
     "subtitle": "Answers to questions our clients ask most often.",
-    "q1": { "q": "Do I need to book an appointment?", "a": "We recommend calling ahead to avoid waiting. Emergencies are accepted without an appointment." },
-    "q2": { "q": "Which animals do you treat?", "a": "We treat dogs, cats, small rodents, birds and exotic pets." },
-    "q3": { "q": "Are you open on weekends?", "a": "Saturdays follow the schedule shown on the page. Sundays we are available only for emergencies." },
-    "q4": { "q": "Can I pay by card?", "a": "Yes, we accept cash and all major payment cards." },
-    "q5": { "q": "How do I prepare my pet for a visit?", "a": "Bring the health booklet and a list of medications. Lab tests may require 8–12 hours of fasting — please consult us in advance." }
+    "q1": {
+      "q": "Do I need to book an appointment?",
+      "a": "We recommend calling ahead to avoid waiting. Emergencies are accepted without an appointment."
+    },
+    "q2": {
+      "q": "Which animals do you treat?",
+      "a": "We treat dogs, cats, small rodents, birds and exotic pets."
+    },
+    "q3": {
+      "q": "Are you open on weekends?",
+      "a": "Saturdays follow the schedule shown on the page. Sundays we are available only for emergencies."
+    },
+    "q4": {
+      "q": "Can I pay by card?",
+      "a": "Yes, we accept cash and all major payment cards."
+    },
+    "q5": {
+      "q": "How do I prepare my pet for a visit?",
+      "a": "Bring the health booklet and a list of medications. Lab tests may require 8–12 hours of fasting — please consult us in advance."
+    }
   }
 }
