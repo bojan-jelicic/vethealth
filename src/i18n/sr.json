@@ -268,5 +268,8 @@
       "q": "Kako da pripremim ljubimca za pregled?",
       "a": "Donesite zdravstveni karton i listu lijekova koje ljubimac koristi. Za laboratorijske analize može biti potreban gladovanje 8-12 sati - obavezno se konsultujte unaprijed."
     }
+  },
+  "topBar": {
+    "weekdays": "Pon–Pet"
   }
 }

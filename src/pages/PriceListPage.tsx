@@ -115,7 +115,7 @@ const PriceListPage = () => {
         />
       </Helmet>
 
-      <section className="pt-24 md:pt-28 pb-2">
+      <section className="pt-32 md:pt-36 pb-2">
         <div className="container-custom">
           <h1 className="text-h1 text-foreground">Cjenovnik Usluga</h1>
         </div>

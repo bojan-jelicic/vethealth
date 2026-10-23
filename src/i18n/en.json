@@ -268,5 +268,8 @@
       "q": "How do I prepare my pet for a visit?",
       "a": "Bring the health booklet and a list of medications. Lab tests may require 8–12 hours of fasting — please consult us in advance."
     }
+  },
+  "topBar": {
+    "weekdays": "Mon–Fri"
   }
 }

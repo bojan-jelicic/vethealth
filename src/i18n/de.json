@@ -268,5 +268,8 @@
       "q": "Wie bereite ich mein Tier auf den Besuch vor?",
       "a": "Bringen Sie das Gesundheitsheft und eine Liste der Medikamente mit. Für Laboruntersuchungen können 8–12 Stunden Fasten nötig sein — bitte vorher abstimmen."
     }
+  },
+  "topBar": {
+    "weekdays": "Mo–Fr"
   }
 }
