@@ -1,73 +1,68 @@
-# Welcome to your Lovable project
+# Lovable Stack Essentials
 
-## Project info
+# Struktura projekta - Lovable Default Stack
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## Tehnologije
 
-## How can I edit this code?
+### Frontend (Lovable uređuje)
+- React 18 + TypeScript
+- Vite (build tool)
+- Tailwind CSS + shadcn/ui komponente
+- React Router v6 (routing)
+- TanStack React Query (server state)
+- Lucide React (ikone)
+- Zod (validacija)
+- React Hook Form (forme)
 
-There are several ways of editing your application.
+### Backend (Lovable Cloud / Supabase)
+- Supabase PostgreSQL baza podataka
+- Supabase Auth (autentifikacija)
+- Supabase Edge Functions (serverless funkcije)
+- Supabase Storage (skladištenje fajlova)
+- Row Level Security (RLS) za zaštitu podataka
 
-**Use Lovable**
+## Struktura foldera
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
-
-Changes made via Lovable will be committed automatically to this repo.
-
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```
+src/
+├── components/          # React komponente
+│   ├── ui/             # shadcn/ui komponente
+│   └── ...             # Custom komponente
+├── pages/              # Stranice aplikacije
+├── hooks/              # Custom React hooks
+├── lib/                # Utility funkcije
+├── integrations/       # Supabase klijent i tipovi
+└── types/              # TypeScript tipovi
 ```
 
-**Edit a file directly in GitHub**
+## Napomene za Lovable
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+1. Koristi Supabase za sve backend funkcionalnosti
+2. Implementiraj RLS politike za zaštitu podataka
+3. Koristi Edge Functions za kompleksnu logiku
+4. Autentifikaciju implementiraj preko Supabase Auth
+5. Za state management koristi TanStack Query
+6. Sve forme implementiraj sa React Hook Form + Zod validacijom
 
-**Use GitHub Codespaces**
+This project was built with [Lovable](https://lovable.dev).
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+**Live app**: https://vethealth.lovable.app
 
-## What technologies are used for this project?
+## Build with Lovable
 
-This project is built with:
+Continue developing this project in the [Lovable editor](https://lovable.dev/projects/127a9c8d-2b8a-4894-ba04-4bc3e8cacbbb).
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+- **Ship faster**: describe what you want to build and Lovable handles the code.
+- **Stay in sync**: every change made in Lovable is committed straight to this repository.
+- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
 
-## How can I deploy this project?
+## Development
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
 
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+```sh
+git clone <this-repository-url>
+cd <repository-name>
+npm i
+npm run dev
+```
