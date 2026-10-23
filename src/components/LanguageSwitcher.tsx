@@ -9,9 +9,9 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 const languages = [
-  { code: 'sr', label: 'Srpski', flag: '🇧🇦' },
-  { code: 'en', label: 'English', flag: '🇬🇧' },
-  { code: 'de', label: 'Deutsch', flag: '🇩🇪' },
+  { code: 'sr', label: 'Srpski', flag: 'SR' },
+  { code: 'en', label: 'English', flag: 'EN' },
+  { code: 'de', label: 'Deutsch', flag: 'DE' },
 ];
 
 export const LanguageSwitcher = () => {
@@ -36,7 +36,7 @@ export const LanguageSwitcher = () => {
               i18n.language === lang.code ? 'bg-secondary font-medium' : ''
             }`}
           >
-            <span>{lang.flag}</span>
+            <span className="w-6 text-xs font-semibold text-muted-foreground">{lang.flag}</span>
             <span>{lang.label}</span>
           </DropdownMenuItem>
         ))}
