@@ -6,7 +6,7 @@ import vethealthLogo from '@/assets/vethealth-logo.png';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { TopInfoBar } from '@/components/TopInfoBar';
 import { FEATURES } from '@/config/features';
 import { useClinicSettings, telLink } from '@/hooks/useClinicSettings';
 
@@ -32,7 +32,7 @@ export const Header = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > 40);
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
@@ -45,12 +45,12 @@ export const Header = () => {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled
-          ? 'bg-card/95 backdrop-blur-md shadow-card'
-          : 'bg-transparent'
+      className={`fixed top-0 left-0 right-0 z-50 transition-transform duration-300 ${
+        isScrolled ? '-translate-y-10' : 'translate-y-0'
       }`}
     >
+      <TopInfoBar />
+      <div className={`transition-colors duration-300 ${isScrolled ? 'bg-card/95 backdrop-blur-md shadow-card' : 'bg-transparent'}`}>
       <div className="container-custom">
         <div className="flex items-center justify-between h-20 md:h-20 pt-2 md:pt-0">
           {/* Logo */}
@@ -81,14 +81,6 @@ export const Header = () => {
 
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-3">
-            <a
-              href={telLink(phone)}
-              className="flex items-center gap-2 text-muted-foreground hover:text-primary transition-colors"
-            >
-              <Phone className="w-4 h-4" />
-              <span className="text-small">{phone}</span>
-            </a>
-            <LanguageSwitcher />
             {FEATURES.themeToggle && <ThemeToggle />}
             {FEATURES.publicAppointments ? (
               <Button variant="accent" onClick={() => navigate('/zakazivanje-termina')}>
@@ -138,7 +130,6 @@ export const Header = () => {
                     <span>{phone}</span>
                   </a>
                   <div className="flex items-center gap-3">
-                    <LanguageSwitcher />
                     {FEATURES.themeToggle && (
                       <>
                         <ThemeToggle />
@@ -162,6 +153,7 @@ export const Header = () => {
             </SheetContent>
           </Sheet>
         </div>
+      </div>
       </div>
     </header>
   );
