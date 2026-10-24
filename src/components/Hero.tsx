@@ -10,20 +10,20 @@ export const Hero = () => {
   return (
     <section
       id="home"
-      className="relative pt-[180px] md:pt-[188px] lg:pt-48 pb-16 md:pb-20 overflow-hidden"
+      className="relative pt-[340px] md:pt-[460px] lg:pt-48 pb-12 md:pb-20 overflow-hidden"
     >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
 
       {/* Mobile/tablet full-width photo background */}
-      <div className="absolute inset-x-0 bottom-0 top-[148px] md:top-[152px] lg:hidden" aria-hidden="true">
+      <div className="absolute inset-x-0 bottom-0 top-[124px] md:top-[152px] lg:hidden" aria-hidden="true">
         <img
           src={heroPhoto.url}
           alt=""
-          className="w-full h-full object-cover object-[45%_center]"
+          className="w-full h-full object-cover object-[30%_15%]"
           loading="eager"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/45 via-background/60 to-background/90" />
+        <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(to bottom, hsl(var(--foreground) / 0) 0%, hsl(var(--foreground) / 0.15) 22%, hsl(var(--foreground) / 0.75) 45%, hsl(var(--foreground) / 0.9) 100%)' }} />
       </div>
 
       {/* Decorative blurs */}
@@ -39,13 +39,13 @@ export const Hero = () => {
               <span>{t('hero.badge')}</span>
             </div>
 
-            <h1 className="max-lg:!mt-0 text-4xl md:text-5xl lg:text-h1 font-heading font-bold text-foreground leading-tight animate-fade-in-up delay-100">
+            <h1 className="max-lg:!mt-0 text-4xl md:text-5xl lg:text-h1 font-heading font-bold text-foreground max-lg:text-background leading-tight animate-fade-in-up delay-100">
               {t('hero.title1')}{' '}
-              <span className="text-primary">{t('hero.titleHighlight')}</span>{' '}
+              <span className="text-primary max-lg:text-accent">{t('hero.titleHighlight')}</span>{' '}
               {t('hero.title2')}
             </h1>
 
-            <p className="text-lg text-muted-foreground max-w-lg leading-relaxed animate-fade-in-up delay-200">
+            <p className="text-lg text-muted-foreground max-lg:text-background/85 max-w-lg leading-relaxed animate-fade-in-up delay-200">
               {t('hero.description')}
             </p>
 
@@ -61,25 +61,25 @@ export const Hero = () => {
             {/* Trust indicators */}
             <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-8 max-w-md animate-fade-in-up delay-400">
               <div className="flex flex-col items-center text-center">
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-2">
-                  <Shield className="w-6 h-6 text-primary" />
+                <div className="w-12 h-12 bg-primary/10 max-lg:bg-background/15 rounded-full flex items-center justify-center mb-2">
+                  <Shield className="w-6 h-6 text-primary max-lg:text-background" />
                 </div>
-                <span className="text-lg sm:text-h4 font-heading font-bold text-foreground">15+</span>
-                <span className="text-xs sm:text-small text-muted-foreground">{t('hero.yearsExp')}</span>
+                <span className="text-lg sm:text-h4 font-heading font-bold text-foreground max-lg:text-background">15+</span>
+                <span className="text-xs sm:text-small text-muted-foreground max-lg:text-background/80">{t('hero.yearsExp')}</span>
               </div>
               <div className="flex flex-col items-center text-center">
-                <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mb-2">
+                <div className="w-12 h-12 bg-accent/10 max-lg:bg-background/15 rounded-full flex items-center justify-center mb-2">
                   <Heart className="w-6 h-6 text-accent" />
                 </div>
-                <span className="text-lg sm:text-h4 font-heading font-bold text-foreground">5000+</span>
-                <span className="text-xs sm:text-small text-muted-foreground">{t('hero.happyPets')}</span>
+                <span className="text-lg sm:text-h4 font-heading font-bold text-foreground max-lg:text-background">5000+</span>
+                <span className="text-xs sm:text-small text-muted-foreground max-lg:text-background/80">{t('hero.happyPets')}</span>
               </div>
               <div className="flex flex-col items-center text-center">
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-2">
-                  <MapPin className="w-6 h-6 text-primary" />
+                <div className="w-12 h-12 bg-primary/10 max-lg:bg-background/15 rounded-full flex items-center justify-center mb-2">
+                  <MapPin className="w-6 h-6 text-primary max-lg:text-background" />
                 </div>
-                <span className="text-lg sm:text-h4 font-heading font-bold text-foreground">2016.</span>
-                <span className="text-xs sm:text-small text-muted-foreground">{t('hero.sameAddress')}</span>
+                <span className="text-lg sm:text-h4 font-heading font-bold text-foreground max-lg:text-background">2016.</span>
+                <span className="text-xs sm:text-small text-muted-foreground max-lg:text-background/80">{t('hero.sameAddress')}</span>
               </div>
             </div>
           </div>
