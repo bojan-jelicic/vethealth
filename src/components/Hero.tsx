@@ -10,20 +10,25 @@ export const Hero = () => {
   return (
     <section
       id="home"
-      className="relative pt-[340px] md:pt-[460px] lg:pt-48 pb-12 md:pb-20 overflow-hidden"
+      className="relative pt-[430px] sm:pt-[480px] md:pt-[580px] lg:pt-48 pb-12 md:pb-20 overflow-hidden"
     >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
 
-      {/* Mobile/tablet full-width photo background */}
-      <div className="absolute inset-x-0 bottom-0 top-[124px] md:top-[152px] lg:hidden" aria-hidden="true">
-        <img
-          src={heroPhoto.url}
-          alt=""
-          className="w-full h-full object-cover object-[30%_15%]"
-          loading="eager"
-        />
-        <div className="absolute inset-0" style={{ backgroundImage: 'linear-gradient(to bottom, hsl(var(--foreground) / 0) 0%, hsl(var(--foreground) / 0.15) 22%, hsl(var(--foreground) / 0.75) 45%, hsl(var(--foreground) / 0.9) 100%)' }} />
+      {/* Mobile/tablet photo on top, fading into a dark panel */}
+      <div className="absolute inset-x-0 bottom-0 top-[124px] md:top-[152px] lg:hidden bg-foreground" aria-hidden="true">
+        <div className="relative h-[420px] sm:h-[480px] md:h-[560px]">
+          <img
+            src={heroPhoto.url}
+            alt=""
+            className="w-full h-full object-cover object-[47%_20%]"
+            loading="eager"
+          />
+          <div
+            className="absolute inset-0"
+            style={{ backgroundImage: 'linear-gradient(to bottom, hsl(var(--foreground) / 0.15) 0%, hsl(var(--foreground) / 0.2) 50%, hsl(var(--foreground) / 0.75) 80%, hsl(var(--foreground)) 100%)' }}
+          />
+        </div>
       </div>
 
       {/* Decorative blurs */}
