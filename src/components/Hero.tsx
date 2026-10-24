@@ -16,7 +16,7 @@ export const Hero = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
 
       {/* Mobile/tablet photo on top, fading into a dark panel */}
-      <div className="absolute inset-x-0 bottom-0 top-[124px] md:top-[152px] lg:hidden bg-foreground" aria-hidden="true">
+      <div className="absolute inset-x-0 bottom-0 top-[124px] md:top-[152px] lg:hidden bg-background" aria-hidden="true">
         <div className="relative h-[420px] sm:h-[480px] md:h-[560px]">
           <img
             src={heroPhoto.url}
@@ -26,7 +26,7 @@ export const Hero = () => {
           />
           <div
             className="absolute inset-0"
-            style={{ backgroundImage: 'linear-gradient(to bottom, hsl(var(--foreground) / 0.15) 0%, hsl(var(--foreground) / 0.2) 50%, hsl(var(--foreground) / 0.75) 80%, hsl(var(--foreground)) 100%)' }}
+            style={{ backgroundImage: 'linear-gradient(to bottom, hsl(var(--background) / 0) 0%, hsl(var(--background) / 0) 45%, hsl(var(--background) / 0.75) 75%, hsl(var(--background)) 100%)' }}
           />
         </div>
       </div>
@@ -44,13 +44,13 @@ export const Hero = () => {
               <span>{t('hero.badge')}</span>
             </div>
 
-            <h1 className="max-lg:!mt-0 text-4xl md:text-5xl lg:text-h1 font-heading font-bold text-foreground max-lg:text-background leading-tight animate-fade-in-up delay-100">
+            <h1 className="max-lg:!mt-0 text-4xl md:text-5xl lg:text-h1 font-heading font-bold text-foreground leading-tight animate-fade-in-up delay-100">
               {t('hero.title1')}{' '}
-              <span className="text-primary max-lg:text-accent">{t('hero.titleHighlight')}</span>{' '}
+              <span className="text-primary">{t('hero.titleHighlight')}</span>{' '}
               {t('hero.title2')}
             </h1>
 
-            <p className="text-lg text-muted-foreground max-lg:text-background/85 max-w-lg leading-relaxed animate-fade-in-up delay-200">
+            <p className="text-lg text-muted-foreground max-w-lg leading-relaxed animate-fade-in-up delay-200">
               {t('hero.description')}
             </p>
 
@@ -66,25 +66,25 @@ export const Hero = () => {
             {/* Trust indicators */}
             <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-8 max-w-md animate-fade-in-up delay-400">
               <div className="flex flex-col items-center text-center">
-                <div className="w-12 h-12 bg-primary/10 max-lg:bg-background/15 rounded-full flex items-center justify-center mb-2">
-                  <Shield className="w-6 h-6 text-primary max-lg:text-background" />
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-2">
+                  <Shield className="w-6 h-6 text-primary" />
                 </div>
-                <span className="text-lg sm:text-h4 font-heading font-bold text-foreground max-lg:text-background">15+</span>
-                <span className="text-xs sm:text-small text-muted-foreground max-lg:text-background/80">{t('hero.yearsExp')}</span>
+                <span className="text-lg sm:text-h4 font-heading font-bold text-foreground">15+</span>
+                <span className="text-xs sm:text-small text-muted-foreground">{t('hero.yearsExp')}</span>
               </div>
               <div className="flex flex-col items-center text-center">
-                <div className="w-12 h-12 bg-accent/10 max-lg:bg-background/15 rounded-full flex items-center justify-center mb-2">
+                <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mb-2">
                   <Heart className="w-6 h-6 text-accent" />
                 </div>
-                <span className="text-lg sm:text-h4 font-heading font-bold text-foreground max-lg:text-background">5000+</span>
-                <span className="text-xs sm:text-small text-muted-foreground max-lg:text-background/80">{t('hero.happyPets')}</span>
+                <span className="text-lg sm:text-h4 font-heading font-bold text-foreground">5000+</span>
+                <span className="text-xs sm:text-small text-muted-foreground">{t('hero.happyPets')}</span>
               </div>
               <div className="flex flex-col items-center text-center">
-                <div className="w-12 h-12 bg-primary/10 max-lg:bg-background/15 rounded-full flex items-center justify-center mb-2">
-                  <MapPin className="w-6 h-6 text-primary max-lg:text-background" />
+                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-2">
+                  <MapPin className="w-6 h-6 text-primary" />
                 </div>
-                <span className="text-lg sm:text-h4 font-heading font-bold text-foreground max-lg:text-background">2016.</span>
-                <span className="text-xs sm:text-small text-muted-foreground max-lg:text-background/80">{t('hero.sameAddress')}</span>
+                <span className="text-lg sm:text-h4 font-heading font-bold text-foreground">2016.</span>
+                <span className="text-xs sm:text-small text-muted-foreground">{t('hero.sameAddress')}</span>
               </div>
             </div>
           </div>
