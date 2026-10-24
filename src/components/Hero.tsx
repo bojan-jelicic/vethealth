@@ -10,20 +10,20 @@ export const Hero = () => {
   return (
     <section
       id="home"
-      className="relative pt-[172px] md:pt-48 pb-16 md:pb-20 overflow-hidden"
+      className="relative pt-[180px] md:pt-[188px] lg:pt-48 pb-16 md:pb-20 overflow-hidden"
     >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
 
       {/* Mobile/tablet full-width photo background */}
-      <div className="absolute inset-x-0 bottom-0 top-[132px] md:top-[136px] lg:hidden" aria-hidden="true">
+      <div className="absolute inset-x-0 bottom-0 top-[148px] md:top-[152px] lg:hidden" aria-hidden="true">
         <img
           src={heroPhoto.url}
           alt=""
           className="w-full h-full object-cover object-[45%_center]"
           loading="eager"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-background/70 via-background/80 to-background/95" />
+        <div className="absolute inset-0 bg-gradient-to-b from-background/45 via-background/60 to-background/90" />
       </div>
 
       {/* Decorative blurs */}
@@ -39,7 +39,7 @@ export const Hero = () => {
               <span>{t('hero.badge')}</span>
             </div>
 
-            <h1 className="text-4xl md:text-5xl lg:text-h1 font-heading font-bold text-foreground leading-tight animate-fade-in-up delay-100">
+            <h1 className="max-lg:!mt-0 text-4xl md:text-5xl lg:text-h1 font-heading font-bold text-foreground leading-tight animate-fade-in-up delay-100">
               {t('hero.title1')}{' '}
               <span className="text-primary">{t('hero.titleHighlight')}</span>{' '}
               {t('hero.title2')}
