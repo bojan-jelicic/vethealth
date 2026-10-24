@@ -271,6 +271,10 @@
     }
   },
   "topBar": {
-    "weekdays": "Mo–Fr"
+    "weekdays": "Mo–Fr",
+    "sat": "Sa",
+    "sun": "So",
+    "closed": "Geschlossen",
+    "hours": "Öffnungszeiten"
   }
 }
