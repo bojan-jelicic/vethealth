@@ -10,7 +10,7 @@ export const Hero = () => {
   return (
     <section
       id="home"
-      className="relative pt-32 md:pt-36 pb-16 md:pb-20 overflow-hidden"
+      className="relative pt-40 md:pt-48 pb-16 md:pb-20 overflow-hidden"
     >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
