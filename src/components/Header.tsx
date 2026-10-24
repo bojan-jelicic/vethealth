@@ -50,15 +50,15 @@ export const Header = () => {
       }`}
     >
       <TopInfoBar />
-      <div className={`transition-all duration-300 ${isScrolled ? 'bg-card/95 backdrop-blur-md shadow-card' : 'bg-transparent pt-3 md:pt-4'}`}>
+      <div className={`transition-all duration-300 ${isScrolled ? 'bg-card/95 backdrop-blur-md shadow-card' : 'bg-transparent pt-2 md:pt-4'}`}>
       <div className="container-custom">
-        <div className="flex items-center justify-between h-20 md:h-20 pt-2 md:pt-0">
+        <div className="flex items-center justify-between h-16 md:h-20">
           {/* Logo */}
           <Link to="/" className="group">
             <img
               src={vethealthLogo}
               alt="VetHealth.ba - Veterinarska Ordinacija"
-              className="h-16 md:h-[72px] w-auto group-hover:scale-105 transition-transform"
+              className="h-12 md:h-[72px] w-auto group-hover:scale-105 transition-transform"
             />
           </Link>
 
