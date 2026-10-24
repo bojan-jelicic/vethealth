@@ -1,14 +1,14 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { Menu, Phone, Calendar } from 'lucide-react';
+import { Menu, Phone, Calendar, MapPin, Clock } from 'lucide-react';
 import vethealthLogo from '@/assets/vethealth-logo.png';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { TopInfoBar } from '@/components/TopInfoBar';
 import { FEATURES } from '@/config/features';
-import { useClinicSettings, telLink } from '@/hooks/useClinicSettings';
+import { useClinicSettings, telLink, mapsLink } from '@/hooks/useClinicSettings';
 
 const allNavLinks = [
   { key: 'home', href: '/', flag: null },
@@ -126,9 +126,34 @@ export const Header = () => {
                     href={telLink(phone)}
                     className="flex items-center gap-3 text-foreground"
                   >
-                    <Phone className="w-5 h-5 text-primary" />
+                    <Phone className="w-5 h-5 text-primary shrink-0" />
                     <span>{phone}</span>
                   </a>
+                  {clinic?.address && (
+                    <a
+                      href={mapsLink(clinic.address)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-3 text-foreground"
+                    >
+                      <MapPin className="w-5 h-5 text-primary shrink-0" />
+                      <span>{clinic.address}</span>
+                    </a>
+                  )}
+                  {clinic?.working_hours && (
+                    <div className="flex items-start gap-3 text-foreground">
+                      <Clock className="w-5 h-5 text-primary shrink-0 mt-0.5" />
+                      <div className="text-sm space-y-0.5">
+                        {clinic.working_hours.pon_pet && (
+                          <p><span className="text-muted-foreground">{t('topBar.weekdays')}:</span> {clinic.working_hours.pon_pet}</p>
+                        )}
+                        {clinic.working_hours.sub && (
+                          <p><span className="text-muted-foreground">{t('topBar.sat')}:</span> {clinic.working_hours.sub}</p>
+                        )}
+                        <p><span className="text-muted-foreground">{t('topBar.sun')}:</span> {t('topBar.closed')}</p>
+                      </div>
+                    </div>
+                  )}
                   <div className="flex items-center gap-3">
                     {FEATURES.themeToggle && (
                       <>
