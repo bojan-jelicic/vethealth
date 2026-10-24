@@ -16,8 +16,8 @@ export const Hero = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
 
       {/* Mobile/tablet photo on top, fading into a dark panel */}
-      <div className="absolute inset-x-0 bottom-0 top-[124px] md:top-[152px] lg:hidden bg-background" aria-hidden="true">
-        <div className="relative h-[420px] sm:h-[480px] md:h-[560px]">
+      <div className="absolute inset-x-0 bottom-0 top-[96px] md:top-[120px] lg:hidden bg-background" aria-hidden="true">
+        <div className="relative h-[448px] sm:h-[508px] md:h-[592px]">
           <img
             src={heroPhoto.url}
             alt=""
@@ -26,7 +26,7 @@ export const Hero = () => {
           />
           <div
             className="absolute inset-0"
-            style={{ backgroundImage: 'linear-gradient(to bottom, hsl(var(--background) / 0) 0%, hsl(var(--background) / 0) 45%, hsl(var(--background) / 0.75) 75%, hsl(var(--background)) 100%)' }}
+            style={{ backgroundImage: 'linear-gradient(to bottom, hsl(var(--background)) 0%, hsl(var(--background) / 0.6) 7%, hsl(var(--background) / 0) 18%, hsl(var(--background) / 0) 45%, hsl(var(--background) / 0.75) 75%, hsl(var(--background)) 100%)' }}
           />
         </div>
       </div>
