@@ -10,13 +10,13 @@ export const Hero = () => {
   return (
     <section
       id="home"
-      className="relative pt-40 md:pt-48 pb-16 md:pb-20 overflow-hidden"
+      className="relative pt-[172px] md:pt-48 pb-16 md:pb-20 overflow-hidden"
     >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
 
       {/* Mobile/tablet full-width photo background */}
-      <div className="absolute inset-0 lg:hidden" aria-hidden="true">
+      <div className="absolute inset-x-0 bottom-0 top-[132px] md:top-[136px] lg:hidden" aria-hidden="true">
         <img
           src={heroPhoto.url}
           alt=""
@@ -34,7 +34,7 @@ export const Hero = () => {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Content */}
           <div className="space-y-8">
-            <div className="inline-flex items-center gap-2 bg-card/80 backdrop-blur-sm lg:bg-primary/10 text-primary px-4 py-2 rounded-full text-small font-medium shadow-sm lg:shadow-none animate-fade-in-up">
+            <div className="hidden lg:inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-small font-medium animate-fade-in-up">
               <Heart className="w-4 h-4" />
               <span>{t('hero.badge')}</span>
             </div>
