@@ -10,7 +10,7 @@ export const Hero = () => {
   return (
     <section
       id="home"
-      className="relative pt-40 md:pt-48 pb-16 md:pb-20 overflow-hidden"
+      className="relative pt-36 md:pt-40 lg:pt-48 pb-16 md:pb-20 overflow-hidden"
     >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-background to-accent/5" />
@@ -23,7 +23,30 @@ export const Hero = () => {
         <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
           {/* Content */}
           <div className="space-y-8">
-            <div className="inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-small font-medium animate-fade-in-up">
+            {/* Mobile/tablet photo */}
+            <div className="relative lg:hidden animate-fade-in-up">
+              <div className="h-64 md:h-[360px] rounded-card overflow-hidden shadow-card ring-4 ring-card">
+                <img
+                  src={heroPhoto.url}
+                  alt="Veterinar Vladimir Ilić pregleda koker španijela"
+                  className="w-full h-full object-cover object-[45%_center]"
+                  loading="eager"
+                />
+              </div>
+              <div className="absolute left-3 bottom-3 bg-card/95 px-3 py-2 rounded-card shadow-card">
+                <div className="flex items-center gap-2">
+                  <div className="w-8 h-8 bg-success/10 rounded-full flex items-center justify-center">
+                    <Shield className="w-4 h-4 text-success" />
+                  </div>
+                  <div>
+                    <p className="text-xs font-medium text-foreground">{t('hero.certified')}</p>
+                    <p className="text-xs text-muted-foreground">{t('hero.veterinarians')}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className="hidden md:inline-flex items-center gap-2 bg-primary/10 text-primary px-4 py-2 rounded-full text-small font-medium animate-fade-in-up">
               <Heart className="w-4 h-4" />
               <span>{t('hero.badge')}</span>
             </div>
