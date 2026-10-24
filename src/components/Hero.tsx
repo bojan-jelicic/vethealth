@@ -10,13 +10,13 @@ export const Hero = () => {
   return (
     <section
       id="home"
-      className="relative pt-[430px] sm:pt-[480px] md:pt-[580px] lg:pt-48 pb-12 md:pb-20 overflow-hidden"
+      className="relative pt-[450px] sm:pt-[500px] md:pt-[608px] lg:pt-48 pb-12 md:pb-20 overflow-hidden"
     >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-background lg:bg-transparent lg:bg-gradient-to-br lg:from-primary/5 lg:via-background lg:to-accent/5" />
 
       {/* Mobile/tablet photo on top, fading into a dark panel */}
-      <div className="absolute inset-x-0 bottom-0 top-[104px] md:top-[120px] lg:hidden bg-background" aria-hidden="true">
+      <div className="absolute inset-x-0 bottom-0 top-[124px] md:top-[148px] lg:hidden bg-background" aria-hidden="true">
         <div className="relative h-[448px] sm:h-[508px] md:h-[592px]">
           <img
             src={heroPhoto.url}
