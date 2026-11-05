@@ -72,7 +72,7 @@
       "price": null,
       "category_id": "33333333-3333-3333-3333-333333333333",
       "slug": "veterinarska-hirurgija",
-      "hero_image_url": "https://bbqqrrfaoabaikmtpcpi.supabase.co/storage/v1/object/public/service-images/6cadc442-126c-4272-80de-3f9a32bd1ebb/69d8f5a6-25d3-4d52-9fcb-354166c57351.jpg",
+      "hero_image_url": "/content/69d8f5a6-25d3-4d52-9fcb-354166c57351.jpg",
       "long_description": "Veterinarska hirurgija obuhvata širok spektar operativnih zahvata koji imaju za cilj očuvanje zdravlja, funkcionalnosti i kvaliteta života vašeg ljubimca. U našoj ambulanti izvodimo rutinske i složenije operacije pasa i mačaka, koristeći savremene hirurške tehnike, kvalitetnu anesteziju i stručni postoperativni nadzor. Svakom pacijentu pristupamo individualno kako bismo osigurali maksimalnu sigurnost i što brži oporavak.",
       "content_blocks": [
         {
@@ -91,7 +91,7 @@
       "price": null,
       "category_id": "55555555-5555-5555-5555-555555555555",
       "slug": "laboratorija-i-dijagnostika",
-      "hero_image_url": "https://bbqqrrfaoabaikmtpcpi.supabase.co/storage/v1/object/public/service-images/5bfea8f2-2b9e-49bf-b32b-5c98f8447034/67570fd6-da20-425c-8914-a605ba2187eb.jfif",
+      "hero_image_url": "/content/67570fd6-da20-425c-8914-a605ba2187eb.jfif",
       "long_description": "Laboratorijska dijagnostika predstavlja jedan od najvažnijih koraka u postavljanju tačne dijagnoze i praćenju zdravstvenog stanja vašeg ljubimca. U našoj ambulanti obavljamo širok spektar laboratorijskih analiza koje omogućavaju brzo i pouzdano otkrivanje bolesti, procjenu funkcije organa te praćenje toka liječenja. Savremena dijagnostička oprema i stručna interpretacija rezultata omogućavaju pravovremeno donošenje terapijskih odluka i pružanje najbolje moguće zdravstvene zaštite za pse i mačke.",
       "content_blocks": []
     },
@@ -103,7 +103,7 @@
       "price": null,
       "category_id": "11111111-1111-1111-1111-111111111111",
       "slug": "opsti-i-specijalisticki-pregledi",
-      "hero_image_url": "https://bbqqrrfaoabaikmtpcpi.supabase.co/storage/v1/object/public/service-images/ee320867-8cc5-45e1-89e7-819ca0e75b5f/2b7e2f1c-9445-4f95-8118-6fb6203af3eb.jpg",
+      "hero_image_url": "/content/2b7e2f1c-9445-4f95-8118-6fb6203af3eb.jpg",
       "long_description": "Redovnim pregledima omogućava se rano otkrivanje bolesti, pravovremena dijagnoza i efikasno liječenje, čime se značajno povećava kvalitet i dužina života vašeg ljubimca. U našoj ambulanti svaki pacijent dobija individualan pristup, uz detaljnu kliničku procjenu i po potrebi dodatne dijagnostičke pretrage kako bismo osigurali tačnu i pouzdanu zdravstvenu sliku.",
       "content_blocks": []
     },
@@ -127,7 +127,7 @@
       "price": null,
       "category_id": "44444444-4444-4444-4444-444444444444",
       "slug": "stomatologija",
-      "hero_image_url": "https://bbqqrrfaoabaikmtpcpi.supabase.co/storage/v1/object/public/service-images/8ae17092-3b21-41ae-b43c-35120ea56e4c/fe103aaa-ceab-45b2-8f1b-b8e496b40d12.jpg",
+      "hero_image_url": "/content/fe103aaa-ceab-45b2-8f1b-b8e496b40d12.jpg",
       "long_description": "U našoj ambulanti obavljamo stomatološke preglede, tretman stomatitisa te uklanjanje zubnog kamenca.",
       "content_blocks": []
     },
@@ -151,7 +151,7 @@
       "price": null,
       "category_id": "22222222-2222-2222-2222-222222222222",
       "slug": "vakcinacija-pasa-i-macaka",
-      "hero_image_url": "https://bbqqrrfaoabaikmtpcpi.supabase.co/storage/v1/object/public/service-images/a6e0ce51-b4ec-424a-8ed8-b365e1d2d259/e242ddd2-14de-48c7-9dc1-f41844e1e7d7.webp",
+      "hero_image_url": "/content/e242ddd2-14de-48c7-9dc1-f41844e1e7d7.webp",
       "long_description": "Zašto je vakcinacija važna?\n\nštiti od zaraznih bolesti\n\njača imunitet\n\nsprječava širenje infekcija\n\nštiti i ljude od zoonoza\n\nprodužava i poboljšava kvalitet života\n\nVakcinacija pasa\n\nPsi se vakcinišu protiv štenećaka, parvoviroze, zaraznog hepatitisa, parainfluence i leptospiroze. Vakcinacija protiv bjesnila je zakonska obaveza i ključna mjera zaštite zdravlja ljudi i životinja.\n\nVakcinacija mačaka\n\nMačke se vakcinišu protiv mačje kuge, virusnog rinotraheitisa i kaliciviroze, uz dodatne vakcine prema procjeni veterinara.\n\nKada vakcinisati?\n\nPrva vakcinacija se obavlja u ranom uzrastu, a imunitet se održava redovnim revakcinacijama prema preporuci veterinara.",
       "content_blocks": [
         {
@@ -169,7 +169,7 @@
       "title": "Sterilizacija i kastracija pasa i mačaka – sve što treba da znate",
       "slug": "sterilizacija-i-kastracija",
       "excerpt": "Sterilizacija i kastracija pasa i mačaka predstavljaju važne veterinarske zahvate koji doprinose očuvanju zdravlja ljubimaca, smanjenju rizika od bolesti reproduktivnog sistema te kontroli nekontrolisanog razmnožavanja i broja napuštenih životinja.",
-      "hero_image_url": "https://bbqqrrfaoabaikmtpcpi.supabase.co/storage/v1/object/public/service-images/blog/bb3e5fb4-59db-4ebd-9286-9bb4adb1bd8f/2db09c99-751c-4816-9d0d-57e0e0815019.webp",
+      "hero_image_url": "/content/2db09c99-751c-4816-9d0d-57e0e0815019.webp",
       "content_blocks": [
         {
           "id": "0aabfbc9-1f04-42dd-ac1f-0796b8d8c8cd",
