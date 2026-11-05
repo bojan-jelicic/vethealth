@@ -7,6 +7,8 @@ import { Layout } from '@/components/Layout';
 import { PageHero } from '@/components/PageHero';
 import { Input } from '@/components/ui/input';
 import { supabase } from '@/integrations/supabase/client';
+import { FEATURES } from '@/config/features';
+import { staticBlogPosts } from '@/data/staticContent';
 
 interface PublicBlogPost {
   id: string;
@@ -31,6 +33,7 @@ const BlogPage = () => {
   const { data: posts, isLoading } = useQuery({
     queryKey: ['public-blog-posts'],
     queryFn: async () => {
+      if (FEATURES.staticMode) return staticBlogPosts as PublicBlogPost[];
       const { data, error } = await supabase
         .from('blog_posts')
         .select('id, title, slug, excerpt, hero_image_url, author_name, read_time_minutes, published_at, created_at')

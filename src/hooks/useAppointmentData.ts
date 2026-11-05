@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { FEATURES } from '@/config/features';
+import { staticServices, staticCategories, getStaticCategoriesWithServices } from '@/data/staticContent';
 
 export interface Service {
   id: string;
@@ -53,6 +55,7 @@ export const useServices = () => {
   return useQuery({
     queryKey: ['services'],
     queryFn: async () => {
+      if (FEATURES.staticMode) return staticServices as Service[];
       const { data, error } = await supabase
         .from('services')
         .select('id, name, description, duration_minutes, price, category_id')
@@ -69,6 +72,7 @@ export const useServiceCategories = () => {
   return useQuery({
     queryKey: ['service-categories'],
     queryFn: async () => {
+      if (FEATURES.staticMode) return staticCategories;
       const { data, error } = await supabase
         .from('service_categories')
         .select('id, name, description, icon, sort_order')
@@ -85,6 +89,7 @@ export const useServicesWithCategories = () => {
   return useQuery({
     queryKey: ['services-with-categories'],
     queryFn: async () => {
+      if (FEATURES.staticMode) return getStaticCategoriesWithServices();
       // Fetch categories
       const { data: categories, error: catError } = await supabase
         .from('service_categories')

@@ -3,6 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { Calendar, Clock, User, Loader2, ArrowLeft } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { FEATURES } from '@/config/features';
+import { staticBlogPosts } from '@/data/staticContent';
 import { Layout } from '@/components/Layout';
 import { PageHero } from '@/components/PageHero';
 import { Button } from '@/components/ui/button';
@@ -20,7 +22,8 @@ const BlogPostPage = () => {
   const { data: post, isLoading } = useQuery({
     queryKey: ['public-blog-post', slug],
     enabled: !!slug,
-    queryFn: async () => {
+    queryFn: async (): Promise<any> => {
+      if (FEATURES.staticMode) return staticBlogPosts.find((p) => p.slug === slug) ?? null;
       const { data, error } = await supabase
         .from('blog_posts')
         .select('*')
