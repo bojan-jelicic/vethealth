@@ -1,0 +1,201 @@
+{
+  "clinic": {
+    "name": "Veterinarska ambulanta i apoteka VEThealth Banjaluka",
+    "phone": "+387 51 370 530",
+    "email": "veterinar@vethelth.ba",
+    "address": "Branka Popovica 186, Banjaluka",
+    "working_hours": {
+      "ned": "Zatvoreno",
+      "sub": "09:00 - 14:00",
+      "pon_pet": "09:00 - 19:00"
+    },
+    "social_facebook": "https://www.facebook.com/VEThealthBL",
+    "social_instagram": "https://www.instagram.com/veterinar_vethealth/"
+  },
+  "categories": [
+    {
+      "id": "30b4ce52-8dda-413c-9cc5-164d1258742a",
+      "name": "Test",
+      "description": "Test",
+      "icon": "Calendar",
+      "sort_order": 0
+    },
+    {
+      "id": "11111111-1111-1111-1111-111111111111",
+      "name": "Pregledi i dijagnostika",
+      "description": "Redovni i specijalistički pregledi za sve vrste kućnih ljubimaca",
+      "icon": "Stethoscope",
+      "sort_order": 1
+    },
+    {
+      "id": "22222222-2222-2222-2222-222222222222",
+      "name": "Vakcinacije",
+      "description": "Kompletni vakcinalni programi za pse, mačke i druge ljubimce",
+      "icon": "Syringe",
+      "sort_order": 2
+    },
+    {
+      "id": "33333333-3333-3333-3333-333333333333",
+      "name": "Hirurgija",
+      "description": "Hirurške intervencije i operativni zahvati",
+      "icon": "Scissors",
+      "sort_order": 3
+    },
+    {
+      "id": "44444444-4444-4444-4444-444444444444",
+      "name": "Stomatologija",
+      "description": "Njega zuba i tretmani usne šupljine",
+      "icon": "Bone",
+      "sort_order": 4
+    },
+    {
+      "id": "55555555-5555-5555-5555-555555555555",
+      "name": "Laboratorija",
+      "description": "Laboratorijske analize i dijagnostički testovi",
+      "icon": "Microscope",
+      "sort_order": 5
+    },
+    {
+      "id": "2d3955c0-c3a0-4878-bc9f-81dd20d66575",
+      "name": "Ostalo",
+      "description": "Preventiva, ultrazvučna dijagnostika i ostale usluge",
+      "icon": "FileText",
+      "sort_order": 9
+    }
+  ],
+  "services": [
+    {
+      "id": "6cadc442-126c-4272-80de-3f9a32bd1ebb",
+      "name": "Hirurgija ",
+      "description": "U ambulanti izvodimo rutinske i složene operacije uz primjenu savremenih hirurških tehnika, sigurne anestezije i kontinuiranog monitoringa pacijenata.",
+      "duration_minutes": 30,
+      "price": null,
+      "category_id": "33333333-3333-3333-3333-333333333333",
+      "slug": "veterinarska-hirurgija",
+      "hero_image_url": "/content/69d8f5a6-25d3-4d52-9fcb-354166c57351.jpg",
+      "long_description": "Veterinarska hirurgija obuhvata širok spektar operativnih zahvata koji imaju za cilj očuvanje zdravlja, funkcionalnosti i kvaliteta života vašeg ljubimca. U našoj ambulanti izvodimo rutinske i složenije operacije pasa i mačaka, koristeći savremene hirurške tehnike, kvalitetnu anesteziju i stručni postoperativni nadzor. Svakom pacijentu pristupamo individualno kako bismo osigurali maksimalnu sigurnost i što brži oporavak.",
+      "content_blocks": [
+        {
+          "id": "d14d89ca-6e55-4154-953e-d5d8400d0159",
+          "body": "Hirurške usluge koje pružamo\nKastracija pasa i mačaka\n\nKastracija mužjaka predstavlja rutinski hirurški zahvat kojim se uklanjaju testisi radi kontrole reprodukcije, smanjenja rizika od određenih bolesti i neželjenih oblika ponašanja.\n\nSterilizacija pasa i mačaka\n\nSterilizacija ženki je jedna od najvažnijih preventivnih procedura u veterinarskoj medicini. Ovim zahvatom smanjuje se rizik od tumora mliječne žlijezde, infekcija materice i drugih reproduktivnih oboljenja.\n\nHirurška obrada rana i povreda\n\nVršimo profesionalnu obradu svježih i hroničnih rana, ugriznih povreda, razderotina kože i drugih traumatskih oštećenja tkiva, sa ciljem što bržeg i kvalitetnijeg zarastanja.\n\nRekonstruktivna hirurgija mekih tkiva\n\nKod složenih povreda i velikih defekata kože primjenjujemo rekonstruktivne tehnike i različite vrste kožnih režnjeva (flapova) kako bismo omogućili funkcionalan i estetski oporavak tkiva.\n\nUklanjanje tumora i kožnih promjena\n\nObavljamo hirurško uklanjanje benignih i malignih tumora, cisti, izraslina, bradavica i drugih kožnih promjena uz odgovarajuću dijagnostiku i praćenje pacijenta.\n\nCarski rez kod pasa i mačaka\n\nU hitnim i planiranim slučajevima obavljamo carske rezove radi spasavanja života majke i mladunaca, uz stručan nadzor tokom cijelog procesa.\n\nAmputacije ekstremiteta\n\nKada je medicinski opravdano, izvodimo amputacije ekstremiteta kod teških povreda, malignih tumora, infekcija ili drugih stanja koja ugrožavaju zdravlje i kvalitet života životinje.\n\nOstali hirurški zahvati\n\nPored navedenih procedura, obavljamo i druge operacije mekih tkiva u skladu sa dijagnozom i potrebama pacijenta, koristeći savremene hirurške tehnike i veterinarske standarde.\n\nSigurna hirurgija i postoperativna njega\n\nSvaki hirurški zahvat zahtijeva individualan pristup. Zato posebnu pažnju posvećujemo preoperativnoj pripremi, anesteziološkom monitoringu, kontroli bola i postoperativnom oporavku. Naš stručni tim stoji vam na raspolaganju za savjete, kontrole i podršku tokom cijelog procesa liječenja.\n\nPovjerite zdravlje svog ljubimca iskusnom veterinarskom timu koji pruža sigurnu i profesionalnu hiruršku njegu pasa i mačaka.",
+          "type": "text",
+          "title": "Hirurgija"
+        }
+      ]
+    },
+    {
+      "id": "5bfea8f2-2b9e-49bf-b32b-5c98f8447034",
+      "name": "Laboratorijske analize i dijagnostika",
+      "description": "Hematološke i biohemijske analize krvi, hormonske analize, citološka dijagnostika, parazitološka dijagnostika, mikrobiološka dijagnostika, antibiogram.",
+      "duration_minutes": 30,
+      "price": null,
+      "category_id": "55555555-5555-5555-5555-555555555555",
+      "slug": "laboratorija-i-dijagnostika",
+      "hero_image_url": "/content/67570fd6-da20-425c-8914-a605ba2187eb.jfif",
+      "long_description": "Laboratorijska dijagnostika predstavlja jedan od najvažnijih koraka u postavljanju tačne dijagnoze i praćenju zdravstvenog stanja vašeg ljubimca. U našoj ambulanti obavljamo širok spektar laboratorijskih analiza koje omogućavaju brzo i pouzdano otkrivanje bolesti, procjenu funkcije organa te praćenje toka liječenja. Savremena dijagnostička oprema i stručna interpretacija rezultata omogućavaju pravovremeno donošenje terapijskih odluka i pružanje najbolje moguće zdravstvene zaštite za pse i mačke.",
+      "content_blocks": []
+    },
+    {
+      "id": "ee320867-8cc5-45e1-89e7-819ca0e75b5f",
+      "name": "Opšti i specijalistički pregled",
+      "description": "U našoj ambulanti pružamo opšte i specijalističke preglede pasa i mačaka s ciljem pravovremenog otkrivanja zdravstvenih problema, postavljanja tačne dijagnoze i određivanja odgovarajućeg plana liječenja. Individualnim pristupom svakom pacijentu i korištenjem savremenih dijagnostičkih metoda osiguravamo kvalitetnu zdravstvenu zaštitu u svim životnim fazama vašeg ljubimca.\n",
+      "duration_minutes": 30,
+      "price": null,
+      "category_id": "11111111-1111-1111-1111-111111111111",
+      "slug": "opsti-i-specijalisticki-pregledi",
+      "hero_image_url": "/content/2b7e2f1c-9445-4f95-8118-6fb6203af3eb.jpg",
+      "long_description": "Redovnim pregledima omogućava se rano otkrivanje bolesti, pravovremena dijagnoza i efikasno liječenje, čime se značajno povećava kvalitet i dužina života vašeg ljubimca. U našoj ambulanti svaki pacijent dobija individualan pristup, uz detaljnu kliničku procjenu i po potrebi dodatne dijagnostičke pretrage kako bismo osigurali tačnu i pouzdanu zdravstvenu sliku.",
+      "content_blocks": []
+    },
+    {
+      "id": "6598b697-a20b-4d62-85d1-9f88ebd6acaa",
+      "name": "Preventivna veterinarska njega",
+      "description": "Pružamo usluge mikročipovanja, izdavanja pasoša i veterinarskih sertifikata za putovanja u zemlje EU, kao i dehelmintizacije, zaštite od ekto parazita i drugih mjera preventivne zdravstvene zaštite kućnih ljubimaca.",
+      "duration_minutes": 30,
+      "price": null,
+      "category_id": null,
+      "slug": "ultrazvucna-dijagnostika",
+      "hero_image_url": null,
+      "long_description": null,
+      "content_blocks": []
+    },
+    {
+      "id": "8ae17092-3b21-41ae-b43c-35120ea56e4c",
+      "name": "Stomatologija",
+      "description": "Zdravlje zuba i desni direktno utiče na opšte zdravstveno stanje ljubimca, zbog čega su redovni stomatološki pregledi izuzetno važni.\nU našoj ambulanti pružamo stomatološke preglede, liječenje stomatitisa, kao i čišćenje zubnog kamenca kako bismo spriječili razvoj infekcija, bolova i drugih komplikacija.",
+      "duration_minutes": 30,
+      "price": null,
+      "category_id": "44444444-4444-4444-4444-444444444444",
+      "slug": "stomatologija",
+      "hero_image_url": "/content/fe103aaa-ceab-45b2-8f1b-b8e496b40d12.jpg",
+      "long_description": "U našoj ambulanti obavljamo stomatološke preglede, tretman stomatitisa te uklanjanje zubnog kamenca.",
+      "content_blocks": []
+    },
+    {
+      "id": "c19b5b28-98ab-450b-b32a-faafd3858a89",
+      "name": "Ultrazvučna dijagnostika (UZV)",
+      "description": "Ultrazvučni pregledi omogućavaju brz, bezbolan i neinvazivan uvid u stanje unutrašnjih organa, doprinoseći pravovremenom otkrivanju promjena, preciznijoj dijagnostici i praćenju zdravstvenog stanja vašeg ljubimca.",
+      "duration_minutes": 30,
+      "price": null,
+      "category_id": "2d3955c0-c3a0-4878-bc9f-81dd20d66575",
+      "slug": "preventiva",
+      "hero_image_url": null,
+      "long_description": null,
+      "content_blocks": []
+    },
+    {
+      "id": "a6e0ce51-b4ec-424a-8ed8-b365e1d2d259",
+      "name": "Vakcinacija pasa i mačaka",
+      "description": "Vakcinacija je jedan od najvažnijih koraka u očuvanju zdravlja pasa i mačaka. Redovnom vakcinacijom ljubimci se štite od ozbiljnih zaraznih bolesti i značajno se smanjuje rizik od infekcija koje mogu ugroziti njihov život.\n\nU našoj veterinarskoj ambulanti vakcinacija se sprovodi prema važećim protokolima imunizacije, uz prethodni klinički pregled kako bi se osiguralo da je ljubimac zdrav i spreman za vakcinu.",
+      "duration_minutes": 30,
+      "price": null,
+      "category_id": "22222222-2222-2222-2222-222222222222",
+      "slug": "vakcinacija-pasa-i-macaka",
+      "hero_image_url": "/content/e242ddd2-14de-48c7-9dc1-f41844e1e7d7.webp",
+      "long_description": "Zašto je vakcinacija važna?\n\nštiti od zaraznih bolesti\n\njača imunitet\n\nsprječava širenje infekcija\n\nštiti i ljude od zoonoza\n\nprodužava i poboljšava kvalitet života\n\nVakcinacija pasa\n\nPsi se vakcinišu protiv štenećaka, parvoviroze, zaraznog hepatitisa, parainfluence i leptospiroze. Vakcinacija protiv bjesnila je zakonska obaveza i ključna mjera zaštite zdravlja ljudi i životinja.\n\nVakcinacija mačaka\n\nMačke se vakcinišu protiv mačje kuge, virusnog rinotraheitisa i kaliciviroze, uz dodatne vakcine prema procjeni veterinara.\n\nKada vakcinisati?\n\nPrva vakcinacija se obavlja u ranom uzrastu, a imunitet se održava redovnim revakcinacijama prema preporuci veterinara.",
+      "content_blocks": [
+        {
+          "id": "71806294-8ad1-4ed0-b61f-5657ea59c716",
+          "type": "image",
+          "title": "",
+          "image_url": ""
+        }
+      ]
+    }
+  ],
+  "blogPosts": [
+    {
+      "id": "bb3e5fb4-59db-4ebd-9286-9bb4adb1bd8f",
+      "title": "Sterilizacija i kastracija pasa i mačaka – sve što treba da znate",
+      "slug": "sterilizacija-i-kastracija",
+      "excerpt": "Sterilizacija i kastracija pasa i mačaka predstavljaju važne veterinarske zahvate koji doprinose očuvanju zdravlja ljubimaca, smanjenju rizika od bolesti reproduktivnog sistema te kontroli nekontrolisanog razmnožavanja i broja napuštenih životinja.",
+      "hero_image_url": "/content/2db09c99-751c-4816-9d0d-57e0e0815019.webp",
+      "content_blocks": [
+        {
+          "id": "0aabfbc9-1f04-42dd-ac1f-0796b8d8c8cd",
+          "body": "Sterilizacija i kastracija pasa i mačaka – sve što treba da znate\n\nSterilizacija i kastracija pasa i mačaka predstavljaju jedan od najvažnijih koraka odgovornog vlasništva kućnih ljubimaca. Iako i dalje postoje brojne zablude o ovom zahvatu, savremena veterinarska medicina jasno pokazuje da on donosi značajne zdravstvene i bihejvioralne koristi.\n\nU našoj veterinarskoj ambulanti obavljamo sterilizacije i kastracije uz primjenu savremenih anestezioloških protokola i pažljiv postoperativni nadzor, sa ciljem maksimalne sigurnosti i brzog oporavka ljubimca.\n\nZašto je sterilizacija važna?\n\nSterilizacija i kastracija nisu samo metoda kontrole razmnožavanja, već i važan dio preventivne zaštite zdravlja ljubimaca.\n\nOvim zahvatima:\n\nsmanjuje se broj napuštenih životinja\n\nprevenira se razvoj tumora i infekcija reproduktivnog sistema\n\npoboljšava se kvalitet života\n\nsmanjuju se neželjena ponašanja vezana za polne hormone\n\nNekontrolisana reprodukcija je jedan od najvećih problema napuštenih životinja u našem okruženju.\n\nKada je pravo vrijeme za sterilizaciju?\n\nOptimalno vrijeme za sterilizaciju je oko 6. mjeseca starosti, prije ili neposredno nakon dostizanja polne zrelosti.\n\nPrije svakog zahvata radi se klinički pregled i procjena zdravstvenog stanja kako bi se osigurala sigurnost anestezije i operacije.\n\nSterilizacija ženki (ovariohisterektomija)\n\nSterilizacija ženki podrazumijeva uklanjanje jajnika i materice pod opštom anestezijom.\n\nNakon zahvata, životinja se najčešće vraća kući isti dan, a konci se uklanjaju nakon 10–14 dana.\n\nRana sterilizacija značajno smanjuje rizik od:\n\ntumora mliječnih žlijezda\n\npiometre\n\ntumora jajnika i materice\n\nKastracija mužjaka\n\nKastracija mužjaka je rutinski hirurški zahvat kojim se uklanjaju testisi i smanjuje lučenje testosterona.\n\nZahvat je brz, siguran i uz pravilan oporavak ljubimac se vraća kući isti dan.\n\nDa li kastracija mijenja ponašanje psa?\n\nKastracija ne mijenja karakter psa, ali utiče na ponašanja povezana sa hormonima, kao što su:\n\nobilježavanje teritorije\n\nlutanje\n\nagresivnost prema drugim mužjacima\n\nnemir u periodima tjeranja ženki\n\nZaključak\n\nSterilizacija i kastracija predstavljaju odgovoran izbor vlasnika koji želi dug, zdrav i kvalitetan život svom ljubimcu, uz značajno smanjenje rizika od bolesti i neželjenih ponašanja.",
+          "type": "text",
+          "title": "Test blok"
+        },
+        {
+          "id": "b1953333-cb58-418d-a703-6e4aac02491a",
+          "body": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. \nLorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.\nIt was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
+          "type": "list",
+          "title": "Test 2"
+        },
+        {
+          "id": "ab10f69b-aeba-4192-be94-24532157a11a",
+          "body": "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.\n",
+          "type": "text",
+          "title": "Test blok"
+        }
+      ],
+      "author_name": "dr vet. med. Vladimir Ilić",
+      "read_time_minutes": 5,
+      "status": "published",
+      "published_at": "2026-05-24T16:57:05.762+00:00",
+      "created_at": "2026-05-24T16:56:44.982862+00:00",
+      "updated_at": "2026-06-01T20:06:29.700323+00:00"
+    }
+  ]
+}

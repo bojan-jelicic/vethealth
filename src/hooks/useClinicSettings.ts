@@ -1,5 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
+import { FEATURES } from '@/config/features';
+import { staticClinic } from '@/data/staticContent';
 
 export interface WorkingHours {
   pon_pet?: string;
@@ -37,6 +39,9 @@ export const useClinicSettings = () => {
     queryKey: ['clinic-settings'],
     staleTime: 5 * 60_000,
     queryFn: async () => {
+      if (FEATURES.staticMode) {
+        return { ...FALLBACK, ...staticClinic, working_hours: staticClinic.working_hours ?? FALLBACK.working_hours } as ClinicSettings;
+      }
       const { data, error } = await (supabase as any)
         .from('clinic_settings')
         .select('*')

@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { supabase } from '@/integrations/supabase/client';
+import { FEATURES } from '@/config/features';
 import { contactFormSchema, type ContactFormData } from '@/lib/validations';
 import { useClinicSettings, telLink, mailLink, mapsLink } from '@/hooks/useClinicSettings';
 
@@ -52,6 +53,15 @@ export const ContactSection = ({ variant = 'plain' }: ContactSectionProps) => {
     setSubmitError(null);
     if (!validateForm()) return;
     setIsSubmitting(true);
+    if (FEATURES.staticMode) {
+      // Static site: open the visitor's email app with the message pre-filled.
+      const to = clinic?.email || 'info@vethealth.ba';
+      const body = `${formData.message.trim()}\n\n${formData.name.trim()}\n${formData.email.trim()}${formData.phone?.trim() ? '\n' + formData.phone.trim() : ''}`;
+      window.location.href = `mailto:${to}?subject=${encodeURIComponent(formData.subject.trim())}&body=${encodeURIComponent(body)}`;
+      setIsSubmitting(false);
+      setSubmitSuccess(true);
+      return;
+    }
     try {
       const { data, error } = await supabase.functions.invoke('contact-form', {
         body: {

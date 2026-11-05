@@ -4,6 +4,11 @@
  * Keep keys stable — they are referenced by FeatureRoute and nav menus.
  */
 export const FEATURES = {
+  // STATIC MODE: public site reads content from src/data/content.json
+  // (no database calls, admin panel hidden). Set to false to switch back
+  // to the full version with admin panel + database.
+  staticMode: true,
+
   // Public site
   publicPetShop: false,
   publicAppointments: false,

@@ -3,6 +3,8 @@ import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
 import { Clock, Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { FEATURES } from '@/config/features';
+import { getStaticServiceBySlug } from '@/data/staticContent';
 import { Layout } from '@/components/Layout';
 import { PageHero } from '@/components/PageHero';
 import { Button } from '@/components/ui/button';
@@ -12,7 +14,8 @@ const useServiceBySlug = (slug?: string) =>
   useQuery({
     queryKey: ['service-by-slug', slug],
     enabled: !!slug,
-    queryFn: async () => {
+    queryFn: async (): Promise<any> => {
+      if (FEATURES.staticMode) return getStaticServiceBySlug(slug!);
       const { data, error } = await supabase
         .from('services')
         .select('id, name, description, price, duration_minutes, slug, hero_image_url, long_description, content_blocks, service_categories(name)')
