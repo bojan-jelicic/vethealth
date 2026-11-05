@@ -75,6 +75,7 @@ const App = () => (
                 <Route path="/potvrda-zakazivanja" element={<FeatureRoute flag="publicAppointments"><AppointmentConfirmationPage /></FeatureRoute>} />
                 <Route path="/cjenovnik-usluga" element={<PriceListPage />} />
 
+                {!FEATURES.staticMode && (<>
                 {/* App Routes */}
                 <Route path="/app/login" element={<AppLoginPage />} />
                 <Route path="/app" element={<Navigate to="/app/dashboard" replace />} />
@@ -106,6 +107,7 @@ const App = () => (
                 {/* Legacy redirects */}
                 <Route path="/auth" element={<Navigate to="/app/login" replace />} />
                 <Route path="/admin/*" element={<Navigate to="/app/dashboard" replace />} />
+                </>)}
 
                 <Route path="*" element={<NotFound />} />
               </Routes>
