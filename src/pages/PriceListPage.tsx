@@ -4,7 +4,7 @@ import { Layout } from '@/components/Layout';
 import { PageHero } from '@/components/PageHero';
 import { useServicesWithCategories, CategoryWithServices, hasServiceDetails } from '@/hooks/useAppointmentData';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Loader2, AlertCircle, Clock, ExternalLink } from 'lucide-react';
+import { Loader2, AlertCircle, ExternalLink } from 'lucide-react';
 import { getCategoryIcon } from '@/lib/categoryIcons';
 
 const ServiceCategoryCard = ({ category }: { category: CategoryWithServices }) => {
@@ -33,11 +33,6 @@ const ServiceCategoryCard = ({ category }: { category: CategoryWithServices }) =
       </CardHeader>
       <CardContent className="p-0">
         <table className="w-full table-fixed">
-          <colgroup>
-            <col />
-            <col className="hidden sm:table-column" style={{ width: '140px' }} />
-            <col style={{ width: '140px' }} />
-          </colgroup>
           <tbody>
             {category.services.map((service, index) => (
               <tr
@@ -68,27 +63,6 @@ const ServiceCategoryCard = ({ category }: { category: CategoryWithServices }) =
                         {service.description}
                       </p>
                     )}
-                    {/* Mobile duration */}
-                    <div className="flex items-center gap-1 mt-1 sm:hidden text-sm text-muted-foreground">
-                      <Clock className="w-3 h-3" />
-                      <span>{service.duration_minutes} min</span>
-                    </div>
-                  </div>
-                </td>
-                <td className="text-center py-4 px-4 hidden sm:table-cell">
-                  <div className="flex items-center justify-center gap-1 text-muted-foreground">
-                    <Clock className="w-4 h-4" />
-                    <span>{service.duration_minutes} min</span>
-                  </div>
-                </td>
-                <td className="py-4 px-6 text-right">
-                  <div>
-                    <span className="text-lg font-bold text-primary">
-                      {service.price?.toFixed(2) || '—'}
-                    </span>
-                    {service.price && (
-                      <span className="text-sm text-muted-foreground ml-1">KM</span>
-                    )}
                   </div>
                 </td>
               </tr>
@@ -108,16 +82,16 @@ const PriceListPage = () => {
   return (
     <Layout>
       <Helmet>
-        <title>Cjenovnik Usluga | Veterinarska Ordinacija Banja Luka</title>
+        <title>Usluge | Veterinarska Ordinacija Banja Luka</title>
         <meta
           name="description"
-          content="Pregledajte kompletan cjenovnik veterinarskih usluga. Transparentne cijene za preglede, vakcinacije, hirurgiju i druge usluge."
+          content="Pregledajte veterinarske usluge VEThealth ambulante: pregledi, vakcinacije, hirurgija, laboratorija i druge usluge."
         />
       </Helmet>
 
       <section className="pt-32 md:pt-36 pb-2">
         <div className="container-custom">
-          <h1 className="text-h1 text-foreground">Cjenovnik Usluga</h1>
+          <h1 className="text-h1 text-foreground">Naše usluge</h1>
         </div>
       </section>
 
@@ -127,7 +101,7 @@ const PriceListPage = () => {
           {isLoading && (
             <div className="flex flex-col items-center justify-center py-16">
               <Loader2 className="w-12 h-12 animate-spin text-primary mb-4" />
-              <p className="text-muted-foreground">Učitavanje cjenovnika...</p>
+              <p className="text-muted-foreground">Učitavanje usluga...</p>
             </div>
           )}
 
@@ -141,7 +115,7 @@ const PriceListPage = () => {
                     Greška pri učitavanju
                   </h3>
                   <p className="text-muted-foreground">
-                    Došlo je do greške prilikom učitavanja cjenovnika. Molimo pokušajte ponovo.
+                    Došlo je do greške prilikom učitavanja usluga. Molimo pokušajte ponovo.
                   </p>
                 </div>
               </CardContent>
@@ -153,7 +127,7 @@ const PriceListPage = () => {
             <Card>
               <CardContent className="flex flex-col items-center justify-center py-16">
                 <p className="text-muted-foreground text-lg">
-                  Trenutno nema dostupnih usluga u cjenovniku.
+                  Trenutno nema dostupnih usluga.
                 </p>
               </CardContent>
             </Card>
@@ -162,17 +136,6 @@ const PriceListPage = () => {
           {/* Price List by Category */}
           {!isLoading && !error && categories && totalServices > 0 && (
             <div className="space-y-6">
-              {/* Info Card */}
-              <Card className="bg-primary/5 border-primary/20 print:hidden">
-                <CardContent className="p-4">
-                  <p className="text-sm text-foreground">
-                    <strong>Napomena:</strong> Cijene su izražene u konvertibilnim markama (KM) i informativnog su karaktera.
-                    Konačna cijena može varirati ovisno o složenosti tretmana i potrebnim materijalima. 
-                    Za tačnu procjenu, molimo kontaktirajte nas.
-                  </p>
-                </CardContent>
-              </Card>
-
               {/* Categories Grid */}
               <div className="space-y-6">
                 {categories.map((category) => (
@@ -181,7 +144,7 @@ const PriceListPage = () => {
               </div>
 
               {/* Additional Info */}
-              <div className="grid md:grid-cols-2 gap-6 print:hidden">
+              <div className="grid gap-6 print:hidden">
                 <Card>
                   <CardContent className="p-6">
                     <h3 className="font-heading font-semibold text-foreground mb-3">
@@ -196,35 +159,10 @@ const PriceListPage = () => {
                         <span className="w-2 h-2 bg-primary rounded-full" />
                         Platne kartice (Visa, Mastercard)
                       </li>
-                      <li className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-primary rounded-full" />
-                        Plaćanje na rate (za veće iznose)
-                      </li>
                     </ul>
                   </CardContent>
                 </Card>
 
-                <Card>
-                  <CardContent className="p-6">
-                    <h3 className="font-heading font-semibold text-foreground mb-3">
-                      Popusti
-                    </h3>
-                    <ul className="space-y-2 text-muted-foreground">
-                      <li className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-accent rounded-full" />
-                        10% popust za umirovljenike
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-accent rounded-full" />
-                        15% popust za više ljubimaca
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <span className="w-2 h-2 bg-accent rounded-full" />
-                        Posebne cijene za azile i udruge
-                      </li>
-                    </ul>
-                  </CardContent>
-                </Card>
               </div>
             </div>
           )}

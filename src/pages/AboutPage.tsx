@@ -2,7 +2,7 @@ import vetPhoto from '@/assets/photos/vet-buldog.jpg.asset.json';
 import techPhoto from '@/assets/photos/tehnicar-pipeta.jpg.asset.json';
 import bigl from '@/assets/photos/bigl-ulaz.jpg.asset.json';
 import lab from '@/assets/photos/laboratorija.jpg.asset.json';
-import { Award, Users, Heart, Clock, CheckCircle } from 'lucide-react';
+import { Award, Heart, Clock, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
@@ -18,11 +18,6 @@ const teamMembers = [
 const AboutPage = () => {
   const { t } = useTranslation();
 
-  const stats = [
-    { icon: Award, value: '15+', labelKey: 'aboutPage.storyTitle' },
-    { icon: Users, value: '5000+', labelKey: 'about.happyClients' },
-    { icon: Heart, value: '10000+', labelKey: 'about.treatedAnimals' },
-  ];
 
   const valueKeys = ['feature1', 'feature2', 'feature3', 'feature4', 'feature5', 'feature6'];
 
@@ -60,11 +55,10 @@ const AboutPage = () => {
             </div>
           </div>
 
-          <div className="mt-16 grid sm:grid-cols-3 gap-6">
+          <div className="mt-16 grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
             {[
               { icon: Award, value: '2016', labelKey: 'about.founded' },
-              { icon: Users, value: '5000+', labelKey: 'about.happyClients' },
-              { icon: Heart, value: '10000+', labelKey: 'about.treatedAnimals' },
+              { icon: Heart, value: '10', labelKey: 'about.yearsExp' },
             ].map((stat) => (
               <div key={stat.labelKey} className="bg-card p-6 rounded-card shadow-card text-center">
                 <stat.icon className="w-10 h-10 mx-auto text-primary mb-4" />

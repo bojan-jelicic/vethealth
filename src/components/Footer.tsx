@@ -11,10 +11,10 @@ export const Footer = () => {
   const { data: clinic } = useClinicSettings();
 
   const serviceLinks = [
-    { name: t('services.generalExams'), to: '/services/opsti-pregledi' },
-    { name: t('services.vaccinations'), to: '/services/vakcinacije' },
-    { name: t('services.surgery'), to: '/services/operacije' },
-    { name: t('services.laboratory'), to: '/services/laboratorija' },
+    { name: t('services.generalExams'), to: '/services/opsti-i-specijalisticki-pregledi' },
+    { name: t('services.vaccinations'), to: '/services/vakcinacija-pasa-i-macaka' },
+    { name: t('services.surgery'), to: '/services/veterinarska-hirurgija' },
+    { name: t('services.laboratory'), to: '/services/laboratorija-i-dijagnostika' },
     { name: t('services.dentistry'), to: '/services/stomatologija' },
   ];
 

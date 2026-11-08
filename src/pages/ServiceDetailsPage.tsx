@@ -1,7 +1,7 @@
 import { useParams, Link } from 'react-router-dom';
 import { useQuery } from '@tanstack/react-query';
 import { Helmet } from 'react-helmet-async';
-import { Clock, Loader2 } from 'lucide-react';
+import { Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
 import { FEATURES } from '@/config/features';
 import { getStaticServiceBySlug } from '@/data/staticContent';
@@ -84,7 +84,7 @@ const ServiceDetailsPage = () => {
           <div className="text-center">
             <h1 className="text-h2 text-foreground mb-4">Usluga nije pronađena</h1>
             <Button asChild>
-              <Link to="/cjenovnik-usluga">Povratak na cjenovnik</Link>
+              <Link to="/cjenovnik-usluga">Povratak na usluge</Link>
             </Button>
           </div>
         </div>
@@ -148,16 +148,6 @@ const ServiceDetailsPage = () => {
             <aside className="lg:col-span-1">
               <div className="sticky top-24 space-y-6">
                 <div className="bg-card p-6 rounded-card shadow-card space-y-4">
-                  <div>
-                    <span className="text-small text-muted-foreground">Cijena</span>
-                    <p className="text-h4 font-heading font-bold text-primary">
-                      {service.price != null ? `${Number(service.price).toFixed(2)} KM` : 'Po dogovoru'}
-                    </p>
-                  </div>
-                  <div className="flex items-center gap-2 text-muted-foreground">
-                    <Clock className="w-4 h-4" />
-                    <span>{service.duration_minutes} min</span>
-                  </div>
                   <Button variant="outline" className="w-full" asChild>
                     <Link to="/cjenovnik-usluga">Sve usluge</Link>
                   </Button>
