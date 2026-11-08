@@ -10,8 +10,7 @@ export const About = () => {
 
   const stats = [
     { icon: Award, value: '2016', labelKey: 'about.founded' },
-    { icon: Users, value: '5000+', labelKey: 'about.happyClients' },
-    { icon: Heart, value: '10000+', labelKey: 'about.treatedAnimals' },
+    { icon: Heart, value: '10', labelKey: 'about.yearsExp' },
   ];
 
   const featureKeys = ['feature1', 'feature2', 'feature3', 'feature4', 'feature5', 'feature6'];

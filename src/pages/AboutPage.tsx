@@ -19,9 +19,8 @@ const AboutPage = () => {
   const { t } = useTranslation();
 
   const stats = [
-    { icon: Award, value: '15+', labelKey: 'aboutPage.storyTitle' },
-    { icon: Users, value: '5000+', labelKey: 'about.happyClients' },
-    { icon: Heart, value: '10000+', labelKey: 'about.treatedAnimals' },
+    { icon: Award, value: '10', labelKey: 'aboutPage.storyTitle' },
+    { icon: Heart, value: '10', labelKey: 'about.yearsExp' },
   ];
 
   const valueKeys = ['feature1', 'feature2', 'feature3', 'feature4', 'feature5', 'feature6'];
@@ -60,11 +59,10 @@ const AboutPage = () => {
             </div>
           </div>
 
-          <div className="mt-16 grid sm:grid-cols-3 gap-6">
+          <div className="mt-16 grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
             {[
               { icon: Award, value: '2016', labelKey: 'about.founded' },
-              { icon: Users, value: '5000+', labelKey: 'about.happyClients' },
-              { icon: Heart, value: '10000+', labelKey: 'about.treatedAnimals' },
+              { icon: Heart, value: '10', labelKey: 'about.yearsExp' },
             ].map((stat) => (
               <div key={stat.labelKey} className="bg-card p-6 rounded-card shadow-card text-center">
                 <stat.icon className="w-10 h-10 mx-auto text-primary mb-4" />
