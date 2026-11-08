@@ -3,7 +3,7 @@ import petri from '@/assets/photos/petrijeve-posude.jpg.asset.json';
 import lab from '@/assets/photos/laboratorija.jpg.asset.json';
 import spaniel from '@/assets/photos/spaniel-pregled.jpg.asset.json';
 import { useTranslation } from 'react-i18next';
-import { Award, Users, Heart, CheckCircle } from 'lucide-react';
+import { Award, Heart, CheckCircle } from 'lucide-react';
 
 export const About = () => {
   const { t } = useTranslation();
@@ -41,7 +41,7 @@ export const About = () => {
             </div>
 
             <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-card p-6 rounded-card shadow-lg w-[90%] max-w-sm">
-              <div className="grid grid-cols-3 divide-x divide-border">
+              <div className="grid grid-cols-2 divide-x divide-border">
                 {stats.map((stat) => (
                   <div key={stat.labelKey} className="text-center px-2">
                     <stat.icon className="w-6 h-6 mx-auto text-primary mb-2" />
