@@ -6,29 +6,32 @@ import { Button } from '@/components/ui/button';
 const testimonials = [
   {
     id: 1,
-    name: 'Marija Petrović',
-    pet: 'Vlasnica psa Rex',
+    name: 'Ivana Mitrović Nešić',
     rating: 5,
-    text: 'Odličan tim profesionalaca! Moj pas Rex je imao hitnu operaciju i zahvaljujući brzoj reakciji i stručnosti veterinara, sve je prošlo savršeno. Toplo preporučujem!',
-    image: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&h=150&fit=crop',
+    text: 'Ova klinika je godinama posvećena brizi o mom psu, koji je doživeo 18 godina sa ozbiljnim zdravstvenim stanjem. Kada mu je život bio u opasnosti zbog povreda od drugih pasa, vratili su ga u život veoma zahtevnom operacijom i oporavili ga kako bi mogao da nastavi da živi veoma srećan i kvalitetan život još 6 godina. Do poslednjeg dana činili su sve što su mogli da mu ublaže bol i omoguće mu normalno kretanje. Hvala od srca celom timu i hvala vam u ime svih šapa Banjaluke što postojite!',
   },
   {
     id: 2,
-    name: 'Nikola Jović',
-    pet: 'Vlasnik mačke Mia',
+    name: 'Borjana Tešnović',
     rating: 5,
-    text: 'Već godinama vodim svoju mačku Miu u VetHealth i uvijek sam zadovoljan uslugom. Osoblje je ljubazno, a cijene fer. Pet Shop ima sve što mi treba.',
-    image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop',
+    text: 'Sve preporuke za VetHealth i doktora Vladu. Izuzetno stručan, posvećen i pažljiv pristup. Osjeti se koliko voli životinje i koliko mu je stalo do svakog pacijenta. Hvala na brizi, trudu i profesionalnosti — rijetko se sreće ovakav odnos!',
   },
   {
     id: 3,
-    name: 'Ana Kovačević',
-    pet: 'Vlasnica zeca Bubi',
+    name: 'Sanja Rodić',
     rating: 5,
-    text: 'Teško je naći veterinara koji se razumije u male životinje, ali VetHealth ima stručnjake za sve vrste ljubimaca. Moj zec Bubi je u najboljim rukama!',
-    image: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop',
+    text: 'Odgovaraju na poruke, šalju glasovne poruke brzinom munje, uvek su dostupni svima i milion puta su spasili moje životinje.',
+  },
+  {
+    id: 4,
+    name: 'Slavica Kejsy Božić',
+    rating: 5,
+    text: 'Kada neko voli svoj posao i radi ga sa puno ljubavi, onda su vaši ljubimci u odličnim rukama. Zaista odlični, profesionalni, ljubazni i posvećeni svom poslu...',
   },
 ];
+
+const initials = (name: string) =>
+  name.split(' ').filter(Boolean).map((p) => p[0]).slice(0, 2).join('').toUpperCase();
 
 export const Testimonials = () => {
   const { t } = useTranslation();
@@ -57,8 +60,8 @@ export const Testimonials = () => {
 
             <div className="flex flex-col md:flex-row gap-8 items-center">
               <div className="flex-shrink-0">
-                <div className="w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-4 border-primary/20">
-                  <img src={current.image} alt={current.name} className="w-full h-full object-cover" />
+                <div className="w-24 h-24 md:w-32 md:h-32 rounded-full border-4 border-primary/20 bg-primary/10 flex items-center justify-center">
+                  <span className="text-3xl md:text-4xl font-heading font-bold text-primary">{initials(current.name)}</span>
                 </div>
               </div>
 
@@ -68,10 +71,9 @@ export const Testimonials = () => {
                     <Star key={i} className="w-5 h-5 fill-accent text-accent" />
                   ))}
                 </div>
-                <p className="text-lg text-foreground mb-6 italic">"{current.text}"</p>
+                <p className="text-base md:text-lg text-foreground mb-6 italic">"{current.text}"</p>
                 <div>
                   <p className="font-heading font-semibold text-foreground">{current.name}</p>
-                  <p className="text-small text-muted-foreground">{current.pet}</p>
                 </div>
               </div>
             </div>
