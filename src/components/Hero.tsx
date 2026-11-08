@@ -2,10 +2,12 @@ import heroPhoto from '@/assets/photos/vet-spaniel-hero.jpg.asset.json';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
-import { List, Heart, Shield, Clock, MapPin } from 'lucide-react';
+import { List, Heart, Shield, MapPin } from 'lucide-react';
+import { useClinicSettings, mapsLink } from '@/hooks/useClinicSettings';
 
 export const Hero = () => {
   const { t } = useTranslation();
+  const { data: c } = useClinicSettings();
 
   return (
     <section
@@ -64,28 +66,26 @@ export const Hero = () => {
             </div>
 
             {/* Trust indicators */}
-            <div className="grid grid-cols-3 gap-4 sm:gap-6 pt-8 max-w-md animate-fade-in-up delay-400">
+            <div className="grid grid-cols-2 gap-4 sm:gap-6 pt-8 max-w-xs animate-fade-in-up delay-400">
               <div className="flex flex-col items-center text-center">
                 <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-2">
                   <Shield className="w-6 h-6 text-primary" />
                 </div>
-                <span className="text-lg sm:text-h4 font-heading font-bold text-foreground">15+</span>
+                <span className="text-lg sm:text-h4 font-heading font-bold text-foreground">10</span>
                 <span className="text-xs sm:text-small text-muted-foreground">{t('hero.yearsExp')}</span>
               </div>
-              <div className="flex flex-col items-center text-center">
-                <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mb-2">
-                  <Heart className="w-6 h-6 text-accent" />
-                </div>
-                <span className="text-lg sm:text-h4 font-heading font-bold text-foreground">5000+</span>
-                <span className="text-xs sm:text-small text-muted-foreground">{t('hero.happyPets')}</span>
-              </div>
-              <div className="flex flex-col items-center text-center">
-                <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-2">
-                  <MapPin className="w-6 h-6 text-primary" />
+              <a
+                href={mapsLink(c?.address || 'VEThealth Banjaluka')}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="group flex flex-col items-center text-center"
+              >
+                <div className="w-12 h-12 bg-accent/10 rounded-full flex items-center justify-center mb-2 group-hover:bg-accent/20 transition-colors">
+                  <MapPin className="w-6 h-6 text-accent" />
                 </div>
                 <span className="text-lg sm:text-h4 font-heading font-bold text-foreground">2016.</span>
-                <span className="text-xs sm:text-small text-muted-foreground">{t('hero.sameAddress')}</span>
-              </div>
+                <span className="text-xs sm:text-small text-muted-foreground underline-offset-4 group-hover:underline">{t('hero.sameAddress')}</span>
+              </a>
             </div>
           </div>
 
@@ -104,29 +104,6 @@ export const Hero = () => {
                 />
               </div>
 
-              <div className="absolute -left-6 top-1/4 bg-card p-4 rounded-card shadow-card animate-float">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-success/10 rounded-full flex items-center justify-center">
-                    <Shield className="w-5 h-5 text-success" />
-                  </div>
-                  <div>
-                    <p className="text-small font-medium text-foreground">{t('hero.certified')}</p>
-                    <p className="text-xs text-muted-foreground">{t('hero.veterinarians')}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="absolute -right-6 bottom-1/4 bg-card p-4 rounded-card shadow-card animate-float delay-500">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center">
-                    <Heart className="w-5 h-5 text-accent" />
-                  </div>
-                  <div>
-                    <p className="text-small font-medium text-foreground">99%</p>
-                    <p className="text-xs text-muted-foreground">{t('hero.satisfaction')}</p>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
         </div>

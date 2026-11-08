@@ -9,6 +9,7 @@ export const TopInfoBar = () => {
   const { t } = useTranslation();
   const { data: c } = useClinicSettings();
   const hours = c?.working_hours?.pon_pet;
+  const sat = c?.working_hours?.sub;
 
   return (
     <div className="h-10 bg-primary text-primary-foreground text-xs sm:text-sm">
@@ -29,7 +30,7 @@ export const TopInfoBar = () => {
           {hours && (
             <span className="hidden lg:flex items-center gap-1.5 whitespace-nowrap">
               <Clock className="w-4 h-4 text-accent" />
-              {t('topBar.weekdays')} {hours}
+              {t('topBar.weekdays')} {hours}{sat ? ` · ${t('topBar.sat')} ${sat}` : ''}
             </span>
           )}
           {c?.email && (
