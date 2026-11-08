@@ -15,7 +15,7 @@
     "title1": "Ihr Partner Für Die",
     "titleHighlight": "Gesundheit",
     "title2": "Ihrer Haustiere",
-    "description": "VetHealth.ba bietet fachkundige Tierarztpflege in Banja Luka. Von Vorsorgeuntersuchungen bis hin zu Notfällen – wir sind für Sie und Ihre Haustiere da.",
+    "description": "Die VEThealth Praxis bietet fachkundige Tierarztpflege in Banja Luka. Von Vorsorgeuntersuchungen bis hin zu Notfällen – wir sind für Sie und Ihre Haustiere da.",
     "ctaPrimary": "Unsere Leistungen",
     "yearsExp": "Jahre Erfahrung",
     "happyPets": "Glückliche Haustiere",
@@ -82,14 +82,14 @@
     "phoneLabel": "Telefon",
     "phonePlaceholder": "+387 XX XXX XXX",
     "messageLabel": "Nachricht",
-    "messagePlaceholder": "Beschreiben Sie Ihre Frage oder buchen Sie einen Termin...",
+    "messagePlaceholder": "Geben Sie Ihre Frage ein oder vereinbaren Sie einen Termin",
     "sending": "Wird gesendet...",
     "send": "Nachricht Senden",
     "successTitle": "Nachricht gesendet!",
     "successMessage": "Vielen Dank für Ihre Nachricht. Wir melden uns bald bei Ihnen."
   },
   "footer": {
-    "brandDescription": "Ihre vertrauenswürdige Tierklinik in Banja Luka. Fachkundige Pflege für Ihre Haustiere seit 2009.",
+    "brandDescription": "Ihre vertrauenswürdige Tierarztpraxis in Banja Luka. Fachkundige Pflege für Ihre Haustiere seit 2016.",
     "servicesTitle": "Leistungen",
     "companyTitle": "Unternehmen",
     "contactTitle": "Kontakt",
@@ -172,12 +172,12 @@
   },
   "aboutPage": {
     "seoTitle": "Über Uns | VetHealth.ba - Tierklinik Banja Luka",
-    "seoDescription": "Lernen Sie das VetHealth.ba Tierarzt-Team in Banja Luka kennen. 15+ Jahre Erfahrung, 5000+ zufriedene Kunden. Der Gesundheit Ihrer Haustiere gewidmet seit 2009.",
+    "seoDescription": "Lernen Sie das Team der VEThealth Praxis in Banja Luka kennen. 10 Jahre Erfahrung, seit 2016 an derselben Adresse.",
     "title": "Über Uns",
     "description": "Lernen Sie VetHealth Banja Luka kennen – eine Tierarztpraxis, die sich seit 2016 um die Gesundheit Ihrer Haustiere kümmert.",
     "ourStory": "Unsere Geschichte",
     "storyTitle": "Tierarztpraxis VetHealth Banja Luka",
-    "storyP1": "VetHealth.ba wurde 2009 mit einer klaren Vision gegründet – erstklassige tierärztliche Versorgung für alle Haustiere in Banja Luka und der weiteren Region zu bieten. Von bescheidenen Anfängen in einer kleinen Praxis sind wir zu einer modernen Tierklinik mit vollständiger Ausstattung herangewachsen.",
+    "storyP1": "Die VEThealth Praxis wurde 2016 mit einer klaren Vision gegründet – erstklassige tierärztliche Versorgung für Haustiere in Banja Luka und der weiteren Region zu bieten.",
     "storyP2": "Unser Team besteht aus erfahrenen Tierärzten und Spezialisten, die dieselbe Leidenschaft teilen – Liebe zu Tieren und Hingabe an deren Gesundheit. Wir glauben, dass jedes Haustier die bestmögliche Pflege verdient, unabhängig davon, ob es sich um eine Routineuntersuchung oder eine komplexe Operation handelt.",
     "storyP3": "Besondere Aufmerksamkeit widmen wir einem umfassenden und individuellen Ansatz für jeden Patienten. Jeder Hund und jede Katze hat eigene Bedürfnisse, daher passen wir unser Vorgehen an Gesundheitszustand, Alter und Lebensgewohnheiten an.",
     "missionVision": "Mission & Vision",
@@ -199,7 +199,7 @@
     "ourTeamTitle": "Lernen Sie unser Team kennen",
     "ourTeamDesc": "Fachwissen, Aufmerksamkeit und ein aufrichtiger Umgang mit Tieren und den Menschen, die sich um sie kümmern.",
     "ctaTitle": "Wir Sind Bereit Für Ihr Haustier",
-    "ctaDesc": "Buchen Sie heute einen Termin und überzeugen Sie sich, warum uns über 5.000 Besitzer empfehlen.",
+    "ctaDesc": "Melden Sie sich und vereinbaren Sie einen Termin – wir sind für Sie und Ihre Haustiere da.",
     "bookAppointment": "Termin Buchen",
     "viewServices": "Leistungen Anzeigen",
     "storyP4": "Unser Ziel ist eine hochwertige tierärztliche Versorgung an einem Ort – von Vorsorgeuntersuchungen und Diagnostik bis zur Behandlung und Chirurgie – mit Fachwissen, Aufmerksamkeit und einer Beziehung, die langfristiges Vertrauen schafft.",
@@ -235,7 +235,7 @@
     "subjectPlaceholder": "Z.B. Untersuchung buchen",
     "messageLabel": "Ihre Nachricht",
     "messageMax": "(max. 500 Zeichen)",
-    "messagePlaceholder": "Beschreiben Sie Ihre Frage oder buchen Sie einen Termin...",
+    "messagePlaceholder": "Geben Sie Ihre Frage ein oder vereinbaren Sie einen Termin",
     "sending": "Nachricht wird gesendet...",
     "send": "Nachricht Senden",
     "monFri": "Montag - Freitag",
@@ -251,11 +251,11 @@
     "subtitle": "Antworten auf die häufigsten Fragen unserer Kunden.",
     "q1": {
       "q": "Muss ich einen Termin vereinbaren?",
-      "a": "Wir empfehlen einen Anruf im Voraus, um Wartezeiten zu vermeiden. Notfälle werden ohne Termin angenommen."
+      "a": "Ja, für eine Untersuchung ist ein vorab vereinbarter Termin erforderlich, damit wir jedem Patienten genügend Zeit und Aufmerksamkeit widmen können. Notfälle nehmen wir ohne vorherige Terminvereinbarung an."
     },
     "q2": {
       "q": "Welche Tiere behandeln Sie?",
-      "a": "Wir behandeln Hunde, Katzen, kleine Nagetiere, Vögel und exotische Haustiere."
+      "a": "Unsere Praxis ist auf die Tiermedizin für Kleintiere spezialisiert. Wir versorgen Hunde, Katzen, Kaninchen, Hasen und Vögel."
     },
     "q3": {
       "q": "Haben Sie am Wochenende geöffnet?",
