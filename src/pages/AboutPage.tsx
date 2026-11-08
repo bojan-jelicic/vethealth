@@ -2,7 +2,7 @@ import vetPhoto from '@/assets/photos/vet-buldog.jpg.asset.json';
 import techPhoto from '@/assets/photos/tehnicar-pipeta.jpg.asset.json';
 import bigl from '@/assets/photos/bigl-ulaz.jpg.asset.json';
 import lab from '@/assets/photos/laboratorija.jpg.asset.json';
-import { Award, Users, Heart, Clock, CheckCircle } from 'lucide-react';
+import { Award, Heart, Clock, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
@@ -18,10 +18,6 @@ const teamMembers = [
 const AboutPage = () => {
   const { t } = useTranslation();
 
-  const stats = [
-    { icon: Award, value: '10', labelKey: 'aboutPage.storyTitle' },
-    { icon: Heart, value: '10', labelKey: 'about.yearsExp' },
-  ];
 
   const valueKeys = ['feature1', 'feature2', 'feature3', 'feature4', 'feature5', 'feature6'];
 
