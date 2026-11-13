@@ -165,6 +165,372 @@
   ],
   "blogPosts": [
     {
+      "id": "63ec2ba1-9624-4173-bbca-42b934dfe622",
+      "title": "Upala uha kod pasa: simptomi, dijagnostika i liječenje",
+      "slug": "upala-uha-kod-pasa",
+      "excerpt": "Upala spoljašnjeg ušnog kanala, odnosno otitis externa, čest je razlog zbog kojeg vlasnici dovode psa veterinaru.",
+      "hero_image_url": "/content/upala-uha-kod-pasa.webp",
+      "content_blocks": [
+        {
+          "id": "fb84c318-5976-4c45-8b82-204ee022123b",
+          "type": "text",
+          "title": "Koji su najčešći uzroci upale uha kod pasa?",
+          "body": "Upala spoljašnjeg ušnog kanala, odnosno otitis externa, čest je razlog zbog kojeg vlasnici dovode psa veterinaru. Može zahvatiti jedno ili oba uha, a uzroci uključuju bakterije, kvasnice, parazite, strano tijelo poput popinog praseta, alergije ili druga oboljenja kože.\n\nOblik uha, sužen ušni kanal, višak vlage ili dlake mogu povećati sklonost problemima. Kod ponavljajućih upala važno je utvrditi i osnovni uzrok, kako bi se smanjila mogućnost da se tegobe vrate."
+        },
+        {
+          "id": "c60dcc81-f7d8-4824-9aca-65dde4c83169",
+          "type": "text",
+          "title": "Simptomi upale uha kod psa",
+          "body": "Znakovi upale mogu uključivati:"
+        },
+        {
+          "id": "39a9ca23-4e43-4150-9cec-7b12ba0869f4",
+          "type": "list",
+          "title": "",
+          "body": "tresenje glavom i češanje uha\ntrljanje uha o pod ili namještaj\ncrvenilo, bol ili osjetljivost na dodir\nneugodan miris\npojačanu količinu sekreta"
+        },
+        {
+          "id": "b39319b8-d797-4e6f-87af-58d22612038e",
+          "type": "text",
+          "title": "",
+          "body": "Ako pas drži glavu nagnutu, gubi ravnotežu ili teško hoda, javite se veterinaru bez odlaganja. Takvi znaci mogu ukazivati na zahvaćenost dubljih dijelova uha."
+        },
+        {
+          "id": "e4ed1084-b761-4bfc-8c81-7e556b3a0dcb",
+          "type": "text",
+          "title": "Popino prase i druga strana tijela u uhu",
+          "body": "Popino prase može dospjeti u ušni kanal tokom šetnje i izazvati naglu iritaciju, bol i tresenje glavom – često samo na jednoj strani. Ako sumnjate da je nešto ušlo u uho, nemojte pokušavati da predmet izvadite štapićem ili pincetom. Obratite se veterinaru."
+        },
+        {
+          "id": "f248c8f1-f1f9-40fe-9173-919b38c00e4f",
+          "type": "text",
+          "title": "Kako se dijagnostikuje upala uha?",
+          "body": "Pregled obuhvata procjenu simptoma i pregled ušnog kanala otoskopom. U ambulanti VetHealth radimo citološki pregled uzorka iz uha, kojim pod mikroskopom procjenjujemo prisustvo bakterija, kvasnica, upalnih ćelija ili ušnih parazita.\n\nPo potrebi uzimamo i bris uha za mikrobiološku analizu i antibiogram. Rezultati pomažu veterinaru da odabere ciljanu terapiju, posebno kod upala koje se ponavljaju ili ne reaguju na prethodno liječenje. Izbor terapije uzima u obzir i klinički pregled, jer nalaz brisa treba tumačiti zajedno sa stanjem uha i citološkim nalazom. Kod izrazito bolnog uha za potpun pregled ponekad je potrebna sedacija."
+        },
+        {
+          "id": "2e41852a-12ab-4990-ba85-c2e5a76fb0bd",
+          "type": "text",
+          "title": "Liječenje upale uha",
+          "body": "Terapija zavisi od uzroka i nalaza. Može uključivati čišćenje ušnog kanala i odgovarajuće kapi, a kod određenih stanja i lijekove koji se daju oralno. Veterinar bira preparat nakon pregleda, uzimajući u obzir i stanje bubne opne.\n\nTerapiju treba sprovoditi prema uputstvu i do kraja, čak i ako se simptomi brzo smanje. Kod ponavljajućih upala potrebno je obratiti pažnju i na osnovni uzrok, poput alergije ili hroničnog oboljenja kože."
+        },
+        {
+          "id": "727596bf-8279-4829-a189-e01a2b137660",
+          "type": "text",
+          "title": "Kako njegovati uši psa?",
+          "body": "Uši redovno pregledajte, ali ih čistite samo kada je potrebno i sredstvom koje je preporučio veterinar. Ne gurajte štapiće u ušni kanal i nemojte koristiti alkohol, hidrogen, sirće ili kapi namijenjene ljudima. Dlake u ušnom kanalu ne treba rutinski čupati – veterinar će procijeniti da li one stvaraju problem i kako ih njegovati."
+        },
+        {
+          "id": "aa3aee55-3773-49c9-b436-2a57961e73d8",
+          "type": "text",
+          "title": "Pregled uha psa u ambulanti VetHealth",
+          "body": "Ako vaš pas trese glavom, češe uho, ima sekret ili neugodan miris iz uha, zakažite pregled u Veterinarskoj ambulanti VetHealth u Banjoj Luci. Citološki pregled, bris i antibiogram, kada su potrebni, pomažu nam da odredimo uzrok i odaberemo ciljanu terapiju."
+        }
+      ],
+      "author_name": "dr vet. med. Vladimir Ilić",
+      "read_time_minutes": 3,
+      "status": "published",
+      "published_at": "2026-11-13T09:00:00+00:00",
+      "created_at": "2026-11-13T09:00:00+00:00",
+      "updated_at": "2026-11-13T09:00:00+00:00"
+    },
+    {
+      "id": "dbc95fea-af92-40cf-ac85-8fff8d09b02c",
+      "title": "Babezioza kod pasa: simptomi i zaštita od krpelja u Banjoj Luci",
+      "slug": "babezioza-kod-pasa",
+      "excerpt": "Babezioza, poznata i kao piroplazmoza ili krpeljska groznica, ozbiljna je bolest pasa koju izazivaju paraziti iz roda Babesia.",
+      "hero_image_url": "/content/babezioza-kod-pasa.webp",
+      "content_blocks": [
+        {
+          "id": "6c91ed50-8c43-406a-bea8-128aa96193f2",
+          "type": "text",
+          "title": "",
+          "body": "Babezioza, poznata i kao piroplazmoza ili krpeljska groznica, ozbiljna je bolest pasa koju izazivaju paraziti iz roda Babesia. Najčešće se prenosi ujedom zaraženog krpelja. Može izazvati razaranje crvenih krvnih zrnaca i dovesti do anemije, a u težim slučajevima ugroziti život psa."
+        },
+        {
+          "id": "130767cd-56fa-4c17-9cf4-b1201530cb3c",
+          "type": "text",
+          "title": "Kako prepoznati babeziozu kod psa?",
+          "body": "Simptomi se mogu pojaviti nakon što je krpelj već otpao, pa vlasnik ne mora ni primijetiti ujed.\n\nObratite pažnju na:"
+        },
+        {
+          "id": "f6fbc6c8-c646-4c6a-bf57-80730fae3922",
+          "type": "list",
+          "title": "",
+          "body": "bezvoljnost i slabost\ngubitak apetita\npovišenu temperaturu\nblijede ili žućkaste desni\ntamnu, crvenkastu ili smeđu mokraću"
+        },
+        {
+          "id": "17456b9f-e554-4794-b1c2-4395a43f36c5",
+          "type": "text",
+          "title": "",
+          "body": "Ne moraju se pojaviti svi simptomi. Ako pas djeluje izrazito slabo, ima povišenu temperaturu ili mu je mokraća promijenila boju, javite se veterinaru što prije. Babezioza može imati različit tok, a brzo postavljanje dijagnoze važno je za liječenje."
+        },
+        {
+          "id": "dabed693-64a1-4f4b-977b-348476b66f6c",
+          "type": "text",
+          "title": "Kako se postavlja dijagnoza?",
+          "body": "Veterinar će procijeniti simptome i opšte stanje psa. Za potvrdu se mogu uraditi pregled krvnog razmaza, krvne analize ili PCR test, u zavisnosti od slučaja. Slične simptome mogu izazvati i druga oboljenja, zato je važno da dijagnozu postavi veterinar."
+        },
+        {
+          "id": "f7dba3e7-572f-443a-92fd-49245b4b98d1",
+          "type": "text",
+          "title": "Liječenje babezioze",
+          "body": "Liječenje zavisi od vrste parazita i zdravstvenog stanja psa. Veterinar određuje odgovarajuću terapiju, a kod težih slučajeva može biti potrebna dodatna potporna njega. Nemojte psu davati lijekove na svoju ruku – terapija se bira nakon pregleda i dijagnostike."
+        },
+        {
+          "id": "f7886760-60fc-48df-8285-d6b1c54f9ab4",
+          "type": "text",
+          "title": "Kako zaštititi psa od krpelja?",
+          "body": "Zaštitu protiv krpelja treba birati prema uzrastu, načinu života i zdravstvenom stanju psa. Veterinar može preporučiti odgovarajući preparat, poput ampule ili ogrlice, i objasniti koliko često se koristi. Nakon šetnje u prirodi pregledajte psa, naročito oko ušiju, vrata, pazuha i između prstiju. Ako pronađete krpelja, uklonite ga što prije odgovarajućim alatom ili zatražite pomoć veterinara.\n\nNemojte se oslanjati na pravilo da krpelj mora biti pričvršćen određeni broj sati da bi prenio infekciju. Vrijeme prenosa zavisi od okolnosti, pa krpelja treba ukloniti čim ga primijetite.\n\nKrpelji su aktivniji tokom toplijih mjeseci, ali se mogu pojaviti i tokom blažih zimskih perioda. Zato se o zaštiti psa posavjetujte s veterinarom i odaberite raspored koji odgovara vašem ljubimcu."
+        },
+        {
+          "id": "092c4fb6-60db-4d1e-8a16-de3c97cd7754",
+          "type": "text",
+          "title": "Pregled psa zbog krpelja i babezioze u Banjoj Luci",
+          "body": "Ako sumnjate da je vaš pas obolio od babezioze ili ste primijetili krpelja i promjene u njegovom ponašanju, kontaktirajte Veterinarsku ambulantu VetHealth u Banjoj Luci radi pregleda i savjeta o zaštiti. Pozovite ambulantu prije dolaska ako pas pokazuje simptome, kako bi se prijem mogao organizovati."
+        }
+      ],
+      "author_name": "dr vet. med. Vladimir Ilić",
+      "read_time_minutes": 2,
+      "status": "published",
+      "published_at": "2026-11-12T09:00:00+00:00",
+      "created_at": "2026-11-12T09:00:00+00:00",
+      "updated_at": "2026-11-12T09:00:00+00:00"
+    },
+    {
+      "id": "1833d796-eb48-47f1-804f-aaf0511c6e3c",
+      "title": "Parvoviroza pasa: simptomi, liječenje i prevencija",
+      "slug": "parvoviroza-pasa",
+      "excerpt": "Parvoviroza pasa, poznata i kao parvo, veoma je zarazno virusno oboljenje koje najčešće pogađa štence i nevakcinisane pse.",
+      "hero_image_url": "/content/parvoviroza-pasa.webp",
+      "content_blocks": [
+        {
+          "id": "29077f9b-3064-4afe-b12c-46beae9ba7f0",
+          "type": "text",
+          "title": "",
+          "body": "Parvoviroza pasa, poznata i kao parvo, veoma je zarazno virusno oboljenje koje najčešće pogađa štence i nevakcinisane pse. Može oboljeti pas bilo koje dobi, a bolest može brzo postati životno ugrožavajuća. Ako primijetite povraćanje, proliv ili naglu slabost, odmah se obratite veterinaru."
+        },
+        {
+          "id": "65ec762e-a04f-4fa1-b672-98d1534c4065",
+          "type": "text",
+          "title": "Kako se prenosi parvoviroza?",
+          "body": "Virus se najčešće prenosi preko izmeta zaraženog psa. Pas se može zaraziti direktnim kontaktom, ali i preko zagađenih površina, obuće, odjeće, posuda i opreme. Parvovirus dugo opstaje u okolini i otporan je na mnoge uobičajene deterdžente i dezinfekciona sredstva."
+        },
+        {
+          "id": "6025d44f-8eca-42c3-abdd-638bdce943f1",
+          "type": "text",
+          "title": "Koji su simptomi parvoviroze kod pasa?",
+          "body": "Bolest može početi bezvoljnošću i gubitkom apetita, a zatim se mogu javiti:"
+        },
+        {
+          "id": "29258d7e-1355-4cb6-9a63-4f7c223f1811",
+          "type": "list",
+          "title": "",
+          "body": "povraćanje\nproliv, koji može biti krvav\nizražena slabost\nbol u stomaku\ndehidracija"
+        },
+        {
+          "id": "26872ac3-9c2f-4223-ad1b-635b818254d6",
+          "type": "text",
+          "title": "",
+          "body": "Ne čekajte da se pojave svi simptomi. Kod šteneta ili nevakcinisanog psa koji povraća i ima proliv potreban je brz veterinarski pregled. Parvoviroza se može pogoršati za kratko vrijeme, a pravovremeno liječenje povećava šansu za oporavak."
+        },
+        {
+          "id": "ebd42547-8c6b-47fa-9502-52d2505104b4",
+          "type": "text",
+          "title": "Kako se postavlja dijagnoza?",
+          "body": "Veterinar procjenjuje simptome i opšte stanje psa, a parvoviroza se najčešće provjerava brzim testom iz uzorka izmeta. Po potrebi se rade i dodatne analize, uključujući krvnu sliku ili PCR test. Brzi test se, dakle, ne radi iz krvi. U nekim slučajevima rezultat testa treba tumačiti zajedno s kliničkom slikom i drugim nalazima."
+        },
+        {
+          "id": "1eff4eb4-ec9c-4c50-8bd6-be8be56d344e",
+          "type": "text",
+          "title": "Kako se liječi parvoviroza?",
+          "body": "Ne postoji kućni lijek koji može zamijeniti veterinarsko liječenje. Terapija zavisi od stanja psa i najčešće uključuje nadoknadu tečnosti i elektrolita, lijekove protiv povraćanja, kontrolu bola i pažljivo praćenje. Nekim psima je potrebno bolničko liječenje, dok veterinar procjenjuje da li su potrebni i drugi lijekovi.\n\nNemojte psu samostalno davati ljudske lijekove, medicinski ugalj niti ga prisiljavati da jede ili pije ako povraća. O liječenju i ishrani treba da odluči veterinar."
+        },
+        {
+          "id": "2b485d9f-638b-4c41-a4b0-faafc40cd543",
+          "type": "text",
+          "title": "Vakcinacija je najbolja zaštita",
+          "body": "Vakcinacija je najvažnija zaštita od parvoviroze. Prema smjernicama WSAVA, vakcinacija štenaca počinje najranije sa šest sedmica, a doze se ponavljaju u razmacima koje određuje veterinar, tako da se vakcinalna serija nastavi najmanje do 16. sedmice života. U područjima s većim rizikom veterinar može preporučiti dodatne doze ili produžiti seriju.\n\nDok štene ne završi početnu vakcinalnu seriju, izbjegavajte mjesta na kojima boravi mnogo nepoznatih pasa i pridržavajte se savjeta veterinara o bezbjednoj socijalizaciji."
+        },
+        {
+          "id": "5049aabc-e6ac-4f57-a381-e4cf9ff43d71",
+          "type": "text",
+          "title": "Sumnjate na parvovirozu?",
+          "body": "Ako vaš pas povraća, ima proliv ili je izrazito bezvoljan, kontaktirajte Veterinarsku ambulantu VetHealth u Banjoj Luci i dogovorite pregled. Ako sumnjate na parvovirozu, pozovite ambulantu prije dolaska kako bi se organizovao prijem i smanjio rizik od kontakta s drugim psima."
+        }
+      ],
+      "author_name": "dr vet. med. Vladimir Ilić",
+      "read_time_minutes": 3,
+      "status": "published",
+      "published_at": "2026-11-11T09:00:00+00:00",
+      "created_at": "2026-11-11T09:00:00+00:00",
+      "updated_at": "2026-11-11T09:00:00+00:00"
+    },
+    {
+      "id": "bd07aff9-889b-47ee-ae09-0d897bc4df55",
+      "title": "Kako prepoznati i riješiti alergije kod pasa? Vodič iz ugla veterinara",
+      "slug": "alergije-kod-pasa",
+      "excerpt": "Svrab (pruritus), intenzivno grickanje šapa i crvenilo kože (eritem) kod pasa predstavljaju jedan od najčešćih razloga zbog kojih vlasnici dovode ljubimce u našu ambulantu.",
+      "hero_image_url": "/content/alergije-kod-pasa.webp",
+      "content_blocks": [
+        {
+          "id": "bdcd9fa1-3cbf-4476-9641-9f40495a4f05",
+          "type": "text",
+          "title": "",
+          "body": "Svrab (pruritus), intenzivno grickanje šapa i crvenilo kože (eritem) kod pasa predstavljaju jedan od najčešćih razloga zbog kojih vlasnici dovode ljubimce u našu ambulantu. Mnogi vlasnici prvo pokušavaju da promijene hranu ili koriste komercijalne šampone, ali kada dermatološki problem poprimi hroničan tok, neophodan je precizan dijagnostički i terapijski protokol.\n\nU VEThealth ambulanti u Banjoj Luci svakodnevno se susrećemo sa ovim izazovima. Evo ključnih medicinskih aspekata i pristupa dijagnostici i liječenju alergijskih oboljenja kod pasa."
+        },
+        {
+          "id": "06dea3e9-d49b-4938-b52d-920414677e8a",
+          "type": "text",
+          "title": "Diferencijalna dijagnostika: tri glavna dermatološka entiteta",
+          "body": "Kada pas pokaže znakove intenzivnog svraba, u kliničkoj praksi najprije diferenciramo tri osnovna stanja:\n\nAlergijski dermatitis na ujed buve (FAD): Preosjetljivost posredovana IgE i IgG antitijelima na alergene iz pljuvačke ektoparazita (Ctenocephalides felis). Zabluda je da pas mora imati masivnu invaziju – kod osjetljivih jedinki dovoljan je samo jedan ujed da pokrene kaskadu upalnih medijatora. Klasična lokalizacija promjena je lumbosakralna regija, korijen repa i kaudalni aspekt butina.\n\nAtopijski dermatitis pasa (CAD): Nasljedno, multifaktorsko oboljenje kože gdje dolazi do penetracije alergena iz okoline (polen, kućne grinje, buđ) kroz oslabljenu epidermalnu barijeru. Karakteristični su pruritus lica, aksilarnih i ingvinalnih regija, interdigitalnih prostora (lizanje šapa) i recidivirajuće bilateralne upale spoljašnjeg uha (otitis externa).\n\nKutana neželjena reakcija na hranu (CAFR): Imunološki posredovana reakcija (ili intolerancija) najčešće usmjerena na proteinske komponente hrane (piletina, govedina, mliječni proizvodi). Često oponaša atopijski dermatitis, ali je prisutna tokom cijele godine bez obzira na sezonske alergene."
+        },
+        {
+          "id": "19f5b58f-ccd5-45d0-99ce-c35fb5a412e0",
+          "type": "text",
+          "title": "Patofiziologija i sekundarne komplikacije",
+          "body": "Konstantno mehaničko češljanje dovodi do trajnog oštećenja stratum corneum-a, narušavanja kožne barijere i pojave mikrotrauma. Time se stvaraju idealni uslovi za razvoj sekundarnih infekcija:\n\nBakterijske infekcije (Pioderma): Najčešće izazvane sa Staphylococcus pseudintermedius.\n\nGljivične infekcije: Prekomjerno razmnožavanje kvasnica vrste Malassezia pachydermatis, što rezultira seboroičnim dermatitisom, hiperemijom i specifičnim teškim mirisom kože.\n\nUvođenje terapije bez prethodnog isključivanja sekundarnih infekcija i parazita redovno dovodi do neuspjeha liječenja."
+        },
+        {
+          "id": "fef3bcad-08a4-452b-9637-8f81775fd761",
+          "type": "text",
+          "title": "Savremeni dijagnostički i terapijski pristupi",
+          "body": "Naš pristup temelji se na dokazanoj veterinarskoj praksi i smjernicama međunarodnih dermatoloških udruženja (ICADA):\n\nDermatološki pregled i citologija: Uzimanje otisaka kože (tape-prep) i kožnih strugotina radi brze mikroskopske potvrde prisustva bakterija, Malassezia kvasnica ili demodikoze/sarkoptoze.\n\nOtoskopski pregled: Obavezna procjena stanja timpanične membrane i citološka analiza cerumena kod pacijenata sa otitisom.\n\nEliminaciona dijeta: Zlatni standard u dijagnostici sumnje na neželjenu reakciju na hranu, koja se sprovodi isključivo sa hidrolizovanom ili novom proteinskom dijetom u trajanju od minimalno 6 do 8 nedjelja.\n\nMultimodalna terapija svraba: Ciljana primjena modernih molekula i inhibitora (kao što su oklacitinib ili lokivetmab), koji brzo blokiraju pruritusne citokine bez kortizonskih nuspojava, uz istovremenu obnovu kožne barijere dermalnim preparatima (spot-on formulacije sa ceramidima) i specifičnu antimikrobnu topikalnu terapiju.\n\nStručni stav: Svrab kod pasa nije samo estetski problem ili neprijatnost – to je neurosenzorni stimulans koji izaziva hronični stres i narušava kvalitet života pacijenta. Preciznom dijagnozom prekidamo krug upale i vraćamo komfor vašem ljubimcu."
+        },
+        {
+          "id": "735e94e1-40ac-4866-b270-10507375167a",
+          "type": "text",
+          "title": "Zakažite stručni pregled u VEThealth ambulanti",
+          "body": "Ukoliko vaš pas pokazuje znake hroničnog svraba, trese glavom ili grize šape, prepustite dijagnostiku i liječenje stručnjacima."
+        }
+      ],
+      "author_name": "dr vet. med. Vladimir Ilić",
+      "read_time_minutes": 3,
+      "status": "published",
+      "published_at": "2026-11-10T09:00:00+00:00",
+      "created_at": "2026-11-10T09:00:00+00:00",
+      "updated_at": "2026-11-10T09:00:00+00:00"
+    },
+    {
+      "id": "61d11187-4ef4-461c-b40e-a0fe6bcd9c63",
+      "title": "Čišćenje zubnog kamenca kod pasa – kada je potrebno?",
+      "slug": "ciscenje-zubnog-kamenca-kod-pasa",
+      "excerpt": "Zubni kamenac jedan je od najčešćih problema sa kojima se susrećemo prilikom pregleda usne duplje kod pasa.",
+      "hero_image_url": "/content/ciscenje-zubnog-kamenca-kod-pasa.webp",
+      "content_blocks": [
+        {
+          "id": "ab279905-ec29-4318-a6a1-31cfb6a3abdc",
+          "type": "text",
+          "title": "",
+          "body": "Zubni kamenac jedan je od najčešćih problema sa kojima se susrećemo prilikom pregleda usne duplje kod pasa. Vlasnici ga najčešće primijete kao žućkaste ili smeđe naslage na zubima, praćene neprijatnim zadahom. Međutim, zubni kamenac nije samo estetski problem. Njegovo prisustvo pogoduje zadržavanju bakterijskog biofilma, koji može dovesti do zapaljenja desni, oštećenja potpornog aparata zuba i njihovog postepenog gubitka.\n\nPoseban problem predstavlja činjenica da parodontalna bolest često napreduje bez izraženih kliničkih simptoma. Pas može normalno uzimati hranu, iako već postoje bolne promjene na zubima i desnima."
+        },
+        {
+          "id": "20d04999-21a2-4f0e-a1b2-462fdc23b471",
+          "type": "text",
+          "title": "Kako nastaje zubni kamenac kod pasa?",
+          "body": "Na površini zuba svakodnevno se formira dentalni plak, odnosno bakterijski biofilm. Ukoliko se redovno ne uklanja, dolazi do njegove mineralizacije pod uticajem minerala iz pljuvačke, čime nastaje čvrsta naslaga koju nazivamo zubni kamenac.\n\nNajčešće se nakuplja na spoljašnjoj površini očnjaka i premolara, naročito u blizini gingivalnog ruba.\n\nPosebno su predisponirane male rase pasa, poput maltezera, jorkširskih terijera, pudli i čivava. Kod njih se dentalne naslage često javljaju u ranijem uzrastu, a parodontalna bolest može napredovati relativno brzo."
+        },
+        {
+          "id": "460191a4-4bb2-4ab1-8e18-687321510060",
+          "type": "text",
+          "title": "Koji su simptomi i kakve posljedice može izazvati?",
+          "body": "Najčešći znakovi koji ukazuju na probleme sa zubima i desnima su:"
+        },
+        {
+          "id": "8eae8202-2f17-4b78-ac10-ccb11799a6a0",
+          "type": "list",
+          "title": "",
+          "body": "Neprijatan zadah iz usne duplje (halitoza)\nŽute ili smeđe naslage na zubima\nCrvenilo, oticanje i krvarenje desni\nPojačano lučenje pljuvačke\nOtežano žvakanje i izbjegavanje tvrđe hrane\nKlimanje ili gubitak zuba"
+        },
+        {
+          "id": "9989c08e-f7bd-4aea-854f-cc627980216c",
+          "type": "text",
+          "title": "",
+          "body": "Dugotrajno prisustvo dentalnog biofilma može dovesti do razvoja gingivitisa, odnosno zapaljenja desni. Ukoliko se proces ne zaustavi, može napredovati u parodontitis, pri čemu dolazi do oštećenja periodontalnog ligamenta i resorpcije alveolarne kosti koja podupire zub.\n\nU uznapredovalim slučajevima zubi postaju klimavi, bolni i često ih je neophodno hirurški odstraniti.\n\nVažno je naglasiti da pas može imati uznapredovalu parodontalnu bolest čak i kada normalno jede. Zbog toga odsustvo očiglednih simptoma ne isključuje postojanje ozbiljnih promjena u usnoj duplji."
+        },
+        {
+          "id": "4e0cd812-27e5-4874-bff6-9b483b3f796a",
+          "type": "text",
+          "title": "Kada je potrebno profesionalno čišćenje zubnog kamenca?",
+          "body": "Profesionalno uklanjanje kamenca preporučuje se kada se veterinarskim pregledom utvrdi značajno prisustvo mineralizovanih naslaga, gingivitis ili druge promjene koje zahtijevaju stomatološki tretman.\n\nNe postoji univerzalno pravilo koliko često je potrebno čistiti zube. Učestalost zavisi od starosti psa, rase, individualne predispozicije i prethodnog stanja oralnog zdravlja.\n\nPosebnu pažnju treba obratiti na pse malih rasa i životinje kod kojih su ranije dijagnostikovane parodontalne promjene."
+        },
+        {
+          "id": "3ec623f6-7a75-4c3c-a393-1a6850350021",
+          "type": "text",
+          "title": "Kako izgleda ultrazvučno uklanjanje zubnog kamenca?",
+          "body": "U VEThealth veterinarskoj ambulanti u Banjoj Luci profesionalno uklanjanje zubnog kamenca obavljamo pomoću ultrazvučnog stomatološkog čistača sa LED osvjetljenjem.\n\nPostupak se izvodi u opštoj anesteziji, uz prethodnu procjenu zdravstvenog stanja pacijenta i odgovarajući anesteziološki monitoring.\n\nUltrazvučnim instrumentom uklanjaju se mineralizovane naslage sa površine zuba, uz posebnu pažnju na područje gingivalnog ruba i subgingivalni prostor, gdje se mogu nalaziti bakterijske naslage odgovorne za napredovanje parodontalne bolesti.\n\nNakon uklanjanja kamenca vrši se poliranje zuba, a zatim procjena njihovog parodontalnog statusa. Ukoliko se utvrde uznapredovale promjene, značajan gubitak potpornog tkiva ili izražena pokretljivost zuba, može biti neophodna ekstrakcija."
+        },
+        {
+          "id": "f997eabb-de5c-40f9-be80-1db9ca732ba3",
+          "type": "text",
+          "title": "Zašto se postupak izvodi u opštoj anesteziji?",
+          "body": "Kvalitetno stomatološko čišćenje ne podrazumijeva samo uklanjanje vidljivog kamenca. Potrebno je pregledati sve dostupne površine zuba i očistiti prostore ispod ivice gingive.\n\nBez opšte anestezije nije moguće obaviti adekvatan pregled i subgingivalno čišćenje. Površinsko uklanjanje kamenca kod budnog psa ne predstavlja odgovarajuću terapiju parodontalne bolesti."
+        },
+        {
+          "id": "57ec75fe-527f-4ad7-a557-ff50c6bb33cb",
+          "type": "text",
+          "title": "Kako spriječiti ponovno stvaranje zubnog kamenca?",
+          "body": "Nakon profesionalnog čišćenja veoma je važno nastaviti sa održavanjem oralne higijene.\n\nNajefikasnija metoda kontrole dentalnog plaka jeste redovno, po mogućnosti svakodnevno četkanje zuba.\n\nPreporučuje se:"
+        },
+        {
+          "id": "327eb2d2-70b8-49a5-a509-58b7f7b975e8",
+          "type": "list",
+          "title": "",
+          "body": "Korišćenje četkice prilagođene psima\nUpotreba specijalizovanih pasti za zube namijenjenih životinjama\nPrimjena dentalnih proizvoda sa dokazanom efikasnošću\nRedovne kontrole usne duplje kod veterinara"
+        },
+        {
+          "id": "b5440bdc-ad20-4110-9d62-24172339f70e",
+          "type": "text",
+          "title": "",
+          "body": "Dentalne poslastice i posebna hrana mogu biti korisna dopuna higijeni, ali ne mogu zamijeniti četkanje zuba."
+        },
+        {
+          "id": "a23285a7-3447-4415-856a-5b1473436ffa",
+          "type": "text",
+          "title": "Stomatološki pregled i čišćenje zubnog kamenca u VEThealth ambulanti",
+          "body": "Zubni kamenac ne treba posmatrati samo kao estetski nedostatak. Pravovremeno prepoznavanje i liječenje promjena na zubima i desnima može spriječiti napredovanje parodontalne bolesti, bol i gubitak zuba.\n\nU VEThealth veterinarskoj ambulanti u Banjoj Luci obavljamo stomatološke preglede i tretmane oboljenja usne duplje kod pasa, uključujući ultrazvučno uklanjanje zubnog kamenca i ekstrakciju zuba kada je to medicinski indikovano.\n\nUkoliko primijetite neprijatan zadah, naslage na zubima, crvenilo ili krvarenje desni kod svog psa, preporučujemo da zakažete stomatološki pregled."
+        }
+      ],
+      "author_name": "dr vet. med. Vladimir Ilić",
+      "read_time_minutes": 4,
+      "status": "published",
+      "published_at": "2026-11-09T09:00:00+00:00",
+      "created_at": "2026-11-09T09:00:00+00:00",
+      "updated_at": "2026-11-09T09:00:00+00:00"
+    },
+    {
+      "id": "20b715ef-e79a-4e73-8f65-71d8c87f1d6e",
+      "title": "Veterinarski sertifikat za putovanje sa psom ili mačkom u Banjoj Luci",
+      "slug": "veterinarski-sertifikat-za-putovanje",
+      "excerpt": "Mnogi vlasnici žele da povedu svog psa ili mačku na putovanje, ali nisu sigurni koja je dokumentacija potrebna za prelazak granice.",
+      "hero_image_url": "/content/veterinarski-sertifikat-za-putovanje.webp",
+      "content_blocks": [
+        {
+          "id": "e6113f08-9e15-42d6-b170-8ceb42d81d87",
+          "type": "text",
+          "title": "",
+          "body": "Mnogi vlasnici žele da povedu svog psa ili mačku na putovanje, ali nisu sigurni koja je dokumentacija potrebna za prelazak granice. Ako putujete iz Bosne i Hercegovine u neku od zemalja Evropske unije, ljubimac mora imati odgovarajuće dokumente i ispunjavati propisane zdravstvene uslove."
+        },
+        {
+          "id": "dd36c833-a4a6-4108-9cd1-457fca2a67f3",
+          "type": "text",
+          "title": "Šta je potrebno za izdavanje veterinarskog sertifikata?",
+          "body": "Pas ili mačka treba da budu označeni mikročipom i vakcinisani protiv bjesnila. Vakcina se daje nakon mikročipovanja. Ako je ljubimac prvi put vakcinisan protiv bjesnila, potrebno je da prođe najmanje 21 dan prije putovanja.\n\nLjubimac treba da ima pasoš ili knjižicu u kojoj su upisani podaci o njemu, broj mikročipa i vakcinacije. Za nekomercijalno putovanje iz BiH u EU potreban je i veterinarsko-zdravstveni sertifikat, uz odgovarajuću izjavu.\n\nSertifikat za ulazak u EU izdaje se najviše 10 dana prije putovanja, zato nam se javite na vrijeme kako bismo provjerili dokumentaciju i dogovorili termin."
+        },
+        {
+          "id": "7aadfb17-6557-45da-a145-84ff2377aa18",
+          "type": "text",
+          "title": "Sertifikat za psa ili mačku u Banjoj Luci",
+          "body": "Ako vam je potreban veterinarski sertifikat za psa ili mačku u Banjoj Luci, obratite se Veterinarskoj ambulanti VetHealth. Provjerićemo mikročip, vakcinaciju i podatke u pasošu, te ćemo pripremiti sertifikat za putovanje u skladu s važećim zahtjevima.\n\nZa informacije ili zakazivanje termina kontaktirajte našu ambulantu prije planiranog puta."
+        }
+      ],
+      "author_name": "dr vet. med. Vladimir Ilić",
+      "read_time_minutes": 2,
+      "status": "published",
+      "published_at": "2026-11-08T09:00:00+00:00",
+      "created_at": "2026-11-08T09:00:00+00:00",
+      "updated_at": "2026-11-08T09:00:00+00:00"
+    },
+    {
       "id": "bb3e5fb4-59db-4ebd-9286-9bb4adb1bd8f",
       "title": "Sterilizacija i kastracija pasa i mačaka – sve što treba da znate",
       "slug": "sterilizacija-i-kastracija",

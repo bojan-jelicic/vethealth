@@ -1,5 +1,16 @@
 import type { ServiceContentBlock } from '@/hooks/useAppointmentData';
 
+// "Oznaka: tekst" pasusi dobijaju podebljanu oznaku
+const renderLabeled = (para: string) => {
+  const m = para.match(/^([^:\n]{3,70}):\s(.+)$/s);
+  if (!m) return para;
+  return (
+    <>
+      <strong className="font-semibold text-foreground">{m[1]}:</strong> {m[2]}
+    </>
+  );
+};
+
 export const ContentBlock = ({ block }: { block: ServiceContentBlock }) => {
   if (block.type === 'image') {
     return (
@@ -37,7 +48,9 @@ export const ContentBlock = ({ block }: { block: ServiceContentBlock }) => {
           .map((para) => para.trim())
           .filter(Boolean)
           .map((para, i) => (
-            <p key={i} className="text-muted-foreground text-lg leading-relaxed whitespace-pre-line">{para}</p>
+            <p key={i} className="text-muted-foreground text-lg leading-relaxed whitespace-pre-line">
+              {renderLabeled(para)}
+            </p>
           ))}
       </div>
     </div>
