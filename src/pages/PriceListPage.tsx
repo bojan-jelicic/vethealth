@@ -148,7 +148,7 @@ const PriceListPage = () => {
                 <Card>
                   <CardContent className="p-6">
                     <h3 className="font-heading font-semibold text-foreground mb-3">
-                      Načini Plaćanja
+                      Načini plaćanja
                     </h3>
                     <ul className="space-y-2 text-muted-foreground">
                       <li className="flex items-center gap-2">
