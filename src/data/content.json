@@ -57,9 +57,9 @@
     },
     {
       "id": "2d3955c0-c3a0-4878-bc9f-81dd20d66575",
-      "name": "Ostalo",
-      "description": "Preventiva, ultrazvučna dijagnostika i ostale usluge",
-      "icon": "FileText",
+      "name": "Ultrazvučna dijagnostika (UZV)",
+      "description": "Ultrazvučni pregledi",
+      "icon": "Activity",
       "sort_order": 9
     }
   ],
