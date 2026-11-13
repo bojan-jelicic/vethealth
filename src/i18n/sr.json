@@ -27,11 +27,11 @@
   },
   "services": {
     "label": "Naše Usluge",
-    "title": "Kompletna Veterinarska Njega",
+    "title": "Kompletna veterinarska njega",
     "description": "Pružamo širok spektar veterinarskih usluga kako bismo osigurali zdravlje i dobrobit vašeg ljubimca kroz sve životne faze.",
     "learnMore": "Saznaj više",
     "viewAll": "Pogledaj Sve Usluge",
-    "generalExams": "Opšti Pregledi",
+    "generalExams": "Opšti pregledi",
     "generalExamsDesc": "Redovni zdravstveni pregledi i dijagnostika za sve vrste kućnih ljubimaca.",
     "vaccinations": "Vakcinacije",
     "vaccinationsDesc": "Kompletni vakcinalni program za zaštitu vašeg ljubimca od bolesti.",
@@ -46,7 +46,7 @@
   },
   "about": {
     "label": "O Nama",
-    "title": "Veterinarska ambulanta VetHealth Banjaluka",
+    "title": "Veterinarska ambulanta VetHealth Banja Luka",
     "description1": "VetHealth Banjaluka je veterinarska ambulanta koja od 2016. godine posluje na istoj adresi, pružajući stručnu i posvećenu zdravstvenu zaštitu kućnim ljubimcima. Tokom godina rada gradili smo povjerenje sa brojnim vlasnicima i njihovim ljubimcima, uz stalno nastojanje da unapređujemo kvalitet naših usluga.",
     "description2": "Trudimo se da svake godine uvedemo neku novu uslugu ili unaprijedimo postojeće mogućnosti dijagnostike i liječenja, prateći razvoj savremene veterinarske medicine.",
     "yearsExp": "Godina Iskustva",
@@ -62,11 +62,11 @@
   },
   "testimonials": {
     "label": "Iskustva Klijenata",
-    "title": "Šta Kažu Naši Klijenti"
+    "title": "Šta kažu naši klijenti"
   },
   "contact": {
     "label": "Kontakt",
-    "title": "Javite Nam Se",
+    "title": "Javite nam se",
     "description": "Imate pitanja ili želite zakazati termin? Kontaktirajte nas putem forme ili nas direktno nazovite.",
     "address": "Adresa",
     "phone": "Telefon",
@@ -221,7 +221,7 @@
     "emergencyTitle": "Hitna Veterinarska Pomoć",
     "emergencyDesc": "Za hitne slučajeve van radnog vremena",
     "contactInfo": "Kontakt Informacije",
-    "sendMessageTitle": "Pošaljite Nam Poruku",
+    "sendMessageTitle": "Pošaljite nam poruku",
     "sendMessageDesc": "Popunite formu ispod i odgovorićemo Vam u najkraćem mogućem roku.",
     "successTitle": "Vaša poruka je uspješno poslata!",
     "successDesc": "Odgovorićemo Vam u najkraćem mogućem roku.",
@@ -237,7 +237,7 @@
     "messageMax": "(max 500 karaktera)",
     "messagePlaceholder": "Unesite Vaše pitanje ili zakažite termin",
     "sending": "Šaljem poruku...",
-    "send": "Pošalji Poruku",
+    "send": "Pošalji poruku",
     "monFri": "Ponedjeljak – Petak",
     "saturday": "Subota",
     "sunday": "Nedjelja",
