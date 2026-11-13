@@ -172,22 +172,70 @@
       "hero_image_url": "/content/2db09c99-751c-4816-9d0d-57e0e0815019.webp",
       "content_blocks": [
         {
-          "id": "0aabfbc9-1f04-42dd-ac1f-0796b8d8c8cd",
-          "body": "Sterilizacija i kastracija pasa i mačaka – sve što treba da znate\n\nSterilizacija i kastracija pasa i mačaka predstavljaju jedan od najvažnijih koraka odgovornog vlasništva kućnih ljubimaca. Iako i dalje postoje brojne zablude o ovom zahvatu, savremena veterinarska medicina jasno pokazuje da on donosi značajne zdravstvene i bihejvioralne koristi.\n\nU našoj veterinarskoj ambulanti obavljamo sterilizacije i kastracije uz primjenu savremenih anestezioloških protokola i pažljiv postoperativni nadzor, sa ciljem maksimalne sigurnosti i brzog oporavka ljubimca.\n\nZašto je sterilizacija važna?\n\nSterilizacija i kastracija nisu samo metoda kontrole razmnožavanja, već i važan dio preventivne zaštite zdravlja ljubimaca.\n\nOvim zahvatima:\n\nsmanjuje se broj napuštenih životinja\n\nprevenira se razvoj tumora i infekcija reproduktivnog sistema\n\npoboljšava se kvalitet života\n\nsmanjuju se neželjena ponašanja vezana za polne hormone\n\nNekontrolisana reprodukcija je jedan od najvećih problema napuštenih životinja u našem okruženju.\n\nKada je pravo vrijeme za sterilizaciju?\n\nOptimalno vrijeme za sterilizaciju je oko 6. mjeseca starosti, prije ili neposredno nakon dostizanja polne zrelosti.\n\nPrije svakog zahvata radi se klinički pregled i procjena zdravstvenog stanja kako bi se osigurala sigurnost anestezije i operacije.\n\nSterilizacija ženki (ovariohisterektomija)\n\nSterilizacija ženki podrazumijeva uklanjanje jajnika i materice pod opštom anestezijom.\n\nNakon zahvata, životinja se najčešće vraća kući isti dan, a konci se uklanjaju nakon 10–14 dana.\n\nRana sterilizacija značajno smanjuje rizik od:\n\ntumora mliječnih žlijezda\n\npiometre\n\ntumora jajnika i materice\n\nKastracija mužjaka\n\nKastracija mužjaka je rutinski hirurški zahvat kojim se uklanjaju testisi i smanjuje lučenje testosterona.\n\nZahvat je brz, siguran i uz pravilan oporavak ljubimac se vraća kući isti dan.\n\nDa li kastracija mijenja ponašanje psa?\n\nKastracija ne mijenja karakter psa, ali utiče na ponašanja povezana sa hormonima, kao što su:\n\nobilježavanje teritorije\n\nlutanje\n\nagresivnost prema drugim mužjacima\n\nnemir u periodima tjeranja ženki\n\nZaključak\n\nSterilizacija i kastracija predstavljaju odgovoran izbor vlasnika koji želi dug, zdrav i kvalitetan život svom ljubimcu, uz značajno smanjenje rizika od bolesti i neželjenih ponašanja.",
+          "id": "db5b1a54-0515-41ec-99ee-de17a435b684",
           "type": "text",
-          "title": "Test blok"
+          "title": "",
+          "body": "Sterilizacija i kastracija pasa i mačaka predstavljaju jedan od najvažnijih koraka odgovornog vlasništva kućnih ljubimaca. Iako i dalje postoje brojne zablude o ovom zahvatu, savremena veterinarska medicina jasno pokazuje da on donosi značajne zdravstvene i bihejvioralne koristi.\n\nU našoj veterinarskoj ambulanti obavljamo sterilizacije i kastracije uz primjenu savremenih anestezioloških protokola i pažljiv postoperativni nadzor, sa ciljem maksimalne sigurnosti i brzog oporavka ljubimca."
         },
         {
-          "id": "b1953333-cb58-418d-a703-6e4aac02491a",
-          "body": "Lorem Ipsum is simply dummy text of the printing and typesetting industry. \nLorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.\nIt was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum",
+          "id": "c98ce847-d1f8-4eb4-9242-618d755b6e8b",
+          "type": "text",
+          "title": "Zašto je sterilizacija važna?",
+          "body": "Sterilizacija i kastracija nisu samo metoda kontrole razmnožavanja, već i važan dio preventivne zaštite zdravlja ljubimaca. Ovim zahvatima:"
+        },
+        {
+          "id": "93b94f43-d1e6-4261-bb66-d1fea1fd7ff1",
           "type": "list",
-          "title": "Test 2"
+          "title": "",
+          "body": "smanjuje se broj napuštenih životinja\nprevenira se razvoj tumora i infekcija reproduktivnog sistema\npoboljšava se kvalitet života\nsmanjuju se neželjena ponašanja vezana za polne hormone"
         },
         {
-          "id": "ab10f69b-aeba-4192-be94-24532157a11a",
-          "body": "Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.\n",
+          "id": "78a884bc-c879-43d5-8840-1ba96a3b0321",
           "type": "text",
-          "title": "Test blok"
+          "title": "",
+          "body": "Nekontrolisana reprodukcija je jedan od najvećih problema napuštenih životinja u našem okruženju."
+        },
+        {
+          "id": "b8a203a3-1d87-4797-84c6-e3638a754817",
+          "type": "text",
+          "title": "Kada je pravo vrijeme za sterilizaciju?",
+          "body": "Optimalno vrijeme za sterilizaciju je oko 6. mjeseca starosti, prije ili neposredno nakon dostizanja polne zrelosti.\n\nPrije svakog zahvata radi se klinički pregled i procjena zdravstvenog stanja kako bi se osigurala sigurnost anestezije i operacije."
+        },
+        {
+          "id": "23584685-f8ec-4abb-82c6-daea143dd040",
+          "type": "text",
+          "title": "Sterilizacija ženki (ovariohisterektomija)",
+          "body": "Sterilizacija ženki podrazumijeva uklanjanje jajnika i materice pod opštom anestezijom. Nakon zahvata, životinja se najčešće vraća kući isti dan, a konci se uklanjaju nakon 10–14 dana.\n\nRana sterilizacija značajno smanjuje rizik od:"
+        },
+        {
+          "id": "da36d86f-23f2-4e50-99a7-d5cc6e7d7428",
+          "type": "list",
+          "title": "",
+          "body": "tumora mliječnih žlijezda\npiometre\ntumora jajnika i materice"
+        },
+        {
+          "id": "2d2b8e99-a4c0-4a89-b466-7bb3461a3781",
+          "type": "text",
+          "title": "Kastracija mužjaka",
+          "body": "Kastracija mužjaka je rutinski hirurški zahvat kojim se uklanjaju testisi i smanjuje lučenje testosterona. Zahvat je brz, siguran i uz pravilan oporavak ljubimac se vraća kući isti dan."
+        },
+        {
+          "id": "09dc079d-2903-43ab-8c2a-08089d8dc01a",
+          "type": "text",
+          "title": "Da li kastracija mijenja ponašanje psa?",
+          "body": "Kastracija ne mijenja karakter psa, ali utiče na ponašanja povezana sa hormonima, kao što su:"
+        },
+        {
+          "id": "3be8bf86-33a8-4abc-ba59-c9e3e47af597",
+          "type": "list",
+          "title": "",
+          "body": "obilježavanje teritorije\nlutanje\nagresivnost prema drugim mužjacima\nnemir u periodima tjeranja ženki"
+        },
+        {
+          "id": "ceacaa6a-e53c-4d7d-8db9-2e00ef0d9de0",
+          "type": "text",
+          "title": "Zaključak",
+          "body": "Sterilizacija i kastracija predstavljaju odgovoran izbor vlasnika koji želi dug, zdrav i kvalitetan život svom ljubimcu, uz značajno smanjenje rizika od bolesti i neželjenih ponašanja."
         }
       ],
       "author_name": "dr vet. med. Vladimir Ilić",

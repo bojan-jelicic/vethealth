@@ -110,7 +110,7 @@ const BlogPostPage = () => {
             </div>
           )}
 
-          <article className="space-y-8">
+          <article className="space-y-6 [&>div>h2]:pt-4">
             {blocks.length === 0 && !post.excerpt && (
               <p className="text-muted-foreground">Sadržaj članka još nije dodat.</p>
             )}

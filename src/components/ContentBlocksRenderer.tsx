@@ -19,10 +19,10 @@ export const ContentBlock = ({ block }: { block: ServiceContentBlock }) => {
     const items = (block.body || '').split('\n').map((s) => s.trim()).filter(Boolean);
     return (
       <div>
-        {block.title && <h2 className="text-h3 text-foreground mb-4">{block.title}</h2>}
-        <ul className="space-y-2 list-disc list-inside text-foreground">
+        {block.title && <h2 className="text-h3 text-foreground mb-3">{block.title}</h2>}
+        <ul className="space-y-2 pl-6 list-disc marker:text-primary text-muted-foreground text-lg leading-relaxed">
           {items.map((item, i) => (
-            <li key={i}>{item}</li>
+            <li key={i} className="pl-1">{item}</li>
           ))}
         </ul>
       </div>
@@ -30,8 +30,16 @@ export const ContentBlock = ({ block }: { block: ServiceContentBlock }) => {
   }
   return (
     <div>
-      {block.title && <h2 className="text-h3 text-foreground mb-4">{block.title}</h2>}
-      <p className="text-muted-foreground text-lg whitespace-pre-line">{block.body}</p>
+      {block.title && <h2 className="text-h3 text-foreground mb-3">{block.title}</h2>}
+      <div className="space-y-4">
+        {(block.body || '')
+          .split(/\n\s*\n/)
+          .map((para) => para.trim())
+          .filter(Boolean)
+          .map((para, i) => (
+            <p key={i} className="text-muted-foreground text-lg leading-relaxed whitespace-pre-line">{para}</p>
+          ))}
+      </div>
     </div>
   );
 };
