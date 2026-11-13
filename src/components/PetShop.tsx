@@ -110,7 +110,7 @@ export const PetShop = () => {
               Besplatna Dostava Za Narudžbe Preko 50 KM
             </h3>
             <p className="text-primary-foreground/80 mb-6">
-              Naručite online i uživajte u besplatnoj dostavi na području Banjaluke 
+              Naručite online i uživajte u besplatnoj dostavi na području Banje Luke 
               za sve narudžbe iznad 50 KM.
             </p>
             <Button variant="accent" size="lg">

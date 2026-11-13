@@ -75,7 +75,7 @@ export const Hero = () => {
                 <span className="text-xs sm:text-small text-muted-foreground">{t('hero.yearsExp')}</span>
               </div>
               <a
-                href={mapsLink(c?.address || 'VEThealth Banjaluka')}
+                href={mapsLink(c?.address || 'VEThealth Banja Luka')}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="group flex flex-col items-center text-center"

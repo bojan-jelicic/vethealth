@@ -134,7 +134,7 @@ const handler = async (req: Request): Promise<Response> => {
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
             <div style="background-color: #008080; padding: 30px; text-align: center; border-radius: 8px 8px 0 0;">
               <h1 style="color: white; margin: 0;">VetHealth.ba</h1>
-              <p style="color: rgba(255,255,255,0.8); margin: 10px 0 0 0;">Veterinarska Ordinacija Banjaluka</p>
+              <p style="color: rgba(255,255,255,0.8); margin: 10px 0 0 0;">Veterinarska Ordinacija Banja Luka</p>
             </div>
             
             <div style="background-color: #fff; padding: 30px; border: 1px solid #e0e0e0; border-top: none;">
@@ -164,7 +164,7 @@ const handler = async (req: Request): Promise<Response> => {
             
             <div style="background-color: #f8f8f8; padding: 20px; text-align: center; border-radius: 0 0 8px 8px;">
               <p style="color: #888; font-size: 12px; margin: 0;">
-                Ulica Primjer 123, 78000 Banjaluka<br>
+                Ulica Primjer 123, 78000 Banja Luka<br>
                 info@vethealth.ba | +387 51 123 456
               </p>
             </div>

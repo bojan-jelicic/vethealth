@@ -8,7 +8,7 @@ const testimonials = [
     id: 1,
     name: 'Ivana Mitrović Nešić',
     rating: 5,
-    text: 'Ova klinika je godinama posvećena brizi o mom psu, koji je doživeo 18 godina sa ozbiljnim zdravstvenim stanjem. Kada mu je život bio u opasnosti zbog povreda od drugih pasa, vratili su ga u život veoma zahtevnom operacijom i oporavili ga kako bi mogao da nastavi da živi veoma srećan i kvalitetan život još 6 godina. Do poslednjeg dana činili su sve što su mogli da mu ublaže bol i omoguće mu normalno kretanje. Hvala od srca celom timu i hvala vam u ime svih šapa Banjaluke što postojite!',
+    text: 'Ova klinika je godinama posvećena brizi o mom psu, koji je doživeo 18 godina sa ozbiljnim zdravstvenim stanjem. Kada mu je život bio u opasnosti zbog povreda od drugih pasa, vratili su ga u život veoma zahtevnom operacijom i oporavili ga kako bi mogao da nastavi da živi veoma srećan i kvalitetan život još 6 godina. Do poslednjeg dana činili su sve što su mogli da mu ublaže bol i omoguće mu normalno kretanje. Hvala od srca celom timu i hvala vam u ime svih šapa Banje Luke što postojite!',
   },
   {
     id: 2,
