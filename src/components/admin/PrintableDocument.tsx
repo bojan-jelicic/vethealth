@@ -102,13 +102,13 @@ const printStyles = `
   @page { margin: 15mm; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 12px; color: #1a1a1a; line-height: 1.6; }
-  .header { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #166534; padding-bottom: 12px; margin-bottom: 20px; }
+  .header { display: flex; align-items: center; justify-content: space-between; border-bottom: 2px solid #2B5AA0; padding-bottom: 12px; margin-bottom: 20px; }
   .header img { height: 48px; }
   .header-right { text-align: right; font-size: 11px; color: #555; }
-  .header-right .clinic-name { font-size: 14px; font-weight: 700; color: #166534; }
-  .header-right .clinic-website { font-size: 10px; color: #166534; }
-  .doc-title { font-size: 18px; font-weight: 700; text-align: center; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; color: #166534; }
-  .group-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: #166534; font-weight: 700; margin-bottom: 8px; padding-bottom: 3px; border-bottom: 1px solid #e0e0e0; }
+  .header-right .clinic-name { font-size: 14px; font-weight: 700; color: #2B5AA0; }
+  .header-right .clinic-website { font-size: 10px; color: #2B5AA0; }
+  .doc-title { font-size: 18px; font-weight: 700; text-align: center; margin-bottom: 20px; text-transform: uppercase; letter-spacing: 1px; color: #2B5AA0; }
+  .group-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: #2B5AA0; font-weight: 700; margin-bottom: 8px; padding-bottom: 3px; border-bottom: 1px solid #e0e0e0; }
   .section { margin-bottom: 12px; }
   .section-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: #888; font-weight: 600; margin-bottom: 2px; }
   .section-value { font-size: 12px; padding: 4px 0; }
@@ -119,7 +119,7 @@ const printStyles = `
   .checkbox-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 4px 16px; margin-bottom: 14px; }
   .checkbox-item { display: flex; align-items: center; gap: 6px; font-size: 12px; }
   .checkbox-box { width: 14px; height: 14px; border: 1.5px solid #555; display: inline-flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; }
-  .checkbox-box.checked { background: #166534; border-color: #166534; color: white; }
+  .checkbox-box.checked { background: #2B5AA0; border-color: #2B5AA0; color: white; }
   table { width: 100%; border-collapse: collapse; margin: 8px 0; }
   th, td { border: 1px solid #ddd; padding: 6px 10px; text-align: left; font-size: 11px; }
   th { background: #f5f5f5; font-weight: 600; text-transform: uppercase; font-size: 10px; letter-spacing: 0.3px; }
@@ -130,14 +130,14 @@ const printStyles = `
   .divider { border: none; border-top: 1px solid #eee; margin: 14px 0; }
   .consent-text { font-size: 11px; color: #444; margin: 12px 0; line-height: 1.7; padding: 10px; background: #f9f9f9; border: 1px solid #eee; border-radius: 4px; }
   .exam-card { border: 1px solid #ccc; border-radius: 6px; padding: 12px 14px; margin-bottom: 10px; page-break-inside: avoid; }
-  .exam-card-header { font-size: 13px; font-weight: 700; color: #166534; margin-bottom: 8px; border-bottom: 1px solid #e0e0e0; padding-bottom: 4px; }
+  .exam-card-header { font-size: 13px; font-weight: 700; color: #2B5AA0; margin-bottom: 8px; border-bottom: 1px solid #e0e0e0; padding-bottom: 4px; }
   .exam-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 20px; }
-  .conclusion-box { border: 2px solid #166534; border-radius: 6px; padding: 14px; margin-top: 14px; background: #f0fdf4; }
-  .conclusion-title { font-size: 12px; font-weight: 700; text-transform: uppercase; color: #166534; margin-bottom: 6px; }
+  .conclusion-box { border: 2px solid #2B5AA0; border-radius: 6px; padding: 14px; margin-top: 14px; background: #EEF4FB; }
+  .conclusion-title { font-size: 12px; font-weight: 700; text-transform: uppercase; color: #2B5AA0; margin-bottom: 6px; }
   .lab-field { border-bottom: 1px solid #e5e5e5; padding: 8px 0; display: grid; grid-template-columns: 140px 1fr; gap: 8px; align-items: baseline; }
   .lab-field-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.4px; color: #555; }
   .lab-field-value { font-size: 12px; }
-  .lab-result-box { border: 1.5px solid #166534; border-radius: 6px; padding: 12px 14px; margin: 10px 0; background: #f0fdf4; min-height: 60px; white-space: pre-wrap; font-size: 12px; line-height: 1.7; }
+  .lab-result-box { border: 1.5px solid #2B5AA0; border-radius: 6px; padding: 12px 14px; margin: 10px 0; background: #EEF4FB; min-height: 60px; white-space: pre-wrap; font-size: 12px; line-height: 1.7; }
   .lab-subtitle { font-size: 11px; text-align: center; color: #888; margin-bottom: 16px; letter-spacing: 1px; text-transform: uppercase; }
 `;
 

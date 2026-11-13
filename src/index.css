@@ -6,30 +6,32 @@
 
 @layer base {
   :root {
-    /* Brand: Teal #008080 = 180 100% 25% */
-    --primary: 180 100% 25%;
+    /* Brand: VEThealth blue #2B5AA0 (from logo) */
+    --primary-hover: 216 61% 31%;
+    --primary-soft: 209 62% 71%;
+    --primary: 216 58% 40%;
     --primary-foreground: 0 0% 100%;
     
-    /* Accent: Amber #FFC300 = 46 100% 50% */
-    --accent: 46 100% 50%;
-    --accent-foreground: 0 0% 13%;
+    /* Accent: warm yellow #F5B82E */
+    --accent: 41 91% 57%;
+    --accent-foreground: 214 32% 17%;
     
     /* Background: #F8F8F8 = 0 0% 97.3% */
-    --background: 0 0% 97.3%;
+    --background: 216 45% 98%;
     /* Text: #333333 = 0 0% 20% */
-    --foreground: 0 0% 20%;
+    --foreground: 214 32% 17%;
     
     --card: 0 0% 100%;
-    --card-foreground: 0 0% 20%;
+    --card-foreground: 214 32% 17%;
     
     --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 20%;
+    --popover-foreground: 214 32% 17%;
     
-    --secondary: 180 15% 95%;
-    --secondary-foreground: 180 100% 25%;
+    --secondary: 212 62% 96%;
+    --secondary-foreground: 216 58% 40%;
     
-    --muted: 0 0% 92%;
-    --muted-foreground: 0 0% 40%;
+    --muted: 213 33% 94%;
+    --muted-foreground: 213 16% 43%;
     
     /* Success: #4CAF50 = 122 39% 49% */
     --success: 122 39% 49%;
@@ -39,24 +41,24 @@
     --destructive: 4 90% 58%;
     --destructive-foreground: 0 0% 100%;
     
-    --border: 0 0% 88%;
-    --input: 0 0% 88%;
-    --ring: 180 100% 25%;
+    --border: 213 33% 90%;
+    --input: 213 33% 90%;
+    --ring: 216 58% 40%;
     
     --radius: 0.5rem;
     
-    --shadow-sm: 0px 2px 6px rgba(0, 0, 0, 0.05);
-    --shadow-md: 0px 4px 12px rgba(0, 0, 0, 0.08);
-    --shadow-lg: 0px 8px 24px rgba(0, 0, 0, 0.12);
+    --shadow-sm: 0px 2px 6px rgba(30, 60, 110, 0.06);
+    --shadow-md: 0px 4px 12px rgba(30, 60, 110, 0.10);
+    --shadow-lg: 0px 8px 24px rgba(30, 60, 110, 0.14);
     
-    --sidebar-background: 0 0% 98%;
-    --sidebar-foreground: 0 0% 20%;
-    --sidebar-primary: 180 100% 25%;
+    --sidebar-background: 216 45% 98%;
+    --sidebar-foreground: 214 32% 17%;
+    --sidebar-primary: 216 58% 40%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 180 15% 95%;
-    --sidebar-accent-foreground: 180 100% 25%;
-    --sidebar-border: 0 0% 88%;
-    --sidebar-ring: 180 100% 25%;
+    --sidebar-accent: 212 62% 96%;
+    --sidebar-accent-foreground: 216 58% 40%;
+    --sidebar-border: 213 33% 90%;
+    --sidebar-ring: 216 58% 40%;
   }
 
   .dark {
@@ -71,16 +73,16 @@
     --popover: 0 0% 15%;
     --popover-foreground: 0 0% 87.8%;
     
-    --primary: 180 100% 30%;
+    --primary: 216 58% 52%;
     --primary-foreground: 0 0% 100%;
     
-    --secondary: 180 20% 18%;
-    --secondary-foreground: 180 50% 70%;
+    --secondary: 216 30% 18%;
+    --secondary-foreground: 209 62% 75%;
     
     --muted: 0 0% 18%;
     --muted-foreground: 0 0% 60%;
     
-    --accent: 46 100% 50%;
+    --accent: 41 91% 57%;
     --accent-foreground: 0 0% 10%;
     
     --success: 122 39% 49%;
@@ -91,7 +93,7 @@
     
     --border: 0 0% 22%;
     --input: 0 0% 22%;
-    --ring: 180 100% 30%;
+    --ring: 216 58% 52%;
     
     --shadow-sm: 0px 2px 6px rgba(0, 0, 0, 0.2);
     --shadow-md: 0px 6px 18px rgba(0, 0, 0, 0.25);
@@ -99,12 +101,12 @@
     
     --sidebar-background: 0 0% 10%;
     --sidebar-foreground: 0 0% 87.8%;
-    --sidebar-primary: 180 100% 30%;
+    --sidebar-primary: 216 58% 52%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 180 20% 18%;
-    --sidebar-accent-foreground: 180 50% 70%;
+    --sidebar-accent: 216 30% 18%;
+    --sidebar-accent-foreground: 209 62% 75%;
     --sidebar-border: 0 0% 22%;
-    --sidebar-ring: 180 100% 30%;
+    --sidebar-ring: 216 58% 52%;
   }
 }
 
