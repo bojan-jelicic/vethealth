@@ -6,7 +6,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import type { VisitDocument } from '@/services/visitDetailServices';
 import { supabase } from '@/integrations/supabase/client';
 import { toast } from '@/hooks/use-toast';
-import logoImg from '@/assets/vethealth-logo.png';
+import logoAsset from '@/assets/vethealth-blue-logo.png.asset.json';
+
+const logoImg = logoAsset.url;
 
 interface Props {
   doc: VisitDocument;

@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Menu, Phone, Calendar, MapPin, Clock } from 'lucide-react';
-import vethealthLogo from '@/assets/vethealth-logo.png';
+import vethealthLogo from '@/assets/vethealth-blue-logo.png.asset.json';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { ThemeToggle } from '@/components/ThemeToggle';
@@ -56,7 +56,7 @@ export const Header = () => {
           {/* Logo */}
           <Link to="/" className="group">
             <img
-              src={vethealthLogo}
+              src={vethealthLogo.url}
               alt="VetHealth.ba - Veterinarska Ordinacija"
               className="h-12 md:h-[72px] w-auto group-hover:scale-105 transition-transform"
             />
